@@ -318,8 +318,29 @@ class OfflineRAGEngine:
                 p_str = f"Trang {retrieved_chunks[0]['trang_dau']}"
                 phan_tra_loi += f"*(Nguồn tham khảo: {retrieved_chunks[0]['tieu_de']} - {p_str})*\n"
         else:
-            # Tra loi tong hop tu cac chunks tim duoc
-            if retrieved_chunks:
+            # Kiem tra do tuong thich noi dung thuc te (Tranh ao tuong RAG tra loi linh tinh)
+            STOPWORDS = {
+                "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",
+                "co", "duoc", "trong", "mot", "cho", "ve", "khi", "da", "se", "dang",
+                "thi", "ma", "va", "voi", "tai", "tu", "den", "boi", "vi", "do", "nen",
+                "ra", "vao", "lai", "qua", "len", "xuong", "nay", "do", "kia", "ay",
+                "hay", "biet", "thong", "tin", "hoi", "sao", "bao", "nhieu", "may"
+            }
+            content_words = [w for w in xoa_dau(cau_hoi).split() if len(w) > 1 and w not in STOPWORDS]
+            
+            hop_le = False
+            if retrieved_chunks and content_words:
+                top_c = retrieved_chunks[0]
+                text_norm = xoa_dau(top_c.get("tieu_de", "") + " " + top_c.get("text", ""))
+                matches = [w for w in content_words if w in text_norm]
+                if len(content_words) <= 2:
+                    hop_le = (len(matches) == len(content_words))
+                else:
+                    hop_le = (len(matches) / len(content_words) >= 0.4)
+            elif retrieved_chunks and not content_words:
+                hop_le = True
+
+            if hop_le and retrieved_chunks:
                 top_c = retrieved_chunks[0]
                 p_str = f"Trang {top_c['trang_dau']}"
                 phan_tra_loi += (
@@ -331,7 +352,18 @@ class OfflineRAGEngine:
                     p_str2 = f"Trang {c2['trang_dau']}"
                     phan_tra_loi += f"**Thông tin bổ trợ [{p_str2}]:**\n\n{c2['text'][:400]}...\n\n"
             else:
-                phan_tra_loi += "Không tìm thấy dữ liệu liên quan trực tiếp trong tài liệu lưu trữ."
+                sources = []
+                phan_tra_loi += (
+                    f"### ⚠️ Không tìm thấy trong dữ liệu Lịch sử Việt Nam (1986 - 2000)\n\n"
+                    f"Nội dung câu hỏi của bạn về **\"{cau_hoi.strip()}\"** không có dữ liệu đối chiếu trong bộ sách "
+                    f"*Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)* cũng như danh mục các nhân vật lịch sử tiêu biểu.\n\n"
+                    f"- **Về nhân vật / sự kiện:** Đối tượng này không phải là nhân vật hay sự kiện lịch sử thuộc giai đoạn Đổi mới (1986 - 2000) và không được ghi nhận trong bộ sách thông sử này.\n"
+                    f"- **Phạm vi của hệ thống:** Hệ thống chỉ cung cấp và xác thực các thông tin chính thống về **Lịch sử Việt Nam giai đoạn Đổi mới (1986 - 2000)**.\n\n"
+                    f"💡 *Bạn có thể tra cứu các chủ đề lịch sử đúng chuyên môn:*\n"
+                    f"- 🏛️ **Nhân vật thời Đổi mới:** *Trường Chinh, Phạm Văn Đồng, Nguyễn Văn Linh, Võ Văn Kiệt, Đỗ Mười...*\n"
+                    f"- ⚔️ **Anh hùng dân tộc các thời kỳ:** *Quang Trung (Nguyễn Huệ), Trần Hưng Đạo, Lê Lợi, Hồ Chí Minh, Võ Nguyên Giáp...*\n"
+                    f"- 📜 **Sự kiện & Chính sách:** *Đại hội VI năm 1986, Gia nhập ASEAN năm 1995, Chính sách Khoán 10 (1988), Hiệp định Thương mại Việt - Mỹ năm 2000...*"
+                )
                 
         # Bo sung cac chips goi y
         if not goi_y_chips:

@@ -1160,16 +1160,42 @@
             }
 
             // 3. General BM25 search
+            const STOPWORDS_SET = new Set([
+                "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",
+                "co", "duoc", "trong", "mot", "cho", "ve", "khi", "da", "se", "dang",
+                "thi", "ma", "va", "voi", "tai", "tu", "den", "boi", "vi", "do", "nen",
+                "ra", "vao", "lai", "qua", "len", "xuong", "nay", "do", "kia", "ay",
+                "hay", "biet", "thong", "tin", "hoi", "sao", "bao", "nhieu", "may"
+            ]);
+            const contentWords = tokenize(query).filter(w => !STOPWORDS_SET.has(w));
+
             const retrieved = bm25SearchClient(query, chunks, 5);
-            if (!retrieved || retrieved.length === 0) {
+
+            // Kiem tra do tuong thich noi dung thuc te (Tranh ao tuong RAG tra loi linh tinh)
+            let hopLe = false;
+            if (retrieved && retrieved.length > 0 && contentWords.length > 0) {
+                const top1 = retrieved[0];
+                const textNorm = xoaDau((top1.tieu_de || "") + " " + (top1.text || top1.tom_tat || ""));
+                const matches = contentWords.filter(w => textNorm.includes(w));
+                if (contentWords.length <= 2) {
+                    hopLe = (matches.length === contentWords.length);
+                } else {
+                    hopLe = (matches.length / contentWords.length >= 0.4);
+                }
+            } else if (retrieved && retrieved.length > 0 && contentWords.length === 0) {
+                hopLe = true;
+            }
+
+            if (!hopLe || !retrieved || retrieved.length === 0) {
                 return {
-                    answer: "Không tìm thấy dữ liệu liên quan trực tiếp trong tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)*.",
+                    answer: `### ⚠️ Không tìm thấy trong dữ liệu Lịch sử Việt Nam (1986 - 2000)\n\nNội dung câu hỏi của bạn về **"${query.trim()}"** không có dữ liệu đối chiếu trong bộ sách *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)* cũng như danh mục các nhân vật lịch sử tiêu biểu.\n\n- **Về nhân vật / sự kiện:** Đối tượng này không phải là nhân vật hay sự kiện lịch sử thuộc giai đoạn Đổi mới (1986 - 2000) và không được ghi nhận trong bộ sách thông sử này.\n- **Phạm vi của hệ thống:** Hệ thống chỉ cung cấp và xác thực các thông tin chính thống về **Lịch sử Việt Nam giai đoạn Đổi mới (1986 - 2000)**.\n\n💡 *Bạn có thể tra cứu các chủ đề lịch sử đúng chuyên môn:*\n- 🏛️ **Nhân vật thời Đổi mới:** *Trường Chinh, Phạm Văn Đồng, Nguyễn Văn Linh, Võ Văn Kiệt, Đỗ Mười...*\n- ⚔️ **Anh hùng dân tộc các thời kỳ:** *Quang Trung (Nguyễn Huệ), Trần Hưng Đạo, Lê Lợi, Hồ Chí Minh, Võ Nguyên Giáp...*\n- 📜 **Sự kiện & Chính sách:** *Đại hội VI năm 1986, Gia nhập ASEAN năm 1995, Chính sách Khoán 10 (1988), Hiệp định Thương mại Việt - Mỹ năm 2000...*`,
                     sources: [],
                     route: "rag_offline",
                     suggestions: [
                         "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
                         "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
-                        "Chính sách khoán 10 trong nông nghiệp năm 1988"
+                        "Chính sách khoán 10 trong nông nghiệp năm 1988",
+                        "Hiệp định Thương mại Việt - Mỹ năm 2000"
                     ]
                 };
             }
