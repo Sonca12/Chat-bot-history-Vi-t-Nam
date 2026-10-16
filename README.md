@@ -12,21 +12,20 @@ Hệ thống hoạt động **100% Offline độc lập**, loại bỏ hoàn to�
 
 ---
 
-## 🌐 Trải Nghiệm Online (Không Cần Chạy Local)
+## 🌐 Trải Nghiệm Trực Tiếp Trên GitHub Pages (100% Trên GitHub, Không Cần Mở Máy)
 
-Bạn có thể đưa ứng dụng lên mạng internet hoàn toàn miễn phí mà không cần máy tính cá nhân phải mở 24/7:
+Ứng dụng được thiết kế với động cơ **In-Browser RAG & Knowledge Graph Engine**, cho phép toàn bộ chatbot hoạt động trực tiếp ngay trên **GitHub Pages** hoàn toàn miễn phí mà không cần bất kỳ máy chủ nào chạy ở máy bạn:
 
-### Cách 1: Triển khai 1-Click qua Render.com (Khuyên dùng)
-1. Đăng ký tài khoản miễn phí tại [Render.com](https://render.com/).
-2. Nhấn vào nút **Deploy to Render** ở đầu trang hoặc kết nối repository `https://github.com/Sonca12/Chat-bot-history-Vi-t-Nam`.
-3. Render sẽ tự động đọc file cấu hình `render.yaml` có sẵn trong dự án và khởi tạo dịch vụ Web miễn phí.
-4. Sau 2-3 phút, bạn sẽ nhận được đường link công khai dạng:
-   👉 `https://chat-bot-history-vi-t-nam.onrender.com`
+👉 **Link truy cập trực tuyến:** **[https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/](https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/)**
 
-### Cách 2: Triển khai trên Hugging Face Spaces
-1. Tạo một Space mới tại [Hugging Face Spaces](https://huggingface.co/spaces) với SDK là **Docker**.
-2. Chọn kết nối hoặc sao chép dự án này vào Space.
-3. Hugging Face sẽ tự động build từ `Dockerfile` và cấp link công khai miễn phí 24/7.
+> 💡 **Cách kích hoạt GitHub Pages trên repository (Chỉ 10 giây):**
+> 1. Truy cập: [https://github.com/Sonca12/Chat-bot-history-Vi-t-Nam/settings/pages](https://github.com/Sonca12/Chat-bot-history-Vi-t-Nam/settings/pages)
+> 2. Tại mục **Build and deployment** -> **Source**:
+>    - Cách nhanh nhất: Chọn **Deploy from a branch** -> Branch chọn `main` và thư mục `/ (root)` -> Nhấn **Save**.
+>    - Hoặc chọn **GitHub Actions** (đã được cấu hình sẵn trong `.github/workflows/pages.yml`).
+> 3. Đợi khoảng 1 phút, trang web sẽ hiển thị thông báo *Your site is live at https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/* và bất kỳ ai cũng có thể truy cập được từ điện thoại, máy tính mọi lúc mọi nơi!
+
+Ngoài ra, dự án vẫn hỗ trợ triển khai Cloud Web Service 24/7 qua [Render.com](https://render.com/) bằng nút **Deploy to Render** hoặc qua [Hugging Face Spaces](https://huggingface.co/spaces) bằng `Dockerfile`.
 
 ---
 

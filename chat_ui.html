@@ -826,17 +826,419 @@
         const chatArea = document.getElementById("chatArea");
         const txtInput = document.getElementById("txtInput");
         const btnSend = document.getElementById("btnSend");
+        const statusText = document.getElementById("statusText");
         let lichSuChat = [];
+        let allChunksCache = [];
+        let isLocalServerAvailable = false;
 
-        // Kiem tra ket noi server
-        fetch(`${API}/health`)
-            .then(r => r.json())
-            .then(data => {
-                console.log("[Health] OK:", data);
-            })
-            .catch(err => {
-                console.warn("[Health] Chua ket noi:", err);
+        // ============================================================
+        // 1. KNOWLEDGE GRAPH DU LIEU (Hoat dong 100% Offline tren Browser & GitHub Pages)
+        // ============================================================
+        const KNOWLEDGE_GRAPH = {
+            "truong_chinh": {
+                "ten": "Trường Chinh",
+                "ten_khac": ["Trương Trinh", "Đặng Xuân Khu", "Anh Năm", "truong chinh", "truong trinh"],
+                "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1941-1956, 1986), Chủ tịch Hội đồng Nhà nước (1981-1987), Cố vấn BCH Trung ương Đảng (1986-1988)",
+                "vai_tro_noi_bat": "Là 'Tổng Bí thư của Đổi mới', người khởi xướng và đặt nền móng lý luận cho công cuộc Đổi mới toàn diện đất nước tại Đại hội đại biểu toàn quốc lần thứ VI (tháng 12/1986) với phương châm 'Nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật'.",
+                "thoi_ky": "1986 (Khởi xướng Đổi mới tại Đại hội VI, Cố vấn BCH Trung ương đến khi từ trần năm 1988)",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    {
+                        "nhan_vat": "Phạm Văn Đồng",
+                        "ly_do": "Cùng là hai vị lãnh đạo tiền bối kiệt xuất, đồng cam cộng khổ qua các thời kỳ cách mạng. Sau Đại hội VI (1986), cả hai đồng chí cùng được Đảng cử làm Cố vấn Ban Chấp hành Trung ương Đảng, cùng đồng thuận bảo trợ và định hình đường lối Đổi mới.",
+                        "goi_y_cau_hoi": "Vai trò của đồng chí Phạm Văn Đồng trong giai đoạn khởi xướng Đổi mới 1986 là gì?"
+                    },
+                    {
+                        "nhan_vat": "Nguyễn Văn Linh",
+                        "ly_do": "Đồng chí kế nhiệm vị trí Tổng Bí thư tại Đại hội VI (12/1986), người tiếp thu và quyết liệt hiện thực hóa đường lối Đổi mới mà đồng chí Trường Chinh đã khởi xướng.",
+                        "goi_y_cau_hoi": "Nguyễn Văn Linh đã thực hiện những nội dung đổi mới nào sau Đại hội VI?"
+                    },
+                    {
+                        "nhan_vat": "Võ Văn Kiệt",
+                        "ly_do": "Người có thực tiễn cải cách năng động tại miền Nam, đã đóng góp nhiều ý kiến và kinh nghiệm thực tiễn quý báu để đồng chí Trường Chinh đưa vào Báo cáo Chính trị Đại hội VI.",
+                        "goi_y_cau_hoi": "Đóng góp thực tiễn của đồng chí Võ Văn Kiệt cho đường lối Đổi mới?"
+                    }
+                ]
+            },
+            "pham_van_dong": {
+                "ten": "Phạm Văn Đồng",
+                "ten_khac": ["Anh Tô", "pham van dong"],
+                "chuc_vu": "Thủ tướng Chính phủ (1955-1987), Cố vấn Ban Chấp hành Trung ương Đảng (1986-1997)",
+                "vai_tro_noi_bat": "Vị Thủ tướng tại vị lâu nhất trong lịch sử Việt Nam (32 năm), nhà ngoại giao kiệt xuất, nhà văn hóa lớn có uy tín quốc tế sâu rộng.",
+                "thoi_ky": "1986 - 1997",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Trường Chinh", "ly_do": "Cùng sát cánh bên Chủ tịch Hồ Chí Minh và cùng được cử làm Cố vấn Ban Chấp hành Trung ương Đảng sau Đại hội VI (1986)." },
+                    { "nhan_vat": "Võ Văn Kiệt", "ly_do": "Đồng chí kế nhiệm cương vị lãnh đạo Chính phủ, tiếp tục công cuộc Đổi mới." }
+                ]
+            },
+            "nguyen_van_linh": {
+                "ten": "Nguyễn Văn Linh",
+                "ten_khac": ["Mười Cúc", "nguyen van linh"],
+                "chuc_vu": "Tổng Bí thư BCH Trung ương Đảng Cộng sản Việt Nam (1986-1991), Cố vấn BCH Trung ương (1991-1997)",
+                "vai_tro_noi_bat": "Vị Tổng Bí thư tiên phong chỉ đạo hiện thực hóa đường lối Đổi mới bằng hành động quyết liệt với chuyên mục 'Những việc cần làm ngay' trên báo Nhân Dân.",
+                "thoi_ky": "1986 - 1991",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Trường Chinh", "ly_do": "Kế thừa ngọn cờ Đổi mới từ đồng chí Trường Chinh tại Đại hội VI." },
+                    { "nhan_vat": "Đỗ Mười", "ly_do": "Chủ tịch Hội đồng Bộ trưởng cùng thời kỳ, kế nhiệm chức Tổng Bí thư tại Đại hội VII (1991)." }
+                ]
+            },
+            "vo_van_kiet": {
+                "ten": "Võ Văn Kiệt",
+                "ten_khac": ["Sáu Dân", "vo van kiet", "thu tuong vo van kiet"],
+                "chuc_vu": "Chủ tịch Hội đồng Bộ trưởng / Thủ tướng Chính phủ (1991-1997), Cố vấn BCH Trung ương (1997-2001)",
+                "vai_tro_noi_bat": "Tổng công trình sư của những công trình thế kỷ: Đường dây tải điện 500kV Bắc - Nam mạch 1, thoát lũ Đồng Tháp Mười, bình thường hóa quan hệ với Hoa Kỳ (1995) và đưa Việt Nam gia nhập ASEAN (1995).",
+                "thoi_ky": "1986 - 2000",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Phan Văn Khải", "ly_do": "Phó Thủ tướng thứ nhất đắc lực cùng điều hành Chính phủ và kế nhiệm vị trí Thủ tướng năm 1997." },
+                    { "nhan_vat": "Trường Chinh & Phạm Văn Đồng", "ly_do": "Hai bậc tiền bối dìu dắt và ủng hộ tinh thần cải cách 'xé rào' tại TP. Hồ Chí Minh thời kỳ tiền Đổi mới." }
+                ]
+            },
+            "phan_van_khai": {
+                "ten": "Phan Văn Khải",
+                "ten_khac": ["Sáu Khải", "phan van khai"],
+                "chuc_vu": "Thủ tướng Chính phủ nước CHXHCN Việt Nam (1997-2006)",
+                "vai_tro_noi_bat": "Nhà kỹ trị tài năng, kiến tạo hành lang pháp lý thị trường với Luật Doanh nghiệp năm 1999 mang tính đột phá, ký kết Hiệp định Thương mại song phương Việt - Mỹ (BTA 2000).",
+                "thoi_ky": "1991 - 2000",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Võ Văn Kiệt", "ly_do": "Tiếp nối nhiệm kỳ Thủ tướng từ đồng chí Võ Văn Kiệt, tiếp tục đẩy mạnh hội nhập quốc tế." },
+                    { "nhan_vat": "Trần Đức Lương", "ly_do": "Chủ tịch nước cùng thời kỳ, phối hợp lãnh đạo đối ngoại và ký kết các điều ước quốc tế lớn." }
+                ]
+            },
+            "do_muoi": {
+                "ten": "Đỗ Mười",
+                "ten_khac": ["Nguyễn Duy Cống", "do muoi"],
+                "chuc_vu": "Chủ tịch Hội đồng Bộ trưởng (1988-1991), Tổng Bí thư BCH Trung ương Đảng (1991-1997)",
+                "vai_tro_noi_bat": "Chỉ đạo thông qua Cương lĩnh 1991, Hiến pháp năm 1992, mở rộng đường lối đối ngoại 'Việt Nam muốn là bạn với tất cả các nước'.",
+                "thoi_ky": "1988 - 1997",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Nguyễn Văn Linh", "ly_do": "Hai nhà lãnh đạo chủ chốt giai đoạn chuyển giao Đổi mới Đại hội VI - VII." }
+                ]
+            },
+            "tran_duc_luong": {
+                "ten": "Trần Đức Lương",
+                "ten_khac": ["tran duc luong"],
+                "chuc_vu": "Chủ tịch nước CHXHCN Việt Nam (1997-2006)",
+                "vai_tro_noi_bat": "Nguyên thủ quốc gia ký kết Hiệp ước Biên giới trên đất liền (1999) và Hiệp định Phân định Vịnh Bắc Bộ (2000), chủ trì đón Tổng thống Bill Clinton (2000).",
+                "thoi_ky": "1997 - 2000",
+                "thuoc_tap_15": true,
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Phan Văn Khải", "ly_do": "Thủ tướng Chính phủ cùng thời kỳ hội nhập quốc tế sâu rộng." }
+                ]
+            },
+            "nguyen_hue": {
+                "ten": "Quang Trung (Nguyễn Huệ)",
+                "ten_khac": ["Nguyễn Huệ", "nguyen hue", "quang trung", "bắc bình vương", "hồ thơm", "vua quang trung", "nguyen hue la ai", "quang trung la ai"],
+                "chuc_vu": "Thủ lĩnh kiệt xuất phong trào khởi nghĩa Tây Sơn, Hoàng đế thứ hai triều đại Tây Sơn (trị vì 1788 - 1792)",
+                "vai_tro_noi_bat": "Anh hùng dân tộc áo vải cờ đào, một trong những thiên tài quân sự bách chiến bách thắng vĩ đại nhất lịch sử Việt Nam. Đã lãnh đạo phong trào Tây Sơn lật đổ các tập đoàn phong kiến cát cứ Đàng Trong - Đàng Ngoài, đánh tan 5 vạn quân xâm lược Xiêm tại Rạch Gầm - Xoài Mút (1785), và thần tốc hành quân đại phá 29 vạn quân Mãn Thanh mùa xuân Kỷ Dậu (1789) với chiến thắng Ngọc Hồi - Đống Đa vang dội.",
+                "thoi_ky": "Thế kỷ XVIII (1753 - 1792)",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 4: Từ năm 1627 đến năm 1858",
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Nguyễn Nhạc & Nguyễn Lữ", "ly_do": "Ba anh em Tây Sơn (Tây Sơn tam kiệt) cùng nhau dựng cờ khởi nghĩa từ vùng Tây Sơn thượng đạo." },
+                    { "nhan_vat": "Ngô Thì Nhậm", "ly_do": "Danh sĩ Bắc Hà, mưu thần đắc lực hiến kế 'rút quân về Tam Điệp - Biện Sơn' giúp vua Quang Trung đại phá quân Thanh." },
+                    { "nhan_vat": "Bùi Thị Xuân & Trần Quang Diệu", "ly_do": "Các vị đô đốc kiệt xuất của phong trào Tây Sơn dưới trướng vua Quang Trung." }
+                ]
+            },
+            "tran_hung_dao": {
+                "ten": "Trần Hưng Đạo (Trần Quốc Tuấn)",
+                "ten_khac": ["tran hung dao", "tran quoc tuan", "hung dao vuong", "tran hung dao la ai"],
+                "chuc_vu": "Quốc công Tiết chế, Tổng chỉ huy quân đội Đại Việt thời nhà Trần",
+                "vai_tro_noi_bat": "Thiên tài quân sự kiệt xuất, tác giả 'Hịch tướng sĩ' và 'Binh thư yếu lược'. Người có công lao tối thượng lãnh đạo quân dân Đại Việt ba lần đánh tan giặc Mông - Nguyên xâm lược (1258, 1285, 1288) với chiến thắng Bạch Đằng năm 1288 lịch sử.",
+                "thoi_ky": "Thế kỷ XIII (1228 - 1300)",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 2: Từ thế kỷ X đến thế kỷ XIV",
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Trần Nhân Tông", "ly_do": "Vị hoàng đế anh minh cùng lãnh đạo cuộc kháng chiến chống quân Nguyên lần 2 và 3." },
+                    { "nhan_vat": "Yết Kiêu & Dã Tượng", "ly_do": "Hai gia tướng trung thành, quả cảm lập nhiều chiến công lẫy lừng." }
+                ]
+            },
+            "le_loi": {
+                "ten": "Lê Lợi (Lê Thái Tổ)",
+                "ten_khac": ["le loi", "le thai to", "binh dinh vuong", "vua le loi"],
+                "chuc_vu": "Bình Định Vương, Hoàng đế sáng lập triều đại Hậu Lê (trị vì 1428 - 1433)",
+                "vai_tro_noi_bat": "Lãnh tụ khởi nghĩa Lam Sơn (1418 - 1427), trải qua 10 năm nếm mật nằm gai đánh tan 15 vạn quân xâm lược nhà Minh, giành lại nền độc lập cho Đại Việt.",
+                "thoi_ky": "Thế kỷ XV (1385 - 1433)",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 3: Thế kỷ XV",
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Nguyễn Trãi", "ly_do": "Quân sư đắc lực dâng 'Bình Ngô sách' và soạn thảo áng thiên cổ hùng văn 'Bình Ngô đại cáo'." },
+                    { "nhan_vat": "Lê Lai", "ly_do": "Vị tướng trung liệt liều mình cứu chúa tại Chí Linh." }
+                ]
+            },
+            "ho_chi_minh": {
+                "ten": "Chủ tịch Hồ Chí Minh (Nguyễn Ái Quốc)",
+                "ten_khac": ["Bác Hồ", "ho chi minh", "nguyen ai quoc", "nguyen tat thanh", "bac ho"],
+                "chuc_vu": "Chủ tịch nước Việt Nam Dân chủ Cộng hòa, Người sáng lập Đảng Cộng sản Việt Nam",
+                "vai_tro_noi_bat": "Vị lãnh tụ thiên tài của dân tộc, Anh hùng giải phóng dân tộc, Nhà văn hóa kiệt xuất được UNESCO vinh danh.",
+                "thoi_ky": "1890 - 1969",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 9 đến Tập 13: Giai đoạn Cách mạng 1930 - 1975",
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Võ Nguyên Giáp", "ly_do": "Người học trò xuất sắc được Bác Hồ trao quyền Tổng tư lệnh quân đội." },
+                    { "nhan_vat": "Phạm Văn Đồng & Trường Chinh", "ly_do": "Các học trò, đồng chí lãnh đạo nòng cốt qua các thời kỳ cách mạng." }
+                ]
+            },
+            "vo_nguyen_giap": {
+                "ten": "Đại tướng Võ Nguyên Giáp",
+                "ten_khac": ["Anh Văn", "vo nguyen giap", "dai tuong vo nguyen giap"],
+                "chuc_vu": "Đại tướng đầu tiên, Tổng tư lệnh Quân đội Nhân dân Việt Nam, Phó Chủ tịch Hội đồng Bộ trưởng",
+                "vai_tro_noi_bat": "Vị tướng huyền thoại chỉ huy Chiến thắng lịch sử Điện Biên Phủ 1954 lừng lẫy năm châu chấn động địa cầu và Chiến dịch Hồ Chí Minh lịch sử 1975.",
+                "thoi_ky": "1911 - 2013",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 10 đến Tập 14: Lịch sử kháng chiến chống Pháp và chống Mỹ",
+                "quan_he_mat_thiet": [
+                    { "nhan_vat": "Hồ Chí Minh", "ly_do": "Người thầy vĩ đại giao trọng trách thành lập Đội Việt Nam Tuyên truyền Giải phóng quân." }
+                ]
+            }
+        };
+
+        // ============================================================
+        // 2. CAC HAM XU LY TIENG VIET & BM25 SEARCH
+        // ============================================================
+        function xoaDau(text) {
+            if (!text) return "";
+            return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLowerCase().trim();
+        }
+
+        function tokenize(text) {
+            return xoaDau(text).split(/[^a-z0-9_]+/i).filter(w => w.length > 1);
+        }
+
+        function tinhToanNam(query) {
+            const qLower = xoaDau(query);
+            if (qLower.includes("bao nhieu nam") || qLower.includes("may nam") || (qLower.includes("tu nam") && qLower.includes("den nam"))) {
+                const years = query.match(/\b(19\d\d|20\d\d)\b/g);
+                if (years && years.length >= 2) {
+                    const y1 = parseInt(years[0]);
+                    const y2 = parseInt(years[1]);
+                    const diff = Math.abs(y2 - y1);
+                    return `Khoảng thời gian từ năm **${Math.min(y1, y2)}** đến năm **${Math.max(y1, y2)}** là **${diff} năm**.`;
+                }
+            }
+            return null;
+        }
+
+        function timThucTheClient(query) {
+            const qNorm = xoaDau(query);
+            for (const [key, ent] of Object.entries(KNOWLEDGE_GRAPH)) {
+                if (qNorm.includes(xoaDau(ent.ten))) return ent;
+                for (const alias of (ent.ten_khac || [])) {
+                    if (qNorm.includes(xoaDau(alias))) return ent;
+                }
+            }
+            return null;
+        }
+
+        function bm25SearchClient(query, chunks, topK = 5) {
+            if (!chunks || chunks.length === 0) return [];
+            const qTerms = tokenize(query);
+            if (qTerms.length === 0) return chunks.slice(0, topK);
+
+            const N = chunks.length;
+            const docCounts = {};
+            const docTermFreqs = chunks.map(c => {
+                const words = tokenize((c.tieu_de || "") + " " + (c.text || c.tom_tat || ""));
+                const freqs = {};
+                words.forEach(w => { freqs[w] = (freqs[w] || 0) + 1; });
+                Object.keys(freqs).forEach(w => { docCounts[w] = (docCounts[w] || 0) + 1; });
+                return { freqs, len: words.length };
             });
+
+            const avgdl = docTermFreqs.reduce((acc, d) => acc + d.len, 0) / N;
+            const k1 = 1.5;
+            const b = 0.75;
+
+            const scored = chunks.map((c, idx) => {
+                const { freqs, len } = docTermFreqs[idx];
+                let score = 0;
+                qTerms.forEach(t => {
+                    const df = docCounts[t] || 0;
+                    if (df > 0) {
+                        const idf = Math.log((N - df + 0.5) / (df + 0.5) + 1);
+                        const tf = freqs[t] || 0;
+                        score += idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (len / avgdl)));
+                    }
+                });
+
+                const titleWords = tokenize(c.tieu_de || "");
+                qTerms.forEach(t => {
+                    if (titleWords.includes(t)) score += 3.0;
+                });
+
+                return { ...c, diem: Math.round(score * 100) / 100 };
+            });
+
+            scored.sort((a, b) => b.diem - a.diem);
+            return scored.slice(0, topK);
+        }
+
+        function traLoiClient(query, chunks) {
+            // 1. Calculator
+            const calcAns = tinhToanNam(query);
+            if (calcAns) {
+                return {
+                    answer: `📊 **Kết quả tính toán thời gian:**\n\n${calcAns}`,
+                    sources: [],
+                    route: "calc",
+                    suggestions: [
+                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                        "Hiệp định Thương mại Việt - Mỹ năm 2000"
+                    ]
+                };
+            }
+
+            // 2. Entity lookup
+            const ent = timThucTheClient(query);
+            if (ent) {
+                let answer = `### 🏛️ Nhân vật lịch sử: **${ent.ten}**\n\n`;
+                answer += `- **Chức vụ & Cương vị:** ${ent.chuc_vu}\n`;
+                answer += `- **Thời kỳ lịch sử:** ${ent.thoi_ky}\n`;
+                answer += `- **Công lao & Vai trò nổi bật:** ${ent.vai_tro_noi_bat}\n\n`;
+
+                let sources = [];
+                let suggestions = [];
+
+                if (!ent.thuoc_tap_15) {
+                    answer += `#### 📚 Phân bố dữ liệu trong Bộ Thông sử Việt Nam:\n`;
+                    answer += `Nhân vật lịch sử **${ent.ten}** thuộc thời kỳ được biên soạn chi tiết tại **${ent.tap_sach || 'Bộ Thông sử Việt Nam'}**. Bộ dữ liệu chuyên sâu hiện tại của hệ thống đang phục vụ cho **Tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)**.\n\n`;
+                    if (ent.quan_he_mat_thiet && ent.quan_he_mat_thiet.length > 0) {
+                        answer += `#### 🔗 Các nhân vật cùng thời kỳ & Mối liên hệ lịch sử tiêu biểu:\n`;
+                        ent.quan_he_mat_thiet.forEach(qh => {
+                            answer += `- 👤 **${qh.nhan_vat}:** ${qh.ly_do}\n`;
+                            suggestions.push(qh.goi_y_cau_hoi || `Thông tin về ${qh.nhan_vat}`);
+                        });
+                    }
+                } else {
+                    const retrieved = bm25SearchClient(query, chunks, 3);
+                    const matching = retrieved.filter(c => (c.text || c.tom_tat || "").includes(ent.ten));
+                    if (matching.length > 0) {
+                        answer += `#### 📖 Nội dung ghi nhận trong tài liệu *Lịch sử Việt Nam tập 15*:\n\n`;
+                        matching.slice(0, 2).forEach(c => {
+                            const p = c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`;
+                            answer += `> "${(c.text || c.tom_tat).slice(0, 350)}..." *(${p})*\n\n`;
+                        });
+                    } else {
+                        answer += `#### ℹ️ Thông tin trong tài liệu lưu trữ:\n`;
+                        answer += `Trong bộ tài liệu *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000)*, các nội dung trọng tâm tập trung vào quá trình triển khai chính sách Đổi mới và hoạt động điều hành kinh tế - xã hội. Đối với câu hỏi cụ thể của bạn về hành động của đồng chí **${ent.ten}**, tài liệu ghi nhận đồng chí cùng giữ vai trò lãnh đạo và Cố vấn Ban Chấp hành Trung ương Đảng giai đoạn mở đầu Đổi mới.\n\n`;
+                    }
+
+                    if (ent.quan_he_mat_thiet && ent.quan_he_mat_thiet.length > 0) {
+                        answer += `#### 🔗 Gợi ý nhân vật và mối liên hệ mật thiết trong dữ liệu:\n`;
+                        ent.quan_he_mat_thiet.forEach(qh => {
+                            answer += `- 👤 **Đồng chí ${qh.nhan_vat}:** ${qh.ly_do}\n`;
+                            suggestions.push(qh.goi_y_cau_hoi || `Đồng chí ${qh.nhan_vat} trong giai đoạn Đổi mới`);
+                        });
+                    }
+
+                    sources = retrieved.map(c => ({
+                        tieu_de: c.tieu_de,
+                        trang: c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`,
+                        tom_tat: (c.text || c.tom_tat).slice(0, 200) + "..."
+                    }));
+                }
+
+                if (suggestions.length === 0) {
+                    suggestions = [
+                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                        "Chính sách khoán 10 trong nông nghiệp năm 1988"
+                    ];
+                }
+
+                return {
+                    answer: answer.trim(),
+                    sources,
+                    route: "rag_offline",
+                    suggestions: suggestions.slice(0, 5)
+                };
+            }
+
+            // 3. General BM25 search
+            const retrieved = bm25SearchClient(query, chunks, 5);
+            if (!retrieved || retrieved.length === 0) {
+                return {
+                    answer: "Không tìm thấy dữ liệu liên quan trực tiếp trong tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)*.",
+                    sources: [],
+                    route: "rag_offline",
+                    suggestions: [
+                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                        "Chính sách khoán 10 trong nông nghiệp năm 1988"
+                    ]
+                };
+            }
+
+            const top1 = retrieved[0];
+            const p1 = top1.trang_dau === top1.trang_cuoi ? `Trang ${top1.trang_dau}` : `Trang ${top1.trang_dau}-${top1.trang_cuoi}`;
+            let answer = `Dựa trên tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)* [${p1}]:\n\n`;
+            answer += `${(top1.text || top1.tom_tat).slice(0, 600)}...\n\n`;
+
+            if (retrieved.length > 1) {
+                const top2 = retrieved[1];
+                const p2 = top2.trang_dau === top2.trang_cuoi ? `Trang ${top2.trang_dau}` : `Trang ${top2.trang_dau}-${top2.trang_cuoi}`;
+                answer += `**Thông tin bổ trợ [${p2}]:**\n\n${(top2.text || top2.tom_tat).slice(0, 400)}...\n\n`;
+            }
+
+            const sources = retrieved.map(c => ({
+                tieu_de: c.tieu_de,
+                trang: c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`,
+                tom_tat: (c.text || c.tom_tat).slice(0, 200) + "..."
+            }));
+
+            return {
+                answer: answer.trim(),
+                sources,
+                route: "rag_offline",
+                suggestions: [
+                    "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                    "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                    "Chính sách khoán 10 trong nông nghiệp năm 1988",
+                    "Hiệp định Thương mại Việt - Mỹ năm 2000"
+                ]
+            };
+        }
+
+        // ============================================================
+        // 3. KHOI TAO & DONG BO DU LIEU
+        // ============================================================
+        async function khoiTaoDuLieu() {
+            // Kiem tra server cuc bo
+            try {
+                const ctrl = new AbortController();
+                setTimeout(() => ctrl.abort(), 1200);
+                const r = await fetch(`${API}/health`, { signal: ctrl.signal });
+                if (r.ok) {
+                    isLocalServerAvailable = true;
+                    if (statusText) statusText.textContent = "100% Offline (Local Server)";
+                    console.log("[RAG] Da ket noi den Local Backend!");
+                }
+            } catch (e) {
+                isLocalServerAvailable = false;
+                if (statusText) {
+                    statusText.innerHTML = '<i class="fa-brands fa-github"></i> GitHub Pages (In-Browser RAG)';
+                }
+                console.log("[RAG] Che do GitHub Pages / Trinh duyet doc lap");
+            }
+
+            // Nap 948 chunks vao bo nho trinh duyet
+            try {
+                const resp = await fetch('data/chunks/chunks_adaptive.json');
+                if (resp.ok) {
+                    allChunksCache = await resp.json();
+                    console.log(`[RAG Client] Da nap ${allChunksCache.length} chunks thich ung vao trinh duyet!`);
+                }
+            } catch (err) {
+                console.warn("[RAG Client] Khong the tai file chunks_adaptive.json cuc bo:", err);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", khoiTaoDuLieu);
 
         function hienToast(msg) {
             const toast = document.getElementById("toast");
@@ -853,7 +1255,7 @@
 
         function formatMarkdown(text) {
             if (!text) return "";
-            let html = text
+            return text
                 .replace(/^### (.*$)/gim, '<h3 style="color:#fbbf24; margin: 8px 0 4px;">$1</h3>')
                 .replace(/^#### (.*$)/gim, '<h4 style="color:#38bdf8; margin: 6px 0 4px;">$1</h4>')
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -862,7 +1264,6 @@
                 .replace(/^- (.*$)/gim, '<li style="margin-left: 18px; margin-bottom: 4px;">$1</li>')
                 .replace(/\n\n/g, '<br><br>')
                 .replace(/\n/g, '<br>');
-            return html;
         }
 
         function themTinNhan(content, loai, data = {}) {
@@ -888,7 +1289,7 @@
 
             innerHtml += `<div class="msg-text">${formatMarkdown(content)}</div>`;
 
-            // Goi y chips (dac biet theo yeu cau cua nguoi dung!)
+            // Suggestions Chips
             if (loai === "bot" && data.suggestions && data.suggestions.length > 0) {
                 innerHtml += `
                     <div class="suggestions-box">
@@ -922,7 +1323,7 @@
                 innerHtml += `</details>`;
             }
 
-            // Message action buttons (TTS + Copy)
+            // Actions
             if (loai === "bot") {
                 innerHtml += `
                     <div class="msg-actions">
@@ -973,57 +1374,48 @@
             txtInput.value = "";
             hienLoading();
 
-            try {
-                const resp = await fetch(`${API}/ask`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ question: q, top_k: 5 })
-                });
+            let data = null;
 
-                if (!resp.ok) {
-                    throw new Error(`Server returned ${resp.status}`);
+            // 1. Neu co Local Server -> thu goi qua Server
+            if (isLocalServerAvailable) {
+                try {
+                    const ctrl = new AbortController();
+                    setTimeout(() => ctrl.abort(), 2000);
+                    const resp = await fetch(`${API}/ask`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ question: q, top_k: 5 }),
+                        signal: ctrl.signal
+                    });
+                    if (resp.ok) {
+                        data = await resp.json();
+                    }
+                } catch (_) {
+                    isLocalServerAvailable = false;
                 }
-
-                const data = await resp.json();
-                anLoading();
-                themTinNhan(data.answer, "bot", data);
-            } catch (err) {
-                anLoading();
-                themTinNhan(`Không thể kết nối đến máy chủ (${err.message}). Vui lòng đảm bảo backend đang chạy.`, "bot");
             }
+
+            // 2. Neu Server khong phan hoi hoac dang chay tren GitHub Pages -> Tra loi truc tiep bang In-Browser RAG Engine
+            if (!data) {
+                if (allChunksCache.length === 0) {
+                    // Thu load lai chunks neu chua co
+                    try {
+                        const r = await fetch('data/chunks/chunks_adaptive.json');
+                        if (r.ok) allChunksCache = await r.json();
+                    } catch (_) {}
+                }
+                data = traLoiClient(q, allChunksCache);
+            }
+
+            anLoading();
+            themTinNhan(data.answer, "bot", data);
         }
 
-        async function guiAnh(input) {
-            if (!input.files || !input.files[0]) return;
-            const file = input.files[0];
-
-            themTinNhan(`📷 [Đã tải ảnh lên: ${file.name}]`, "user");
-            hienLoading();
-
-            const fd = new FormData();
-            fd.append("image", file);
-            fd.append("top_k", "5");
-
-            try {
-                const resp = await fetch(`${API}/ask/image`, {
-                    method: "POST",
-                    body: fd
-                });
-                const data = await resp.json();
-                anLoading();
-                themTinNhan(data.answer, "bot", data);
-            } catch (err) {
-                anLoading();
-                themTinNhan(`Lỗi khi xử lý hình ảnh: ${err.message}`, "bot");
-            }
-        }
-
-        // Voice Read (Web Speech API - 100% Offline)
+        // Voice Read (Web Speech API)
         function docVanBan(btn) {
             const bubble = btn.closest(".bubble");
             const textEl = bubble.querySelector(".msg-text");
             if (!textEl) return;
-
             const text = textEl.innerText;
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -1033,11 +1425,10 @@
                 window.speechSynthesis.speak(utter);
                 hienToast("Đang đọc câu trả lời...");
             } else {
-                hienToast("Trình duyệt không hỗ trợ Web Speech API.");
+                hienToast("Trình duyệt không hỗ trợ Web Speech.");
             }
         }
 
-        // Copy
         function saoChep(btn) {
             const bubble = btn.closest(".bubble");
             const textEl = bubble.querySelector(".msg-text");
@@ -1047,7 +1438,6 @@
             });
         }
 
-        // Export chat
         function xuatHoiThoai() {
             if (lichSuChat.length === 0) {
                 hienToast("Chưa có nội dung để xuất!");
@@ -1059,7 +1449,6 @@
                 const role = m.role === "user" ? "👤 **Người hỏi**" : "🏛️ **Trợ lý Sử học**";
                 md += `### ${role}:\n${m.content}\n\n`;
             });
-
             const blob = new Blob([md], { type: "text/markdown;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -1085,26 +1474,19 @@
         }
 
         // Modal Chunks
-        function moModalChunks() {
+        async function moModalChunks() {
             document.getElementById("modalChunks").style.display = "flex";
-            loadChunksList();
+            if (allChunksCache.length === 0) {
+                try {
+                    const r = await fetch('data/chunks/chunks_adaptive.json');
+                    if (r.ok) allChunksCache = await r.json();
+                } catch (_) {}
+            }
+            renderChunks(allChunksCache.slice(0, 60));
         }
 
         function dongModal(id) {
             document.getElementById(id).style.display = "none";
-        }
-
-        let allChunksCache = [];
-        async function loadChunksList() {
-            const container = document.getElementById("chunksContainer");
-            try {
-                const resp = await fetch(`${API}/chunks?limit=60`);
-                const data = await resp.json();
-                allChunksCache = data.chunks;
-                renderChunks(allChunksCache);
-            } catch (e) {
-                container.innerHTML = `<div style="color:#ef4444; padding:20px;">Lỗi tải dữ liệu: ${e.message}</div>`;
-            }
         }
 
         function renderChunks(list) {
@@ -1118,10 +1500,10 @@
                     <div style="font-weight:600; color:#fbbf24; margin-bottom:6px;">${c.tieu_de || 'Phân đoạn Lịch sử'}</div>
                     <div class="chunk-meta">
                         <span><i class="fa-solid fa-file"></i> Trang ${c.trang_dau} - ${c.trang_cuoi}</span>
-                        <span><i class="fa-solid fa-font"></i> ${c.so_ky_tu} ký tự</span>
+                        <span><i class="fa-solid fa-font"></i> ${(c.text || c.tom_tat || "").length} ký tự</span>
                         <span><i class="fa-solid fa-tag"></i> ${c.chuong || 'Chương'}</span>
                     </div>
-                    <div style="font-size:13px; color:#cbd5e1; line-height:1.5;">${c.tom_tat}</div>
+                    <div style="font-size:13px; color:#cbd5e1; line-height:1.5;">${(c.text || c.tom_tat || "").slice(0, 250)}...</div>
                     <div style="margin-top:8px;">
                         <button class="btn-msg-action" onclick="datCauHoi('Thông tin về ${c.tieu_de ? c.tieu_de.replace(/'/g, "") : ""}'); dongModal('modalChunks')">
                             <i class="fa-solid fa-magnifying-glass"></i> Hỏi về đoạn này
@@ -1132,32 +1514,33 @@
         }
 
         function timKiemChunks(q) {
-            fetch(`${API}/chunks?limit=50&query=${encodeURIComponent(q)}`)
-                .then(r => r.json())
-                .then(d => renderChunks(d.chunks));
+            if (!q.trim()) {
+                renderChunks(allChunksCache.slice(0, 60));
+                return;
+            }
+            const filtered = allChunksCache.filter(c => {
+                const text = ((c.tieu_de || "") + " " + (c.text || c.tom_tat || "")).toLowerCase();
+                return text.includes(q.toLowerCase());
+            });
+            renderChunks(filtered.slice(0, 60));
         }
 
         // Modal Entities
-        async function moModalEntities() {
+        function moModalEntities() {
             document.getElementById("modalEntities").style.display = "flex";
             const container = document.getElementById("entitiesContainer");
-            try {
-                const resp = await fetch(`${API}/entities`);
-                const data = await resp.json();
-                container.innerHTML = data.entities.map(e => `
-                    <div class="chunk-card">
-                        <div style="font-size:16px; font-weight:700; color:#fbbf24;">${e.ten}</div>
-                        <div style="font-size:12.5px; color:#94a3b8; margin:4px 0 8px;"><strong>Cương vị:</strong> ${e.chuc_vu}</div>
-                        <div style="font-size:12.5px; color:#38bdf8; margin-bottom:8px;"><strong>Thời kỳ:</strong> ${e.thoi_ky}</div>
-                        <div style="font-size:12px; color:#cbd5e1;"><strong>Nhân vật liên quan mật thiết:</strong></div>
-                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
-                            ${e.quan_he_mat_thiet.map(qh => `<span class="entity-chip" onclick="datCauHoi('Mối quan hệ giữa ${e.ten} và ${qh}'); dongModal('modalEntities')">👤 ${qh}</span>`).join("")}
-                        </div>
+            const entitiesList = Object.values(KNOWLEDGE_GRAPH);
+            container.innerHTML = entitiesList.map(e => `
+                <div class="chunk-card">
+                    <div style="font-size:16px; font-weight:700; color:#fbbf24;">${e.ten}</div>
+                    <div style="font-size:12.5px; color:#94a3b8; margin:4px 0 8px;"><strong>Cương vị:</strong> ${e.chuc_vu}</div>
+                    <div style="font-size:12.5px; color:#38bdf8; margin-bottom:8px;"><strong>Thời kỳ:</strong> ${e.thoi_ky}</div>
+                    <div style="font-size:12px; color:#cbd5e1;"><strong>Nhân vật liên quan mật thiết:</strong></div>
+                    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+                        ${(e.quan_he_mat_thiet || []).map(qh => `<span class="entity-chip" onclick="datCauHoi('Mối quan hệ giữa ${e.ten} và ${qh.nhan_vat}'); dongModal('modalEntities')">👤 ${qh.nhan_vat}</span>`).join("")}
                     </div>
-                `).join("");
-            } catch (e) {
-                container.innerHTML = `<div style="color:#ef4444; padding:20px;">Lỗi tải dữ liệu: ${e.message}</div>`;
-            }
+                </div>
+            `).join("");
         }
     </script>
 </body>
