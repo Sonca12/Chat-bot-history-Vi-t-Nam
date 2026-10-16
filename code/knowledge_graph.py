@@ -1,0 +1,446 @@
+"""
+Knowledge Graph & Entity Relation Engine
+Quan ly thuc the lich su toan dien, phan giai thoi ky va sinh goi y thong minh
+Hoat dong 100% Offline khong can API ngoai
+"""
+
+import re
+import json
+import unicodedata
+from difflib import SequenceMatcher
+from pathlib import Path
+
+
+def xoa_dau(text: str) -> str:
+    """Loai bo dau tieng Viet de so khop gan dung."""
+    t = unicodedata.normalize("NFD", text.lower().strip())
+    return "".join(c for c in t if unicodedata.category(c) != "Mn").replace("đ", "d")
+
+
+# Co so tri thuc thuc the lich su Viet Nam:
+# 1. Cac nhan vat thuoc Tap 15 (1986 - 2000)
+# 2. Cac anh hung dan toc tieu bieu cac thoi ky lich su (Nguyen Hue, Tran Hung Dao, Le Loi, Ly Thuong Kiet, Ngo Quyen, Ho Chi Minh...)
+KNOWLEDGE_GRAPH = {
+    # ============================================================
+    # 1. CAC NHAN VAT LICH SU THOI KY DOI MOI (TAP 15: 1986 - 2000)
+    # ============================================================
+    "truong_chinh": {
+        "ten": "Trường Chinh",
+        "ten_khac": ["Trương Trinh", "Đặng Xuân Khu", "Anh Năm", "truong chinh", "truong trinh"],
+        "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1941-1956, 1986), Chủ tịch Hội đồng Nhà nước (1981-1987), Cố vấn BCH Trung ương Đảng (1986-1988)",
+        "vai_tro_noi_bat": (
+            "Là 'Tổng Bí thư của Đổi mới', người khởi xướng và đặt nền móng lý luận cho công cuộc Đổi mới "
+            "toàn diện đất nước tại Đại hội đại biểu toàn quốc lần thứ VI (tháng 12/1986) với phương châm "
+            "'Nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật'."
+        ),
+        "giai_doan_trong_tai_lieu": "1986 (Khởi xướng Đổi mới tại Đại hội VI, Cố vấn BCH Trung ương đến khi từ trần năm 1988)",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Phạm Văn Đồng",
+                "ly_do": "Cùng là hai vị lãnh đạo tiền bối kiệt xuất, đồng cam cộng khổ qua các thời kỳ cách mạng. Sau Đại hội VI (1986), cả hai đồng chí cùng được Đảng cử làm Cố vấn Ban Chấp hành Trung ương Đảng, cùng đồng thuận bảo trợ và định hình đường lối Đổi mới.",
+                "goi_y_cau_hoi": "Vai trò của đồng chí Phạm Văn Đồng trong giai đoạn khởi xướng Đổi mới 1986 là gì?"
+            },
+            {
+                "nhan_vat": "Nguyễn Văn Linh",
+                "ly_do": "Đồng chí kế nhiệm vị trí Tổng Bí thư tại Đại hội VI (12/1986), người tiếp thu và quyết liệt hiện thực hóa đường lối Đổi mới mà đồng chí Trường Chinh đã khởi xướng.",
+                "goi_y_cau_hoi": "Nguyễn Văn Linh đã thực hiện những nội dung đổi mới nào sau Đại hội VI?"
+            },
+            {
+                "nhan_vat": "Võ Văn Kiệt",
+                "ly_do": "Người có thực tiễn cải cách năng động tại miền Nam, đã đóng góp nhiều ý kiến và kinh nghiệm thực tiễn quý báu để đồng chí Trường Chinh đưa vào Báo cáo Chính trị Đại hội VI.",
+                "goi_y_cau_hoi": "Đóng góp thực tiễn của đồng chí Võ Văn Kiệt cho đường lối Đổi mới?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Đại hội đại biểu toàn quốc lần thứ VI (tháng 12-1986)",
+            "Chủ trương nhìn thẳng vào sự thật của Trường Chinh",
+            "Ban Cố vấn Ban Chấp hành Trung ương Đảng (1986)"
+        ]
+    },
+
+    "pham_van_dong": {
+        "ten": "Phạm Văn Đồng",
+        "ten_khac": ["Bác Tô", "Anh Tô", "pham van dong", "dong chi to"],
+        "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1955-1987), Cố vấn BCH Trung ương Đảng (1986-1997)",
+        "vai_tro_noi_bat": (
+            "Nhà lãnh đạo, nhà văn hóa và nhà ngoại giao xuất sắc; cùng Trường Chinh và Nguyễn Văn Linh "
+            "chuẩn bị các quyết sách chuyển đổi cơ chế quản lý kinh tế, xóa bỏ bao cấp tại Đại hội VI (1986)."
+        ),
+        "giai_doan_trong_tai_lieu": "1986 - 1997 (Thủ tướng giai đoạn đầu Đổi mới và Cố vấn BCH Trung ương Đảng)",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Trường Chinh",
+                "ly_do": "Cùng đồng hành chỉ đạo công cuộc Đổi mới và cùng được bầu làm Cố vấn BCH Trung ương tại Đại hội VI (1986).",
+                "goi_y_cau_hoi": "Trường Chinh và Phạm Văn Đồng đã phối hợp thế nào tại Đại hội VI năm 1986?"
+            },
+            {
+                "nhan_vat": "Võ Văn Kiệt",
+                "ly_do": "Thủ tướng kế nhiệm trong thời kỳ đẩy mạnh cải cách kinh tế và hội nhập quốc tế.",
+                "goi_y_cau_hoi": "Võ Văn Kiệt đã kế thừa công tác quản lý điều hành chính phủ như thế nào?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Vai trò của Cố vấn Ban Chấp hành Trung ương",
+            "Đổi mới giáo dục và văn hóa thời kỳ Đổi mới"
+        ]
+    },
+
+    "nguyen_van_linh": {
+        "ten": "Nguyễn Văn Linh",
+        "ten_khac": ["Mười Cúc", "nguyen van linh", "muoi cuc"],
+        "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1986-1991), Cố vấn BCH Trung ương (1991-1997)",
+        "vai_tro_noi_bat": (
+            "Tổng Bí thư đầu tiên của thời kỳ Đổi mới, phát động phong trào 'Những việc cần làm ngay' "
+            "tạo luồng sinh khí công khai, dân chủ, bài trừ quan liêu bao cấp và kiên quyết thực hiện 3 chương trình kinh tế lớn."
+        ),
+        "giai_doan_trong_tai_lieu": "1986 - 1991 (Nhiệm kỳ Tổng Bí thư Đại hội VI)",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Trường Chinh",
+                "ly_do": "Kế nhiệm cương vị Tổng Bí thư từ đồng chí Trường Chinh tại Đại hội VI.",
+                "goi_y_cau_hoi": "Sự chuyển giao cương vị Tổng Bí thư từ Trường Chinh sang Nguyễn Văn Linh diễn ra như thế nào?"
+            },
+            {
+                "nhan_vat": "Đỗ Mười",
+                "ly_do": "Chủ tịch Hội đồng Bộ trưởng cùng thời kỳ (1988-1991), cùng chỉ đạo thực hiện Nghị quyết Khoán 10 trong nông nghiệp.",
+                "goi_y_cau_hoi": "Nghị quyết Khoán 10 năm 1988 đã mang lại thành tựu gì cho nông nghiệp?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Chuyên mục Những việc cần làm ngay của Nguyễn Văn Linh",
+            "Ba chương trình kinh tế lớn: Lương thực - thực phẩm, Hàng tiêu dùng và Hàng xuất khẩu"
+        ]
+    },
+
+    "vo_van_kiet": {
+        "ten": "Võ Văn Kiệt",
+        "ten_khac": ["Sáu Dân", "Phan Văn Hòa", "vo van kiet", "sau dan"],
+        "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1991-1997), Phó Chủ tịch HĐBT (1987-1991), Cố vấn BCH Trung ương (1997-2001)",
+        "vai_tro_noi_bat": (
+            "Nhà lãnh đạo đổi mới quyết đoán, 'Kiến trúc sư của Đổi mới'. Người trực tiếp chỉ đạo xây dựng "
+            "công trình Đường dây 500kV Bắc - Nam lịch sử, bình thường hóa quan hệ với Hoa Kỳ (1995), "
+            "đưa Việt Nam gia nhập ASEAN (1995) và thúc đẩy kinh tế thị trường."
+        ),
+        "giai_doan_trong_tai_lieu": "1986 - 2000 (Phó Chủ tịch HĐBT, Thủ tướng Chính phủ, Cố vấn)",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Phan Văn Khải",
+                "ly_do": "Phó Thủ tướng thứ nhất thời kỳ 1991-1997, kế nhiệm cương vị Thủ tướng tiếp tục đẩy mạnh hội nhập kinh tế.",
+                "goi_y_cau_hoi": "Phan Văn Khải đã kế tục và phát triển chính sách kinh tế của Võ Văn Kiệt ra sao?"
+            },
+            {
+                "nhan_vat": "Lê Đức Anh",
+                "ly_do": "Chủ tịch nước cùng thời kỳ (1992-1997), tạo nên sự phối hợp chặt chẽ giữa Đảng, Nhà nước và Chính phủ trong đối ngoại và an ninh quốc phòng.",
+                "goi_y_cau_hoi": "Sự kiện bình thường hóa quan hệ ngoại giao Việt - Mỹ năm 1995?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Công trình Đường dây 500kV Bắc - Nam (1992 - 1994)",
+            "Việt Nam gia nhập ASEAN tháng 7 năm 1995",
+            "Bình thường hóa quan hệ ngoại giao Việt Nam - Hoa Kỳ (1995)"
+        ]
+    },
+
+    "phan_van_khai": {
+        "ten": "Phan Văn Khải",
+        "ten_khac": ["Sáu Khải", "phan van khai", "sau khai"],
+        "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1997-2006), Phó Thủ tướng Thường trực (1991-1997)",
+        "vai_tro_noi_bat": (
+            "Thủ tướng chỉ đạo vượt qua khủng hoảng tài chính châu Á (1997), ban hành Luật Doanh nghiệp năm 1999 "
+            "khơi thông mọi nguồn lực kinh tế tư nhân, ký Hiệp định Thương mại Việt - Mỹ (BTA 2000)."
+        ),
+        "giai_doan_trong_tai_lieu": "1991 - 2000 (Phó Thủ tướng và Thủ tướng Chính phủ)",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Trần Đức Lương",
+                "ly_do": "Chủ tịch nước cùng thời kỳ (1997-2006), phối hợp chặt chẽ trong các hoạt động đối ngoại lớn và ký kết các hiệp ước quốc tế quan trọng.",
+                "goi_y_cau_hoi": "Chuyến thăm lịch sử của Tổng thống Bill Clinton tới Việt Nam năm 2000?"
+            },
+            {
+                "nhan_vat": "Võ Văn Kiệt",
+                "ly_do": "Tiền nhiệm cương vị Thủ tướng, người đã chuẩn bị chu đáo đội ngũ kế cận.",
+                "goi_y_cau_hoi": "Luật Doanh nghiệp 1999 dưới thời Phan Văn Khải có ý nghĩa gì?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Luật Doanh nghiệp năm 1999",
+            "Hiệp định Thương mại Việt - Mỹ (BTA) tháng 7-2000",
+            "Phân định Vịnh Bắc Bộ và Hiệp ước Biên giới trên đất liền Việt - Trung"
+        ]
+    },
+
+    "do_muoi": {
+        "ten": "Đỗ Mười",
+        "ten_khac": ["Nguyễn Duy Cống", "do muoi"],
+        "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1991-1997), Chủ tịch Hội đồng Bộ trưởng (1988-1991)",
+        "vai_tro_noi_bat": (
+            "Lãnh đạo đất nước giữ vững ổn định chính trị và phục hồi kinh tế trong bối cảnh Liên Xô và Đông Âu sụp đổ; "
+            "chủ trì thông qua Cương lĩnh 1991 và Hiến pháp 1992."
+        ),
+        "giai_doan_trong_tai_lieu": "1988 - 1997",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Võ Văn Kiệt",
+                "ly_do": "Thủ tướng Chính phủ cùng thời kỳ, phối hợp thực hiện đường lối đa phương hóa quan hệ quốc tế.",
+                "goi_y_cau_hoi": "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ (Cương lĩnh 1991)?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Cương lĩnh 1991",
+            "Hiến pháp năm 1992",
+            "Chính sách đối ngoại Việt Nam muốn là bạn với tất cả các nước"
+        ]
+    },
+
+    "tran_duc_luong": {
+        "ten": "Trần Đức Lương",
+        "ten_khac": ["tran duc luong"],
+        "chuc_vu": "Chủ tịch nước CHXHCN Việt Nam (1997-2006)",
+        "vai_tro_noi_bat": (
+            "Nguyên thủ quốc gia đại diện Việt Nam ký kết Hiệp ước Biên giới trên đất liền (1999) và "
+            "Hiệp định Phân định Vịnh Bắc Bộ với Trung Quốc (2000), chủ trì đón Tổng thống Hoa Kỳ Bill Clinton (2000)."
+        ),
+        "giai_doan_trong_tai_lieu": "1997 - 2000",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Phan Văn Khải",
+                "ly_do": "Thủ tướng Chính phủ cùng thời kỳ lãnh đạo công cuộc hội nhập quốc tế sâu rộng.",
+                "goi_y_cau_hoi": "Hiệp định Phân định Vịnh Bắc Bộ năm 2000 có nội dung gì?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Hiệp định Phân định Vịnh Bắc Bộ ngày 25-12-2000",
+            "Hiệp ước Biên giới đất liền Việt - Trung năm 1999"
+        ]
+    },
+
+    # ============================================================
+    # 2. CAC NHAN VAT LICH SU TIEU BIEU NGOAI TAP 15 (BO THONG SU)
+    # ============================================================
+    "nguyen_hue": {
+        "ten": "Quang Trung (Nguyễn Huệ)",
+        "ten_khac": [
+            "Nguyễn Huệ", "nguyen hue", "quang trung", "bắc bình vương",
+            "hồ thơm", "vua quang trung", "nguyen hue la ai", "quang trung la ai"
+        ],
+        "chuc_vu": "Thủ lĩnh kiệt xuất phong trào khởi nghĩa Tây Sơn, Hoàng đế thứ hai của triều đại Tây Sơn (trị vì 1788 - 1792)",
+        "vai_tro_noi_bat": (
+            "Anh hùng dân tộc áo vải cờ đào, một trong những thiên tài quân sự bách chiến bách thắng vĩ đại nhất lịch sử Việt Nam. "
+            "Đã lãnh đạo phong trào Tây Sơn lật đổ các tập đoàn phong kiến cát cứ Đàng Trong - Đàng Ngoài (chúa Nguyễn, chúa Trịnh, vua Lê), "
+            "đánh tan 5 vạn quân xâm lược Xiêm tại trận Rạch Gầm - Xoài Mút (1785), và thần tốc hành quân đại phá 29 vạn quân Mãn Thanh "
+            "mùa xuân Kỷ Dậu (1789) với chiến thắng Ngọc Hồi - Đống Đa vang dội."
+        ),
+        "giai_doan_trong_tai_lieu": "Thế kỷ XVIII (1753 - 1792) — Ghi chép chi tiết trong TẬP 4 của bộ 15 tập Lịch sử Việt Nam (Từ năm 1627 đến năm 1858)",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 4: Từ thế kỷ XVII đến thế kỷ XVIII",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Nguyễn Nhạc & Nguyễn Lữ",
+                "ly_do": "Ba anh em Tây Sơn (Tây Sơn tam kiệt) cùng nhau dựng cờ khởi nghĩa nông dân từ vùng Tây Sơn thượng đạo.",
+                "goi_y_cau_hoi": "Khởi nghĩa Tây Sơn bùng nổ trong hoàn cảnh nào?"
+            },
+            {
+                "nhan_vat": "Ngô Thì Nhậm",
+                "ly_do": "Danh sĩ Bắc Hà, mưu thần đắc lực hiến kế 'rút quân về Tam Điệp - Biện Sơn' giúp vua Quang Trung đại phá quân Thanh.",
+                "goi_y_cau_hoi": "Kế sách rút về Tam Điệp của Ngô Thì Nhậm có ý nghĩa gì?"
+            },
+            {
+                "nhan_vat": "Bùi Thị Xuân & Trần Quang Diệu",
+                "ly_do": "Các vị đô đốc kiệt xuất của phong trào Tây Sơn dưới trướng vua Quang Trung.",
+                "goi_y_cau_hoi": "Nữ tướng Bùi Thị Xuân và đội quân voi chiến thời Tây Sơn?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Chiến thắng Ngọc Hồi - Đống Đa mùa xuân Kỷ Dậu 1789",
+            "Chiến thắng Rạch Gầm - Xoài Mút năm 1785 đánh tan quân Xiêm",
+            "Chính sách ngoại giao và cải cách kinh tế - văn hóa của vua Quang Trung"
+        ]
+    },
+
+    "tran_hung_dao": {
+        "ten": "Trần Hưng Đạo (Trần Quốc Tuấn)",
+        "ten_khac": ["tran hung dao", "tran quoc tuan", "hung dao vuong", "tran hung dao la ai"],
+        "chuc_vu": "Quốc công Tiết chế, Tổng chỉ huy quân đội Đại Việt thời nhà Trần",
+        "vai_tro_noi_bat": (
+            "Thiên tài quân sự kiệt xuất, tác giả 'Hịch tướng sĩ' và 'Binh thư yếu lược'. "
+            "Người có công lao tối thượng lãnh đạo quân dân Đại Việt ba lần đánh tan giặc Mông - Nguyên xâm lược (1258, 1285, 1288) "
+            "với chiến thắng Bạch Đằng năm 1288 lịch sử."
+        ),
+        "giai_doan_trong_tai_lieu": "Thế kỷ XIII (1228 - 1300) — Trình bày tại TẬP 2 của bộ sách (Từ thế kỷ X đến thế kỷ XIV)",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 2: Từ thế kỷ X đến thế kỷ XIV",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Trần Thánh Tông & Trần Nhân Tông",
+                "ly_do": "Các vị vua anh minh nhà Trần đặt trọn niềm tin nơi Tiết chế Quốc công.",
+                "goi_y_cau_hoi": "Hội nghị Diên Hồng và tinh thần đoàn kết toàn dân thời Trần?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Chiến thắng Bạch Đằng năm 1288",
+            "Hịch tướng sĩ của Trần Hưng Đạo"
+        ]
+    },
+
+    "le_loi": {
+        "ten": "Lê Lợi (Lê Thái Tổ)",
+        "ten_khac": ["le loi", "le thai to", "binh dinh vuong", "le loi la ai"],
+        "chuc_vu": "Bình Định Vương, Hoàng đế sáng lập triều Hậu Lê (1428 - 1789)",
+        "vai_tro_noi_bat": (
+            "Lãnh tụ tối cao của cuộc khởi nghĩa Lam Sơn (1418 - 1427) kéo dài 10 năm gian khổ, "
+            "quét sạch ách đô hộ tàn bạo của nhà Minh, giành lại nền độc lập và mở ra triều đại Hậu Lê phồn thịnh."
+        ),
+        "giai_doan_trong_tai_lieu": "Thế kỷ XV (1385 - 1433) — Trình bày tại TẬP 3 của bộ sách (Từ thế kỷ XV đến thế kỷ XVI)",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 3: Từ thế kỷ XV đến thế kỷ XVI",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Nguyễn Trãi",
+                "ly_do": "Quân sư mưu lược đại tài, tác giả Bình Ngô đại cáo, người đồng hành cùng Lê Lợi.",
+                "goi_y_cau_hoi": "Ý nghĩa bài Bình Ngô đại cáo của Nguyễn Trãi?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Khởi nghĩa Lam Sơn (1418 - 1427)",
+            "Hội thề Đông Quan và chiến thắng Chi Lăng - Xương Giang"
+        ]
+    },
+
+    "ho_chi_minh": {
+        "ten": "Hồ Chí Minh",
+        "ten_khac": ["Bác Hồ", "Nguyễn Ái Quốc", "Nguyễn Tất Thành", "ho chi minh", "bac ho", "nguyen ai quoc"],
+        "chuc_vu": "Chủ tịch nước Việt Nam Dân chủ Cộng hòa (1945 - 1969), Chủ tịch Đảng Lao động Việt Nam",
+        "vai_tro_noi_bat": (
+            "Lãnh tụ vĩ đại của dân tộc Việt Nam, Danh nhân văn hóa thế giới. Người sáng lập Đảng Cộng sản Việt Nam, "
+            "đọc Tuyên ngôn Độc lập khai sinh nước VNDCCH ngày 2/9/1945, lãnh đạo cuộc kháng chiến chống Pháp và chống Mỹ."
+        ),
+        "giai_doan_trong_tai_lieu": "1890 - 1969 — Trình bày tại các TẬP 9, 10, 11, 12, 13",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 9 đến Tập 13",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Võ Nguyên Giáp",
+                "ly_do": "Học trò xuất sắc, Đại tướng Tổng tư lệnh chỉ huy chiến dịch Điện Biên Phủ.",
+                "goi_y_cau_hoi": "Đại tướng Võ Nguyên Giáp và chiến dịch Điện Biên Phủ 1954?"
+            },
+            {
+                "nhan_vat": "Phạm Văn Đồng",
+                "ly_do": "Người học trò, đồng chí thân cận nhiều năm giữ cương vị Thủ tướng.",
+                "goi_y_cau_hoi": "Mối quan hệ giữa Bác Hồ và đồng chí Phạm Văn Đồng?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Tuyên ngôn Độc lập ngày 2-9-1945",
+            "Tư tưởng Hồ Chí Minh về Đổi mới và độc lập dân tộc"
+        ]
+    },
+
+    "vo_nguyen_giap": {
+        "ten": "Đại tướng Võ Nguyên Giáp",
+        "ten_khac": ["vo nguyen giap", "dai tuong vo nguyen giap", "anh van"],
+        "chuc_vu": "Đại tướng đầu tiên, Tổng tư lệnh Quân đội Nhân dân Việt Nam, Phó Thủ tướng Chính phủ",
+        "vai_tro_noi_bat": (
+            "Danh tướng huyền thoại thế kỷ XX, người chỉ huy tối cao chiến thắng lịch sử Điện Biên Phủ 1954 "
+            "'lừng lẫy năm châu, chấn động địa cầu' và chiến dịch Hồ Chí Minh lịch sử mùa xuân năm 1975."
+        ),
+        "giai_doan_trong_tai_lieu": "1911 - 2013 — Hoạt động xuyên suốt các tập 10, 11, 12, 13, 14, 15",
+        "thuoc_tap_15": True,
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Hồ Chí Minh",
+                "ly_do": "Người thầy vĩ đại trao trọng trách thành lập Đội Việt Nam Tuyên truyền Giải phóng quân năm 1944.",
+                "goi_y_cau_hoi": "Đội Việt Nam Tuyên truyền Giải phóng quân được thành lập như thế nào?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Chiến thắng Điện Biên Phủ năm 1954",
+            "Chiến dịch Hồ Chí Minh năm 1975 giải phóng miền Nam"
+        ]
+    }
+}
+
+
+def tim_thuc_the(cau_hoi: str) -> dict | None:
+    """
+    Tim thuc the trong cau hoi (ho tro go sai chinh ta, chu khong dau, alias).
+    Vi du:
+      'nguyen huệ là ai' -> Quang Trung (Nguyễn Huệ)
+      'Trương Trinh làm gì' -> Trường Chinh
+    """
+    q_clean = xoa_dau(cau_hoi)
+    
+    # 1. So khop chinh xac theo danh sach ten va ten_khac
+    for k, info in KNOWLEDGE_GRAPH.items():
+        ten_clean = xoa_dau(info["ten"])
+        if ten_clean in q_clean or q_clean in ten_clean:
+            return info
+            
+        for tk in info.get("ten_khac", []):
+            tk_clean = xoa_dau(tk)
+            if tk_clean == q_clean or tk_clean in q_clean:
+                return info
+                
+    # 2. So khop cum tu gan dung (Fuzzy matching)
+    words = q_clean.split()
+    for i in range(len(words)):
+        for j in range(i + 2, min(i + 5, len(words) + 1)):
+            phrase = " ".join(words[i:j])
+            for k, info in KNOWLEDGE_GRAPH.items():
+                ten_clean = xoa_dau(info["ten"])
+                sim = SequenceMatcher(None, phrase, ten_clean).ratio()
+                if sim >= 0.82:
+                    return info
+                for tk in info.get("ten_khac", []):
+                    sim_tk = SequenceMatcher(None, phrase, xoa_dau(tk)).ratio()
+                    if sim_tk >= 0.85:
+                        return info
+                        
+    return None
+
+
+def sinh_goi_y_thuc_the(thuc_the: dict) -> dict:
+    """Sinh phan goi y thong minh va lien ket thuc the kem cau hoi mau de nguoi dung nhap ngay tren UI."""
+    ten = thuc_the["ten"]
+    quan_he = thuc_the.get("quan_he_mat_thiet", [])
+    chu_de = thuc_the.get("chu_de_goi_y", [])
+    
+    chips = []
+    cac_goi_y = []
+    
+    for qh in quan_he:
+        cac_goi_y.append({
+            "nhan_vat": qh["nhan_vat"],
+            "ly_do": qh["ly_do"],
+            "cau_hoi": qh["goi_y_cau_hoi"]
+        })
+        chips.append(qh["goi_y_cau_hoi"])
+        
+    for cd in chu_de:
+        chips.append(f"Tìm hiểu: {cd}")
+        
+    return {
+        "nhan_vat_chinh": ten,
+        "vai_tro": thuc_the.get("vai_tro_noi_bat", ""),
+        "thoi_ky": thuc_the.get("giai_doan_trong_tai_lieu", ""),
+        "thuoc_tap_15": thuc_the.get("thuoc_tap_15", True),
+        "tap_sach": thuc_the.get("tap_sach", ""),
+        "quan_he_mat_thiet": cac_goi_y,
+        "chips": chips[:5]
+    }
+
+
+if __name__ == "__main__":
+    import sys
+    sys.stdout.reconfigure(encoding='utf-8')
+    for q in ["nguyen huệ là ai", "Trương Trinh làm gì vào giai đoạn đó?", "Trần Hưng Đạo"]:
+        print(f"\nQuery: {q}")
+        t = tim_thuc_the(q)
+        if t:
+            print(" -> Tim thay:", t["ten"], "| Thuoc Tap 15:", t.get("thuoc_tap_15", True))

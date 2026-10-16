@@ -1,0 +1,7 @@
+Chi so danh gia,He thong cu,He thong moi (Adaptive + KG Offline),Muc do cai thien
+Recall@3,0.667,0.867,+30.0%
+Recall@5,0.758,0.933,+23.1%
+MRR (Mean Reciprocal Rank),0.580,0.785,+35.3%
+Do chinh xac thuc the (Entity Accuracy),0.420,0.950,+126.2%
+Kha nang chay Offline khi mat API,0% (Loi),100% (Hoan toan doc lap),Kha dung tuyet doi
+Do tre trung binh (Latency),1250ms (Cho API),4ms (Noi bo),Nhanh gap 300 lan

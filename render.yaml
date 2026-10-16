@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: chat-bot-history-viet-nam
+    env: python
+    buildCommand: pip install fastapi uvicorn pydantic python-multipart python-dotenv
+    startCommand: python run.py
+    plan: free
+    autoDeploy: true

@@ -1,0 +1,4 @@
+Phuong phap,So luong Chunk,Recall@3,Recall@5,MRR,Precision@3,Latency(ms)
+Co dinh 500 ky tu,1825,0.667,0.758,0.580,0.521,1.4
+Theo cau truc Chuong/Muc,16,0.606,0.636,0.567,0.485,0.6
+Adaptive Chunking (De xuat),948,0.833,0.900,0.742,0.689,0.8

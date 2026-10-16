@@ -1,0 +1,33 @@
+# Virtual environments
+.venv/
+.venv-run/
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*/__pycache__/*
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+._*
+Thumbs.db
+__MACOSX/
+
+# Environment variables
+.env
+.env.local
+
+# Large files exceeding GitHub 100MB limit
+# (Tap 15 PDF is 103.3MB. Extracted text and 948 adaptive chunks are preserved in data/chunks/ and data/extracted_text/)
+data/pdf/*.pdf
+
+# Temporary files
+*.tmp
+*.log

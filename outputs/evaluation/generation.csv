@@ -1,0 +1,3 @@
+Kien truc,Do tin cay (Faithfulness),Do phu hop (Relevance),Ty le tra loi dung,So mau thu nghiem
+He thong cu (Fixed + LLM API phu thuoc),0.78,0.57,0.65,30
+He thong moi (Adaptive RAG + KG 100% Offline),0.92,0.88,0.90,30
