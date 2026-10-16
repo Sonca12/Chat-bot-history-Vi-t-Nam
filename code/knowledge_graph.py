@@ -388,18 +388,23 @@ def tim_thuc_the(cau_hoi: str) -> dict | None:
                 return info
                 
     # 2. So khop cum tu gan dung (Fuzzy matching)
+    # Nhung loai tru cac khai niem lich su pho bien tranh nham lan (VD: 'Đổi mới' khong phai 'Đỗ Mười')
+    EXCLUDED_PHRASES = {"doi moi", "cai cach", "khoan 10", "dai hoi", "chinh sach", "chien thang", "kinh te", "nong nghiep"}
+    
     words = q_clean.split()
     for i in range(len(words)):
         for j in range(i + 2, min(i + 5, len(words) + 1)):
             phrase = " ".join(words[i:j])
+            if phrase in EXCLUDED_PHRASES:
+                continue
             for k, info in KNOWLEDGE_GRAPH.items():
                 ten_clean = xoa_dau(info["ten"])
                 sim = SequenceMatcher(None, phrase, ten_clean).ratio()
-                if sim >= 0.82:
+                if sim >= 0.85:
                     return info
                 for tk in info.get("ten_khac", []):
                     sim_tk = SequenceMatcher(None, phrase, xoa_dau(tk)).ratio()
-                    if sim_tk >= 0.85:
+                    if sim_tk >= 0.88:
                         return info
                         
     return None

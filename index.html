@@ -1026,6 +1026,10 @@
         function timThucTheClient(query) {
             const qNorm = xoaDau(query);
             for (const [key, ent] of Object.entries(KNOWLEDGE_GRAPH)) {
+                // Loai tru truong hop hoi ve "Doi moi" tranh khop nham vao "Do Muoi"
+                if (key === "do_muoi" && qNorm.includes("doi moi") && !qNorm.includes("do muoi")) {
+                    continue;
+                }
                 if (qNorm.includes(xoaDau(ent.ten))) return ent;
                 for (const alias of (ent.ten_khac || [])) {
                     if (qNorm.includes(xoaDau(alias))) return ent;
