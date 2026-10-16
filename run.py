@@ -8,6 +8,12 @@ import os
 import sys
 from pathlib import Path
 
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
 # Dam bao thu muc goc va thu muc code duoc them vao sys.path
 BASE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE_DIR))
