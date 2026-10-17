@@ -363,6 +363,146 @@ KNOWLEDGE_GRAPH = {
             "Chiến thắng Điện Biên Phủ năm 1954",
             "Chiến dịch Hồ Chí Minh năm 1975 giải phóng miền Nam"
         ]
+    },
+
+    "dien_bien_phu": {
+        "ten": "Chiến dịch Điện Biên Phủ (1954)",
+        "ten_khac": [
+            "trận đánh điện biên phủ", "chiến dịch điện biên phủ", "điện biên phủ",
+            "dien bien phu", "tran danh dien bien phu", "chien dich dien bien phu",
+            "tran dien bien phu", "trận điện biên phủ", "dien bien phu la gi"
+        ],
+        "chuc_vu": "Trận quyết chiến chiến lược lớn nhất trong cuộc Kháng chiến chống thực dân Pháp (1945 - 1954)",
+        "vai_tro_noi_bat": (
+            "Diễn ra trong suốt 56 ngày đêm 'khoét núi, ngủ hầm, mưa dầm, cơm vắt, máu trộn bùn non' "
+            "từ ngày 13/03/1954 đến ngày 07/05/1954 dưới sự chỉ đạo của Trung ương Đảng và chỉ huy tối cao của Đại tướng Võ Nguyên Giáp. "
+            "Quân đội Nhân dân Việt Nam đã tiêu diệt và bắt sống toàn bộ 16.200 quân địch tại tập đoàn cứ điểm Điện Biên Phủ, bắt sống tướng De Castries (Đờ Cát). "
+            "Chiến thắng 'lừng lẫy năm châu, chấn động địa cầu' đã đập tan hoàn toàn kế hoạch Nava của Pháp - Mỹ, buộc Pháp phải ký Hiệp định Genève năm 1954, "
+            "chấm dứt ách đô hộ của thực dân Pháp tại Đông Dương và mở đường cho công cuộc xây dựng CNXH ở miền Bắc."
+        ),
+        "giai_doan_trong_tai_lieu": "13/03/1954 - 07/05/1954 — Ghi chép toàn diện tại TẬP 10 của Bộ Thông sử Việt Nam",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 10: Kháng chiến chống thực dân Pháp (1945 - 1954)",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Đại tướng Võ Nguyên Giáp",
+                "ly_do": "Tổng tư lệnh kiêm Chỉ huy trưởng chiến dịch, người đưa ra quyết định lịch sử chuyển phương châm tác chiến từ 'đánh nhanh thắng nhanh' sang 'đánh chắc tiến chắc'.",
+                "goi_y_cau_hoi": "Quyết định chuyển phương châm tác chiến của Đại tướng Võ Nguyên Giáp tại Điện Biên Phủ?"
+            },
+            {
+                "nhan_vat": "Chủ tịch Hồ Chí Minh",
+                "ly_do": "Người trực tiếp chỉ đạo Bộ Chính trị mở chiến dịch Điện Biên Phủ với chỉ thị: 'Chiến dịch này là một chiến dịch rất quan trọng, phải đánh cho thắng, chắc thắng mới đánh'.",
+                "goi_y_cau_hoi": "Lời căn dặn của Bác Hồ với Đại tướng Võ Nguyên Giáp trước khi lên đường ra mặt trận?"
+            },
+            {
+                "nhan_vat": "Các anh hùng liệt sĩ (Bế Văn Đàn, Phan Đình Giót, Tô Vĩnh Diện)",
+                "ly_do": "Những tấm gương hy sinh anh dũng tột bậc: Bế Văn Đàn lấy thân mình làm giá súng, Phan Đình Giót lấy thân mình lấp lỗ châu mai, Tô Vĩnh Diện lấy thân chèn pháo.",
+                "goi_y_cau_hoi": "Hành động anh hùng của Phan Đình Giót và Tô Vĩnh Diện trong chiến dịch Điện Biên Phủ?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Ý nghĩa lịch sử của chiến thắng Điện Biên Phủ 1954",
+            "Hiệp định Genève năm 1954 về chấm dứt chiến tranh ở Đông Dương",
+            "Nghệ thuật quân sự kéo pháo và đào hào tại Điện Biên Phủ"
+        ]
+    },
+
+    "chien_dich_ho_chi_minh": {
+        "ten": "Chiến dịch Hồ Chí Minh (Đại thắng mùa Xuân 1975)",
+        "ten_khac": [
+            "chiến dịch hồ chí minh", "30/4/1975", "giải phóng miền nam",
+            "chien dich ho chi minh", "ngay 30 thang 4", "thong nhat dat nuoc",
+            "30 thang 4 nam 1975", "dai thang mua xuan 1975"
+        ],
+        "chuc_vu": "Chiến dịch tiến công quân sự quy mô lớn nhất lịch sử dân tộc, giải phóng hoàn toàn miền Nam",
+        "vai_tro_noi_bat": (
+            "Chiến dịch đỉnh cao của cuộc Tổng tiến công và nổi dậy mùa Xuân 1975. Diễn ra từ ngày 26/4 đến ngày 30/4/1975 với sự tham gia "
+            "của 5 cánh quân hợp đồng tác chiến tiến thẳng vào trung tâm Sài Gòn. Đúng 11 giờ 30 phút ngày 30/4/1975, lá cờ cách mạng tung bay "
+            "trên nóc Dinh Độc Lập, Tổng thống Dương Văn Minh tuyên bố đầu hàng không điều kiện. Cuộc kháng chiến chống Mỹ cứu nước kết thúc thắng lợi rực rỡ, "
+            "giải phóng hoàn toàn miền Nam, non sông thu về một mối, mở ra kỷ nguyên độc lập và thống nhất cho Tổ quốc."
+        ),
+        "giai_doan_trong_tai_lieu": "1975 — Trình bày chi tiết tại TẬP 14 của Bộ Thông sử Việt Nam",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 14: Cuộc kháng chiến chống Mỹ cứu nước (1973 - 1975)",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Đại tướng Võ Nguyên Giáp",
+                "ly_do": "Tác giả của bức mật điện nổi tiếng ngày 7/4/1975: 'Thần tốc, thần tốc hơn nữa. Táo bạo, táo bạo hơn nữa. Tranh thủ từng giờ từng phút, xốc tới mặt trận, giải phóng miền Nam'.",
+                "goi_y_cau_hoi": "Ý nghĩa bức mật điện 'Thần tốc, táo bạo' của Đại tướng Võ Nguyên Giáp?"
+            },
+            {
+                "nhan_vat": "Đại tướng Văn Tiến Dũng",
+                "ly_do": "Tư lệnh Bộ Tư lệnh Chiến dịch Hồ Chí Minh, trực tiếp chỉ huy các cánh quân tiến vào Sài Gòn.",
+                "goi_y_cau_hoi": "Diễn biến các cánh quân tiến vào giải phóng Sài Gòn trưa ngày 30/4/1975?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Ý nghĩa lịch sử của ngày giải phóng hoàn toàn miền Nam 30-4-1975",
+            "Chiến dịch Tây Nguyên và Chiến dịch Huế - Đà Nẵng mùa Xuân 1975"
+        ]
+    },
+
+    "cach_mang_thang_tam": {
+        "ten": "Cách mạng Tháng Tám năm 1945",
+        "ten_khac": [
+            "cách mạng tháng tám", "cách mạng tháng 8", "cach mang thang tam",
+            "khoi nghia thang tam", "quoc khanh 2-9", "tuyen ngon doc lap",
+            "ngay 2 thang 9 nam 1945", "cach mang thang tam 1945"
+        ],
+        "chuc_vu": "Cuộc cách mạng giải phóng dân tộc vĩ đại, khai sinh nước Việt Nam Dân chủ Cộng hòa",
+        "vai_tro_noi_bat": (
+            "Dưới sự lãnh đạo sáng suốt của Đảng Cộng sản Đông Dương và Chủ tịch Hồ Chí Minh, hơn 20 triệu đồng bào Việt Nam từ Bắc chí Nam "
+            "đã đồng loạt vùng lên tổng khởi nghĩa giành chính quyền mùa thu năm 1945, xóa bỏ ách thống trị hơn 80 năm của thực dân Pháp và gần 1000 năm của chế độ phong kiến. "
+            "Ngày 2/9/1945 tại Quảng trường Ba Đình lịch sử, Chủ tịch Hồ Chí Minh đọc bản 'Tuyên ngôn Độc lập', khai sinh nước Việt Nam Dân chủ Cộng hòa (nay là CHXHCN Việt Nam)."
+        ),
+        "giai_doan_trong_tai_lieu": "1945 — Ghi chép chi tiết tại TẬP 9 của Bộ Thông sử Việt Nam",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 9: Giai đoạn 1930 - 1945",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Chủ tịch Hồ Chí Minh",
+                "ly_do": "Lãnh tụ tối cao chỉ đạo Hội nghị toàn quốc của Đảng tại Tân Trào và soạn thảo Tuyên ngôn Độc lập.",
+                "goi_y_cau_hoi": "Nội dung và ý nghĩa lịch sử của bản Tuyên ngôn Độc lập ngày 2-9-1945?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Hội nghị Tân Trào và Quốc dân Đại hội tháng 8-1945",
+            "Ngày Quốc khánh 2-9-1945 tại Quảng trường Ba Đình"
+        ]
+    },
+
+    "tran_bach_dang": {
+        "ten": "Các Chiến thắng Bạch Đằng lịch sử (Năm 938, 981, 1288)",
+        "ten_khac": [
+            "trận bạch đằng", "bạch đằng 938", "bạch đằng 1288", "bach dang",
+            "song bach dang", "chien thang bach dang", "ngo quyen danh nam han"
+        ],
+        "chuc_vu": "Dòng sông lịch sử ba lần chôn vùi đạo quân xâm lược phương Bắc",
+        "vai_tro_noi_bat": (
+            "Năm 938, Ngô Quyền dùng kế cắm cọc gỗ nhọn bịt sắt trên sông Bạch Đằng, lợi dụng thủy triều tiêu diệt hoàn toàn quân Nam Hán, "
+            "chấm dứt hơn một nghìn năm Bắc thuộc, mở ra thời kỳ độc lập tự chủ lâu dài cho dân tộc Việt Nam. "
+            "Năm 1288, Hưng Đạo Vương Trần Quốc Tuấn tái hiện kế sách cọc gỗ Bạch Đằng lịch sử, bắt sống tướng giặc Ô Mã Nhi, tiêu diệt toàn bộ thủy quân Mông - Nguyên, "
+            "kết thúc thắng lợi vẻ vang cuộc kháng chiến chống quân xâm lược Nguyên - Mông lần thứ ba."
+        ),
+        "giai_doan_trong_tai_lieu": "Năm 938 và 1288 — Trình bày tại TẬP 1 và TẬP 2 của Bộ Thông sử Việt Nam",
+        "thuoc_tap_15": False,
+        "tap_sach": "Tập 1 & Tập 2: Thời kỳ Ngô Quyền và Nhà Trần",
+        "quan_he_mat_thiet": [
+            {
+                "nhan_vat": "Ngô Quyền",
+                "ly_do": "Vị vua anh hùng có công đầu khởi xướng trận cọc gỗ Bạch Đằng năm 938, xưng vương dựng nước.",
+                "goi_y_cau_hoi": "Kế sách cắm cọc gỗ trên sông Bạch Đằng của Ngô Quyền năm 938?"
+            },
+            {
+                "nhan_vat": "Trần Hưng Đạo",
+                "ly_do": "Vị Tổng tư lệnh quân đội nhà Trần lãnh đạo trận đại thắng Bạch Đằng năm 1288.",
+                "goi_y_cau_hoi": "Trận thủy chiến Bạch Đằng năm 1288 của quân dân nhà Trần?"
+            }
+        ],
+        "chu_de_goi_y": [
+            "Chiến thắng Bạch Đằng năm 938 của Ngô Quyền",
+            "Chiến thắng Bạch Đằng năm 1288 của nhà Trần"
+        ]
     }
 }
 

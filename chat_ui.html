@@ -661,6 +661,181 @@
             animation: slideUp 0.3s;
         }
         @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .btn-header.highlight {
+            background: rgba(225, 29, 72, 0.2);
+            border-color: rgba(225, 29, 72, 0.4);
+            color: #f43f5e;
+        }
+        .btn-header.highlight:hover {
+            background: rgba(225, 29, 72, 0.35);
+            color: #fff;
+        }
+
+        /* Category Filter Tabs */
+        .cat-tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .cat-tab {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cat-tab:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .cat-tab.active {
+            background: rgba(225, 29, 72, 0.25);
+            border-color: var(--accent);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Tag Badges */
+        .tag-pill.rag_offline {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+        .tag-pill.thuc_the {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+        }
+        .tag-pill.su_toan_thu {
+            background: rgba(225, 29, 72, 0.15);
+            border: 1px solid rgba(225, 29, 72, 0.4);
+            color: #f43f5e;
+        }
+        .tag-pill.bach_khoa {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+        }
+        .tag-pill.calc {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #c084fc;
+        }
+
+        /* Timeline Cards */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            padding-left: 20px;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: linear-gradient(to bottom, #e11d48, #3b82f6);
+        }
+        .timeline-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            position: relative;
+        }
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 16px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fbbf24;
+            box-shadow: 0 0 6px #fbbf24;
+        }
+        .timeline-year {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fbbf24;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .timeline-desc {
+            font-size: 12.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        /* Beginner Guide Cards */
+        .guide-step {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .guide-step h4 {
+            color: #38bdf8;
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .guide-step p {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+        .guide-example {
+            background: #0f172a;
+            border-left: 3px solid var(--accent);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #fbbf24;
+            cursor: pointer;
+            margin-top: 4px;
+            display: inline-block;
+        }
+        .guide-example:hover {
+            background: rgba(225, 29, 72, 0.2);
+            color: #fff;
+        }
+
+        .welcome-banner {
+            margin-top: 14px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .welcome-banner span {
+            font-size: 12.5px;
+            color: #bae6fd;
+        }
+
     </style>
 </head>
 <body>
@@ -679,6 +854,14 @@
             </div>
         </div>
         <div class="header-right">
+            <button class="btn-header highlight" onclick="moModalTimeline()">
+                <i class="fa-solid fa-timeline"></i>
+                <span>Dòng thời gian (1986-2000)</span>
+            </button>
+            <button class="btn-header" onclick="moModalGuide()">
+                <i class="fa-solid fa-circle-question" style="color: #38bdf8;"></i>
+                <span>Hướng dẫn người mới</span>
+            </button>
             <button class="btn-header" onclick="moModalChunks()">
                 <i class="fa-solid fa-layer-group" style="color: #38bdf8;"></i>
                 <span>Khám phá 948 Phân đoạn (Adaptive)</span>
@@ -702,27 +885,17 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div>
-                <h3><i class="fa-solid fa-bolt"></i> Câu hỏi thử nghiệm tiêu biểu</h3>
-                <button class="quick-btn" onclick="datCauHoi('Trương Trinh làm gì vào giai đoạn đó?')">
-                    🏛️ <strong>Trương Trinh làm gì vào giai đoạn đó?</strong><br>
-                    <small style="color: #94a3b8;">(Kiểm tra thực thể & gợi ý liên quan Phạm Văn Đồng)</small>
-                </button>
-                <button class="quick-btn" onclick="datCauHoi('Từ năm 1986 đến năm 2000 là bao nhiêu năm?')">
-                    📅 <strong>Từ năm 1986 đến năm 2000 là bao nhiêu năm?</strong><br>
-                    <small style="color: #94a3b8;">(Kiểm tra module tính toán lịch sử)</small>
-                </button>
-                <button class="quick-btn" onclick="datCauHoi('Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?')">
-                    📖 Đại hội VI đã đề ra nội dung đổi mới nào?
-                </button>
-                <button class="quick-btn" onclick="datCauHoi('Việt Nam gia nhập ASEAN năm 1995 có ý nghĩa gì?')">
-                    🌏 Quá trình gia nhập ASEAN năm 1995
-                </button>
-                <button class="quick-btn" onclick="datCauHoi('Chính sách khoán 10 năm 1988 đã tác động ra sao đến nông nghiệp?')">
-                    🌾 Chính sách khoán 10 trong nông nghiệp
-                </button>
-                <button class="quick-btn" onclick="datCauHoi('Hiệp định Thương mại Việt - Mỹ năm 2000 được ký kết như thế nào?')">
-                    🤝 Hiệp định Thương mại Việt - Mỹ (BTA 2000)
-                </button>
+                <h3><i class="fa-solid fa-filter"></i> Lọc chủ đề câu hỏi mẫu</h3>
+                <div class="cat-tabs">
+                    <span class="cat-tab active" onclick="locChuDe('all', this)">🌟 Tất cả</span>
+                    <span class="cat-tab" onclick="locChuDe('doi_moi', this)">📜 Đổi mới 1986-2000</span>
+                    <span class="cat-tab" onclick="locChuDe('nhan_vat', this)">🏛️ Nhân vật</span>
+                    <span class="cat-tab" onclick="locChuDe('chien_dich', this)">⚔️ Chiến dịch</span>
+                    <span class="cat-tab" onclick="locChuDe('bach_khoa', this)">🌐 Mọi câu hỏi</span>
+                </div>
+                <div id="questionsContainer">
+                    <!-- Populated dynamically -->
+                </div>
             </div>
 
             <div>
@@ -735,6 +908,13 @@
                     <span class="entity-chip" onclick="datCauHoi('Đồng chí Đỗ Mười và Cương lĩnh 1991')">Đỗ Mười</span>
                     <span class="entity-chip" onclick="datCauHoi('Thủ tướng Phan Văn Khải và Luật Doanh nghiệp 1999')">Phan Văn Khải</span>
                     <span class="entity-chip" onclick="datCauHoi('Chủ tịch nước Trần Đức Lương')">Trần Đức Lương</span>
+                    <span class="entity-chip" onclick="datCauHoi('Trận đánh Điện Biên Phủ năm 1954 diễn ra như thế nào?')">Điện Biên Phủ 1954</span>
+                    <span class="entity-chip" onclick="datCauHoi('Chiến dịch Hồ Chí Minh 30/4/1975 giải phóng miền Nam')">Chiến dịch Hồ Chí Minh</span>
+                    <span class="entity-chip" onclick="datCauHoi('Ý nghĩa Cách mạng Tháng Tám năm 1945')">Cách mạng Tháng Tám</span>
+                    <span class="entity-chip" onclick="datCauHoi('Chiến thắng Bạch Đằng năm 938 và năm 1288')">Chiến thắng Bạch Đằng</span>
+                    <span class="entity-chip" onclick="datCauHoi('Quang Trung Nguyễn Huệ đại phá quân Thanh')">Quang Trung Nguyễn Huệ</span>
+                    <span class="entity-chip" onclick="datCauHoi('Hưng Đạo Vương Trần Quốc Tuấn và ba lần đại thắng quân Nguyên')">Trần Hưng Đạo</span>
+                    <span class="entity-chip" onclick="datCauHoi('Đại tướng Võ Nguyên Giáp')">Võ Nguyên Giáp</span>
                 </div>
             </div>
 
@@ -768,6 +948,18 @@
                         <p>Đính kèm số trang cụ thể trong sách Lịch sử Việt Nam tập 15.</p>
                     </div>
                 </div>
+
+                <div class="welcome-banner">
+                    <span>👉 <strong>Bạn là người mới?</strong> Khám phá dòng thời gian hoặc đọc hướng dẫn sử dụng:</span>
+                    <div style="display:flex; gap:6px;">
+                        <button class="btn-header highlight" style="padding:4px 10px; font-size:11.5px;" onclick="moModalTimeline()">
+                            <i class="fa-solid fa-timeline"></i> Dòng thời gian
+                        </button>
+                        <button class="btn-header" style="padding:4px 10px; font-size:11.5px;" onclick="moModalGuide()">
+                            <i class="fa-solid fa-circle-question"></i> Xem hướng dẫn
+                        </button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -787,6 +979,70 @@
             <span>Gửi</span>
             <i class="fa-solid fa-paper-plane"></i>
         </button>
+    </div>
+
+    <!-- Modal: Timeline Explorer (1986 - 2000) -->
+    <div class="modal-overlay" id="modalTimeline">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-timeline" style="color: #f43f5e;"></i> Dòng Thời Gian Lịch Sử Việt Nam (1986 — 2000)</h3>
+                <button class="btn-close-modal" onclick="dongModal('modalTimeline')">&times;</button>
+            </div>
+            <div class="modal-body" id="timelineContainer">
+                <!-- Loaded dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Beginner Guide -->
+    <div class="modal-overlay" id="modalGuide">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-question" style="color: #38bdf8;"></i> Hướng Dẫn Sử Dụng Dành Cho Người Mới</h3>
+                <button class="btn-close-modal" onclick="dongModal('modalGuide')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-book-open"></i> 1. Hỏi về Sự kiện Thời kỳ Đổi mới (1986 — 2000)</h4>
+                    <p>Khi hỏi về giai đoạn này, hệ thống sẽ sử dụng thuật toán <strong>Adaptive Chunking</strong> đối chiếu trực tiếp trên 451 trang sách và trích dẫn số trang chính xác <code>[Trang X]</code>.</p>
+                    <div class="guide-example" onclick="datCauHoi('Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?'); dongModal('modalGuide')">
+                        👉 Thử hỏi: Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-users-gear"></i> 2. Hỏi về Nhân vật Lịch sử & Gợi ý Nhân vật Liên quan</h4>
+                    <p>Hệ thống tự động nhận diện tên viết tắt, gõ sai chính tả (ví dụ <em>"Trương Trinh"</em> thay vì <em>"Trường Chinh"</em>) và tự động đưa ra các <strong>gợi ý nhân vật liên quan mật thiết</strong> (như Phạm Văn Đồng, Võ Văn Kiệt).</p>
+                    <div class="guide-example" onclick="datCauHoi('Trương Trinh làm gì vào giai đoạn đó?'); dongModal('modalGuide')">
+                        👉 Thử hỏi: Trương Trinh làm gì vào giai đoạn đó?
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-shield-halved"></i> 3. Hỏi về Các Chiến dịch & Anh hùng Lịch sử Toàn thư</h4>
+                    <p>Nếu bạn hỏi về các chiến dịch lớn trước năm 1986 (như <em>Điện Biên Phủ, Chiến dịch Hồ Chí Minh 1975, Cách mạng Tháng Tám, Bạch Đằng, Quang Trung Nguyễn Huệ...</em>), chatbot sẽ tóm tắt hào hùng và cho biết thuộc Tập sách nào trong bộ 15 tập Thông sử Việt Nam.</p>
+                    <div class="guide-example" onclick="datCauHoi('Trận đánh Điện Biên Phủ năm 1954 diễn ra như thế nào?'); dongModal('modalGuide')">
+                        👉 Thử hỏi: Trận đánh Điện Biên Phủ năm 1954 diễn ra như thế nào?
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-globe"></i> 4. Hỏi Bất kỳ Câu hỏi Kiến thức Mở rộng Nào</h4>
+                    <p>Bạn có thể hỏi bất kỳ câu hỏi nào ngoài lịch sử tập 15 (về nhân vật hiện đại, danh lam thắng cảnh, văn hóa, khoa học...). Hệ thống tự động kết nối bách khoa toàn thư mở hoàn toàn miễn phí mà không cần bất kỳ API key nào!</p>
+                    <div class="guide-example" onclick="datCauHoi('Sơn Tùng M-TP là ai?'); dongModal('modalGuide')">
+                        👉 Thử hỏi: Sơn Tùng M-TP là ai?
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <h4><i class="fa-solid fa-calculator"></i> 5. Tính Toán Khoảng Cách Năm Lịch Sử</h4>
+                    <p>Hệ thống có bộ xử lý tính toán số học tự động cho các câu hỏi tính năm.</p>
+                    <div class="guide-example" onclick="datCauHoi('Từ năm 1986 đến năm 2000 là bao nhiêu năm?'); dongModal('modalGuide')">
+                        👉 Thử hỏi: Từ năm 1986 đến năm 2000 là bao nhiêu năm?
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal: Adaptive Chunks Explorer -->
@@ -835,167 +1091,653 @@
         // 1. KNOWLEDGE GRAPH DU LIEU (Hoat dong 100% Offline tren Browser & GitHub Pages)
         // ============================================================
         const KNOWLEDGE_GRAPH = {
-            "truong_chinh": {
+        "truong_chinh": {
                 "ten": "Trường Chinh",
-                "ten_khac": ["Trương Trinh", "Đặng Xuân Khu", "Anh Năm", "truong chinh", "truong trinh"],
+                "ten_khac": [
+                        "Trương Trinh",
+                        "Đặng Xuân Khu",
+                        "Anh Năm",
+                        "truong chinh",
+                        "truong trinh"
+                ],
                 "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1941-1956, 1986), Chủ tịch Hội đồng Nhà nước (1981-1987), Cố vấn BCH Trung ương Đảng (1986-1988)",
                 "vai_tro_noi_bat": "Là 'Tổng Bí thư của Đổi mới', người khởi xướng và đặt nền móng lý luận cho công cuộc Đổi mới toàn diện đất nước tại Đại hội đại biểu toàn quốc lần thứ VI (tháng 12/1986) với phương châm 'Nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật'.",
                 "thoi_ky": "1986 (Khởi xướng Đổi mới tại Đại hội VI, Cố vấn BCH Trung ương đến khi từ trần năm 1988)",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    {
-                        "nhan_vat": "Phạm Văn Đồng",
-                        "ly_do": "Cùng là hai vị lãnh đạo tiền bối kiệt xuất, đồng cam cộng khổ qua các thời kỳ cách mạng. Sau Đại hội VI (1986), cả hai đồng chí cùng được Đảng cử làm Cố vấn Ban Chấp hành Trung ương Đảng, cùng đồng thuận bảo trợ và định hình đường lối Đổi mới.",
-                        "goi_y_cau_hoi": "Vai trò của đồng chí Phạm Văn Đồng trong giai đoạn khởi xướng Đổi mới 1986 là gì?"
-                    },
-                    {
-                        "nhan_vat": "Nguyễn Văn Linh",
-                        "ly_do": "Đồng chí kế nhiệm vị trí Tổng Bí thư tại Đại hội VI (12/1986), người tiếp thu và quyết liệt hiện thực hóa đường lối Đổi mới mà đồng chí Trường Chinh đã khởi xướng.",
-                        "goi_y_cau_hoi": "Nguyễn Văn Linh đã thực hiện những nội dung đổi mới nào sau Đại hội VI?"
-                    },
-                    {
-                        "nhan_vat": "Võ Văn Kiệt",
-                        "ly_do": "Người có thực tiễn cải cách năng động tại miền Nam, đã đóng góp nhiều ý kiến và kinh nghiệm thực tiễn quý báu để đồng chí Trường Chinh đưa vào Báo cáo Chính trị Đại hội VI.",
-                        "goi_y_cau_hoi": "Đóng góp thực tiễn của đồng chí Võ Văn Kiệt cho đường lối Đổi mới?"
-                    }
+                        {
+                                "nhan_vat": "Phạm Văn Đồng",
+                                "ly_do": "Cùng là hai vị lãnh đạo tiền bối kiệt xuất, đồng cam cộng khổ qua các thời kỳ cách mạng. Sau Đại hội VI (1986), cả hai đồng chí cùng được Đảng cử làm Cố vấn Ban Chấp hành Trung ương Đảng, cùng đồng thuận bảo trợ và định hình đường lối Đổi mới.",
+                                "goi_y_cau_hoi": "Vai trò của đồng chí Phạm Văn Đồng trong giai đoạn khởi xướng Đổi mới 1986 là gì?"
+                        },
+                        {
+                                "nhan_vat": "Nguyễn Văn Linh",
+                                "ly_do": "Đồng chí kế nhiệm vị trí Tổng Bí thư tại Đại hội VI (12/1986), người tiếp thu và quyết liệt hiện thực hóa đường lối Đổi mới mà đồng chí Trường Chinh đã khởi xướng.",
+                                "goi_y_cau_hoi": "Nguyễn Văn Linh đã thực hiện những nội dung đổi mới nào sau Đại hội VI?"
+                        },
+                        {
+                                "nhan_vat": "Võ Văn Kiệt",
+                                "ly_do": "Người có thực tiễn cải cách năng động tại miền Nam, đã đóng góp nhiều ý kiến và kinh nghiệm thực tiễn quý báu để đồng chí Trường Chinh đưa vào Báo cáo Chính trị Đại hội VI.",
+                                "goi_y_cau_hoi": "Đóng góp thực tiễn của đồng chí Võ Văn Kiệt cho đường lối Đổi mới?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Đại hội đại biểu toàn quốc lần thứ VI (tháng 12-1986)",
+                        "Chủ trương nhìn thẳng vào sự thật của Trường Chinh",
+                        "Ban Cố vấn Ban Chấp hành Trung ương Đảng (1986)"
                 ]
-            },
-            "pham_van_dong": {
+        },
+        "pham_van_dong": {
                 "ten": "Phạm Văn Đồng",
-                "ten_khac": ["Anh Tô", "pham van dong"],
-                "chuc_vu": "Thủ tướng Chính phủ (1955-1987), Cố vấn Ban Chấp hành Trung ương Đảng (1986-1997)",
-                "vai_tro_noi_bat": "Vị Thủ tướng tại vị lâu nhất trong lịch sử Việt Nam (32 năm), nhà ngoại giao kiệt xuất, nhà văn hóa lớn có uy tín quốc tế sâu rộng.",
-                "thoi_ky": "1986 - 1997",
+                "ten_khac": [
+                        "Bác Tô",
+                        "Anh Tô",
+                        "pham van dong",
+                        "dong chi to"
+                ],
+                "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1955-1987), Cố vấn BCH Trung ương Đảng (1986-1997)",
+                "vai_tro_noi_bat": "Nhà lãnh đạo, nhà văn hóa và nhà ngoại giao xuất sắc; cùng Trường Chinh và Nguyễn Văn Linh chuẩn bị các quyết sách chuyển đổi cơ chế quản lý kinh tế, xóa bỏ bao cấp tại Đại hội VI (1986).",
+                "thoi_ky": "1986 - 1997 (Thủ tướng giai đoạn đầu Đổi mới và Cố vấn BCH Trung ương Đảng)",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Trường Chinh", "ly_do": "Cùng sát cánh bên Chủ tịch Hồ Chí Minh và cùng được cử làm Cố vấn Ban Chấp hành Trung ương Đảng sau Đại hội VI (1986)." },
-                    { "nhan_vat": "Võ Văn Kiệt", "ly_do": "Đồng chí kế nhiệm cương vị lãnh đạo Chính phủ, tiếp tục công cuộc Đổi mới." }
+                        {
+                                "nhan_vat": "Trường Chinh",
+                                "ly_do": "Cùng đồng hành chỉ đạo công cuộc Đổi mới và cùng được bầu làm Cố vấn BCH Trung ương tại Đại hội VI (1986).",
+                                "goi_y_cau_hoi": "Trường Chinh và Phạm Văn Đồng đã phối hợp thế nào tại Đại hội VI năm 1986?"
+                        },
+                        {
+                                "nhan_vat": "Võ Văn Kiệt",
+                                "ly_do": "Thủ tướng kế nhiệm trong thời kỳ đẩy mạnh cải cách kinh tế và hội nhập quốc tế.",
+                                "goi_y_cau_hoi": "Võ Văn Kiệt đã kế thừa công tác quản lý điều hành chính phủ như thế nào?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Vai trò của Cố vấn Ban Chấp hành Trung ương",
+                        "Đổi mới giáo dục và văn hóa thời kỳ Đổi mới"
                 ]
-            },
-            "nguyen_van_linh": {
+        },
+        "nguyen_van_linh": {
                 "ten": "Nguyễn Văn Linh",
-                "ten_khac": ["Mười Cúc", "nguyen van linh"],
-                "chuc_vu": "Tổng Bí thư BCH Trung ương Đảng Cộng sản Việt Nam (1986-1991), Cố vấn BCH Trung ương (1991-1997)",
-                "vai_tro_noi_bat": "Vị Tổng Bí thư tiên phong chỉ đạo hiện thực hóa đường lối Đổi mới bằng hành động quyết liệt với chuyên mục 'Những việc cần làm ngay' trên báo Nhân Dân.",
-                "thoi_ky": "1986 - 1991",
+                "ten_khac": [
+                        "Mười Cúc",
+                        "nguyen van linh",
+                        "muoi cuc"
+                ],
+                "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1986-1991), Cố vấn BCH Trung ương (1991-1997)",
+                "vai_tro_noi_bat": "Tổng Bí thư đầu tiên của thời kỳ Đổi mới, phát động phong trào 'Những việc cần làm ngay' tạo luồng sinh khí công khai, dân chủ, bài trừ quan liêu bao cấp và kiên quyết thực hiện 3 chương trình kinh tế lớn.",
+                "thoi_ky": "1986 - 1991 (Nhiệm kỳ Tổng Bí thư Đại hội VI)",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Trường Chinh", "ly_do": "Kế thừa ngọn cờ Đổi mới từ đồng chí Trường Chinh tại Đại hội VI." },
-                    { "nhan_vat": "Đỗ Mười", "ly_do": "Chủ tịch Hội đồng Bộ trưởng cùng thời kỳ, kế nhiệm chức Tổng Bí thư tại Đại hội VII (1991)." }
+                        {
+                                "nhan_vat": "Trường Chinh",
+                                "ly_do": "Kế nhiệm cương vị Tổng Bí thư từ đồng chí Trường Chinh tại Đại hội VI.",
+                                "goi_y_cau_hoi": "Sự chuyển giao cương vị Tổng Bí thư từ Trường Chinh sang Nguyễn Văn Linh diễn ra như thế nào?"
+                        },
+                        {
+                                "nhan_vat": "Đỗ Mười",
+                                "ly_do": "Chủ tịch Hội đồng Bộ trưởng cùng thời kỳ (1988-1991), cùng chỉ đạo thực hiện Nghị quyết Khoán 10 trong nông nghiệp.",
+                                "goi_y_cau_hoi": "Nghị quyết Khoán 10 năm 1988 đã mang lại thành tựu gì cho nông nghiệp?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Chuyên mục Những việc cần làm ngay của Nguyễn Văn Linh",
+                        "Ba chương trình kinh tế lớn: Lương thực - thực phẩm, Hàng tiêu dùng và Hàng xuất khẩu"
                 ]
-            },
-            "vo_van_kiet": {
+        },
+        "vo_van_kiet": {
                 "ten": "Võ Văn Kiệt",
-                "ten_khac": ["Sáu Dân", "vo van kiet", "thu tuong vo van kiet"],
-                "chuc_vu": "Chủ tịch Hội đồng Bộ trưởng / Thủ tướng Chính phủ (1991-1997), Cố vấn BCH Trung ương (1997-2001)",
-                "vai_tro_noi_bat": "Tổng công trình sư của những công trình thế kỷ: Đường dây tải điện 500kV Bắc - Nam mạch 1, thoát lũ Đồng Tháp Mười, bình thường hóa quan hệ với Hoa Kỳ (1995) và đưa Việt Nam gia nhập ASEAN (1995).",
-                "thoi_ky": "1986 - 2000",
+                "ten_khac": [
+                        "Sáu Dân",
+                        "Phan Văn Hòa",
+                        "vo van kiet",
+                        "sau dan"
+                ],
+                "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1991-1997), Phó Chủ tịch HĐBT (1987-1991), Cố vấn BCH Trung ương (1997-2001)",
+                "vai_tro_noi_bat": "Nhà lãnh đạo đổi mới quyết đoán, 'Kiến trúc sư của Đổi mới'. Người trực tiếp chỉ đạo xây dựng công trình Đường dây 500kV Bắc - Nam lịch sử, bình thường hóa quan hệ với Hoa Kỳ (1995), đưa Việt Nam gia nhập ASEAN (1995) và thúc đẩy kinh tế thị trường.",
+                "thoi_ky": "1986 - 2000 (Phó Chủ tịch HĐBT, Thủ tướng Chính phủ, Cố vấn)",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Phan Văn Khải", "ly_do": "Phó Thủ tướng thứ nhất đắc lực cùng điều hành Chính phủ và kế nhiệm vị trí Thủ tướng năm 1997." },
-                    { "nhan_vat": "Trường Chinh & Phạm Văn Đồng", "ly_do": "Hai bậc tiền bối dìu dắt và ủng hộ tinh thần cải cách 'xé rào' tại TP. Hồ Chí Minh thời kỳ tiền Đổi mới." }
+                        {
+                                "nhan_vat": "Phan Văn Khải",
+                                "ly_do": "Phó Thủ tướng thứ nhất thời kỳ 1991-1997, kế nhiệm cương vị Thủ tướng tiếp tục đẩy mạnh hội nhập kinh tế.",
+                                "goi_y_cau_hoi": "Phan Văn Khải đã kế tục và phát triển chính sách kinh tế của Võ Văn Kiệt ra sao?"
+                        },
+                        {
+                                "nhan_vat": "Lê Đức Anh",
+                                "ly_do": "Chủ tịch nước cùng thời kỳ (1992-1997), tạo nên sự phối hợp chặt chẽ giữa Đảng, Nhà nước và Chính phủ trong đối ngoại và an ninh quốc phòng.",
+                                "goi_y_cau_hoi": "Sự kiện bình thường hóa quan hệ ngoại giao Việt - Mỹ năm 1995?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Công trình Đường dây 500kV Bắc - Nam (1992 - 1994)",
+                        "Việt Nam gia nhập ASEAN tháng 7 năm 1995",
+                        "Bình thường hóa quan hệ ngoại giao Việt Nam - Hoa Kỳ (1995)"
                 ]
-            },
-            "phan_van_khai": {
+        },
+        "phan_van_khai": {
                 "ten": "Phan Văn Khải",
-                "ten_khac": ["Sáu Khải", "phan van khai"],
-                "chuc_vu": "Thủ tướng Chính phủ nước CHXHCN Việt Nam (1997-2006)",
-                "vai_tro_noi_bat": "Nhà kỹ trị tài năng, kiến tạo hành lang pháp lý thị trường với Luật Doanh nghiệp năm 1999 mang tính đột phá, ký kết Hiệp định Thương mại song phương Việt - Mỹ (BTA 2000).",
-                "thoi_ky": "1991 - 2000",
+                "ten_khac": [
+                        "Sáu Khải",
+                        "phan van khai",
+                        "sau khai"
+                ],
+                "chuc_vu": "Thủ tướng Chính phủ Việt Nam (1997-2006), Phó Thủ tướng Thường trực (1991-1997)",
+                "vai_tro_noi_bat": "Thủ tướng chỉ đạo vượt qua khủng hoảng tài chính châu Á (1997), ban hành Luật Doanh nghiệp năm 1999 khơi thông mọi nguồn lực kinh tế tư nhân, ký Hiệp định Thương mại Việt - Mỹ (BTA 2000).",
+                "thoi_ky": "1991 - 2000 (Phó Thủ tướng và Thủ tướng Chính phủ)",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Võ Văn Kiệt", "ly_do": "Tiếp nối nhiệm kỳ Thủ tướng từ đồng chí Võ Văn Kiệt, tiếp tục đẩy mạnh hội nhập quốc tế." },
-                    { "nhan_vat": "Trần Đức Lương", "ly_do": "Chủ tịch nước cùng thời kỳ, phối hợp lãnh đạo đối ngoại và ký kết các điều ước quốc tế lớn." }
+                        {
+                                "nhan_vat": "Trần Đức Lương",
+                                "ly_do": "Chủ tịch nước cùng thời kỳ (1997-2006), phối hợp chặt chẽ trong các hoạt động đối ngoại lớn và ký kết các hiệp ước quốc tế quan trọng.",
+                                "goi_y_cau_hoi": "Chuyến thăm lịch sử của Tổng thống Bill Clinton tới Việt Nam năm 2000?"
+                        },
+                        {
+                                "nhan_vat": "Võ Văn Kiệt",
+                                "ly_do": "Tiền nhiệm cương vị Thủ tướng, người đã chuẩn bị chu đáo đội ngũ kế cận.",
+                                "goi_y_cau_hoi": "Luật Doanh nghiệp 1999 dưới thời Phan Văn Khải có ý nghĩa gì?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Luật Doanh nghiệp năm 1999",
+                        "Hiệp định Thương mại Việt - Mỹ (BTA) tháng 7-2000",
+                        "Phân định Vịnh Bắc Bộ và Hiệp ước Biên giới trên đất liền Việt - Trung"
                 ]
-            },
-            "do_muoi": {
+        },
+        "do_muoi": {
                 "ten": "Đỗ Mười",
-                "ten_khac": ["Nguyễn Duy Cống", "do muoi"],
-                "chuc_vu": "Chủ tịch Hội đồng Bộ trưởng (1988-1991), Tổng Bí thư BCH Trung ương Đảng (1991-1997)",
-                "vai_tro_noi_bat": "Chỉ đạo thông qua Cương lĩnh 1991, Hiến pháp năm 1992, mở rộng đường lối đối ngoại 'Việt Nam muốn là bạn với tất cả các nước'.",
+                "ten_khac": [
+                        "Nguyễn Duy Cống",
+                        "do muoi"
+                ],
+                "chuc_vu": "Tổng Bí thư Đảng Cộng sản Việt Nam (1991-1997), Chủ tịch Hội đồng Bộ trưởng (1988-1991)",
+                "vai_tro_noi_bat": "Lãnh đạo đất nước giữ vững ổn định chính trị và phục hồi kinh tế trong bối cảnh Liên Xô và Đông Âu sụp đổ; chủ trì thông qua Cương lĩnh 1991 và Hiến pháp 1992.",
                 "thoi_ky": "1988 - 1997",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Nguyễn Văn Linh", "ly_do": "Hai nhà lãnh đạo chủ chốt giai đoạn chuyển giao Đổi mới Đại hội VI - VII." }
+                        {
+                                "nhan_vat": "Võ Văn Kiệt",
+                                "ly_do": "Thủ tướng Chính phủ cùng thời kỳ, phối hợp thực hiện đường lối đa phương hóa quan hệ quốc tế.",
+                                "goi_y_cau_hoi": "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ (Cương lĩnh 1991)?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Cương lĩnh 1991",
+                        "Hiến pháp năm 1992",
+                        "Chính sách đối ngoại Việt Nam muốn là bạn với tất cả các nước"
                 ]
-            },
-            "tran_duc_luong": {
+        },
+        "tran_duc_luong": {
                 "ten": "Trần Đức Lương",
-                "ten_khac": ["tran duc luong"],
+                "ten_khac": [
+                        "tran duc luong"
+                ],
                 "chuc_vu": "Chủ tịch nước CHXHCN Việt Nam (1997-2006)",
-                "vai_tro_noi_bat": "Nguyên thủ quốc gia ký kết Hiệp ước Biên giới trên đất liền (1999) và Hiệp định Phân định Vịnh Bắc Bộ (2000), chủ trì đón Tổng thống Bill Clinton (2000).",
+                "vai_tro_noi_bat": "Nguyên thủ quốc gia đại diện Việt Nam ký kết Hiệp ước Biên giới trên đất liền (1999) và Hiệp định Phân định Vịnh Bắc Bộ với Trung Quốc (2000), chủ trì đón Tổng thống Hoa Kỳ Bill Clinton (2000).",
                 "thoi_ky": "1997 - 2000",
                 "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Phan Văn Khải", "ly_do": "Thủ tướng Chính phủ cùng thời kỳ hội nhập quốc tế sâu rộng." }
+                        {
+                                "nhan_vat": "Phan Văn Khải",
+                                "ly_do": "Thủ tướng Chính phủ cùng thời kỳ lãnh đạo công cuộc hội nhập quốc tế sâu rộng.",
+                                "goi_y_cau_hoi": "Hiệp định Phân định Vịnh Bắc Bộ năm 2000 có nội dung gì?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Hiệp định Phân định Vịnh Bắc Bộ ngày 25-12-2000",
+                        "Hiệp ước Biên giới đất liền Việt - Trung năm 1999"
                 ]
-            },
-            "nguyen_hue": {
+        },
+        "nguyen_hue": {
                 "ten": "Quang Trung (Nguyễn Huệ)",
-                "ten_khac": ["Nguyễn Huệ", "nguyen hue", "quang trung", "bắc bình vương", "hồ thơm", "vua quang trung", "nguyen hue la ai", "quang trung la ai"],
-                "chuc_vu": "Thủ lĩnh kiệt xuất phong trào khởi nghĩa Tây Sơn, Hoàng đế thứ hai triều đại Tây Sơn (trị vì 1788 - 1792)",
-                "vai_tro_noi_bat": "Anh hùng dân tộc áo vải cờ đào, một trong những thiên tài quân sự bách chiến bách thắng vĩ đại nhất lịch sử Việt Nam. Đã lãnh đạo phong trào Tây Sơn lật đổ các tập đoàn phong kiến cát cứ Đàng Trong - Đàng Ngoài, đánh tan 5 vạn quân xâm lược Xiêm tại Rạch Gầm - Xoài Mút (1785), và thần tốc hành quân đại phá 29 vạn quân Mãn Thanh mùa xuân Kỷ Dậu (1789) với chiến thắng Ngọc Hồi - Đống Đa vang dội.",
-                "thoi_ky": "Thế kỷ XVIII (1753 - 1792)",
+                "ten_khac": [
+                        "Nguyễn Huệ",
+                        "nguyen hue",
+                        "quang trung",
+                        "bắc bình vương",
+                        "hồ thơm",
+                        "vua quang trung",
+                        "nguyen hue la ai",
+                        "quang trung la ai"
+                ],
+                "chuc_vu": "Thủ lĩnh kiệt xuất phong trào khởi nghĩa Tây Sơn, Hoàng đế thứ hai của triều đại Tây Sơn (trị vì 1788 - 1792)",
+                "vai_tro_noi_bat": "Anh hùng dân tộc áo vải cờ đào, một trong những thiên tài quân sự bách chiến bách thắng vĩ đại nhất lịch sử Việt Nam. Đã lãnh đạo phong trào Tây Sơn lật đổ các tập đoàn phong kiến cát cứ Đàng Trong - Đàng Ngoài (chúa Nguyễn, chúa Trịnh, vua Lê), đánh tan 5 vạn quân xâm lược Xiêm tại trận Rạch Gầm - Xoài Mút (1785), và thần tốc hành quân đại phá 29 vạn quân Mãn Thanh mùa xuân Kỷ Dậu (1789) với chiến thắng Ngọc Hồi - Đống Đa vang dội.",
+                "thoi_ky": "Thế kỷ XVIII (1753 - 1792) — Ghi chép chi tiết trong TẬP 4 của bộ 15 tập Lịch sử Việt Nam (Từ năm 1627 đến năm 1858)",
                 "thuoc_tap_15": false,
-                "tap_sach": "Tập 4: Từ năm 1627 đến năm 1858",
+                "tap_sach": "Tập 4: Từ thế kỷ XVII đến thế kỷ XVIII",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Nguyễn Nhạc & Nguyễn Lữ", "ly_do": "Ba anh em Tây Sơn (Tây Sơn tam kiệt) cùng nhau dựng cờ khởi nghĩa từ vùng Tây Sơn thượng đạo." },
-                    { "nhan_vat": "Ngô Thì Nhậm", "ly_do": "Danh sĩ Bắc Hà, mưu thần đắc lực hiến kế 'rút quân về Tam Điệp - Biện Sơn' giúp vua Quang Trung đại phá quân Thanh." },
-                    { "nhan_vat": "Bùi Thị Xuân & Trần Quang Diệu", "ly_do": "Các vị đô đốc kiệt xuất của phong trào Tây Sơn dưới trướng vua Quang Trung." }
+                        {
+                                "nhan_vat": "Nguyễn Nhạc & Nguyễn Lữ",
+                                "ly_do": "Ba anh em Tây Sơn (Tây Sơn tam kiệt) cùng nhau dựng cờ khởi nghĩa nông dân từ vùng Tây Sơn thượng đạo.",
+                                "goi_y_cau_hoi": "Khởi nghĩa Tây Sơn bùng nổ trong hoàn cảnh nào?"
+                        },
+                        {
+                                "nhan_vat": "Ngô Thì Nhậm",
+                                "ly_do": "Danh sĩ Bắc Hà, mưu thần đắc lực hiến kế 'rút quân về Tam Điệp - Biện Sơn' giúp vua Quang Trung đại phá quân Thanh.",
+                                "goi_y_cau_hoi": "Kế sách rút về Tam Điệp của Ngô Thì Nhậm có ý nghĩa gì?"
+                        },
+                        {
+                                "nhan_vat": "Bùi Thị Xuân & Trần Quang Diệu",
+                                "ly_do": "Các vị đô đốc kiệt xuất của phong trào Tây Sơn dưới trướng vua Quang Trung.",
+                                "goi_y_cau_hoi": "Nữ tướng Bùi Thị Xuân và đội quân voi chiến thời Tây Sơn?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Chiến thắng Ngọc Hồi - Đống Đa mùa xuân Kỷ Dậu 1789",
+                        "Chiến thắng Rạch Gầm - Xoài Mút năm 1785 đánh tan quân Xiêm",
+                        "Chính sách ngoại giao và cải cách kinh tế - văn hóa của vua Quang Trung"
                 ]
-            },
-            "tran_hung_dao": {
+        },
+        "tran_hung_dao": {
                 "ten": "Trần Hưng Đạo (Trần Quốc Tuấn)",
-                "ten_khac": ["tran hung dao", "tran quoc tuan", "hung dao vuong", "tran hung dao la ai"],
+                "ten_khac": [
+                        "tran hung dao",
+                        "tran quoc tuan",
+                        "hung dao vuong",
+                        "tran hung dao la ai"
+                ],
                 "chuc_vu": "Quốc công Tiết chế, Tổng chỉ huy quân đội Đại Việt thời nhà Trần",
                 "vai_tro_noi_bat": "Thiên tài quân sự kiệt xuất, tác giả 'Hịch tướng sĩ' và 'Binh thư yếu lược'. Người có công lao tối thượng lãnh đạo quân dân Đại Việt ba lần đánh tan giặc Mông - Nguyên xâm lược (1258, 1285, 1288) với chiến thắng Bạch Đằng năm 1288 lịch sử.",
-                "thoi_ky": "Thế kỷ XIII (1228 - 1300)",
+                "thoi_ky": "Thế kỷ XIII (1228 - 1300) — Trình bày tại TẬP 2 của bộ sách (Từ thế kỷ X đến thế kỷ XIV)",
                 "thuoc_tap_15": false,
                 "tap_sach": "Tập 2: Từ thế kỷ X đến thế kỷ XIV",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Trần Nhân Tông", "ly_do": "Vị hoàng đế anh minh cùng lãnh đạo cuộc kháng chiến chống quân Nguyên lần 2 và 3." },
-                    { "nhan_vat": "Yết Kiêu & Dã Tượng", "ly_do": "Hai gia tướng trung thành, quả cảm lập nhiều chiến công lẫy lừng." }
+                        {
+                                "nhan_vat": "Trần Thánh Tông & Trần Nhân Tông",
+                                "ly_do": "Các vị vua anh minh nhà Trần đặt trọn niềm tin nơi Tiết chế Quốc công.",
+                                "goi_y_cau_hoi": "Hội nghị Diên Hồng và tinh thần đoàn kết toàn dân thời Trần?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Chiến thắng Bạch Đằng năm 1288",
+                        "Hịch tướng sĩ của Trần Hưng Đạo"
                 ]
-            },
-            "le_loi": {
+        },
+        "le_loi": {
                 "ten": "Lê Lợi (Lê Thái Tổ)",
-                "ten_khac": ["le loi", "le thai to", "binh dinh vuong", "vua le loi"],
-                "chuc_vu": "Bình Định Vương, Hoàng đế sáng lập triều đại Hậu Lê (trị vì 1428 - 1433)",
-                "vai_tro_noi_bat": "Lãnh tụ khởi nghĩa Lam Sơn (1418 - 1427), trải qua 10 năm nếm mật nằm gai đánh tan 15 vạn quân xâm lược nhà Minh, giành lại nền độc lập cho Đại Việt.",
-                "thoi_ky": "Thế kỷ XV (1385 - 1433)",
+                "ten_khac": [
+                        "le loi",
+                        "le thai to",
+                        "binh dinh vuong",
+                        "le loi la ai"
+                ],
+                "chuc_vu": "Bình Định Vương, Hoàng đế sáng lập triều Hậu Lê (1428 - 1789)",
+                "vai_tro_noi_bat": "Lãnh tụ tối cao của cuộc khởi nghĩa Lam Sơn (1418 - 1427) kéo dài 10 năm gian khổ, quét sạch ách đô hộ tàn bạo của nhà Minh, giành lại nền độc lập và mở ra triều đại Hậu Lê phồn thịnh.",
+                "thoi_ky": "Thế kỷ XV (1385 - 1433) — Trình bày tại TẬP 3 của bộ sách (Từ thế kỷ XV đến thế kỷ XVI)",
                 "thuoc_tap_15": false,
-                "tap_sach": "Tập 3: Thế kỷ XV",
+                "tap_sach": "Tập 3: Từ thế kỷ XV đến thế kỷ XVI",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Nguyễn Trãi", "ly_do": "Quân sư đắc lực dâng 'Bình Ngô sách' và soạn thảo áng thiên cổ hùng văn 'Bình Ngô đại cáo'." },
-                    { "nhan_vat": "Lê Lai", "ly_do": "Vị tướng trung liệt liều mình cứu chúa tại Chí Linh." }
+                        {
+                                "nhan_vat": "Nguyễn Trãi",
+                                "ly_do": "Quân sư mưu lược đại tài, tác giả Bình Ngô đại cáo, người đồng hành cùng Lê Lợi.",
+                                "goi_y_cau_hoi": "Ý nghĩa bài Bình Ngô đại cáo của Nguyễn Trãi?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Khởi nghĩa Lam Sơn (1418 - 1427)",
+                        "Hội thề Đông Quan và chiến thắng Chi Lăng - Xương Giang"
                 ]
-            },
-            "ho_chi_minh": {
-                "ten": "Chủ tịch Hồ Chí Minh (Nguyễn Ái Quốc)",
-                "ten_khac": ["Bác Hồ", "ho chi minh", "nguyen ai quoc", "nguyen tat thanh", "bac ho"],
-                "chuc_vu": "Chủ tịch nước Việt Nam Dân chủ Cộng hòa, Người sáng lập Đảng Cộng sản Việt Nam",
-                "vai_tro_noi_bat": "Vị lãnh tụ thiên tài của dân tộc, Anh hùng giải phóng dân tộc, Nhà văn hóa kiệt xuất được UNESCO vinh danh.",
-                "thoi_ky": "1890 - 1969",
+        },
+        "ho_chi_minh": {
+                "ten": "Hồ Chí Minh",
+                "ten_khac": [
+                        "Bác Hồ",
+                        "Nguyễn Ái Quốc",
+                        "Nguyễn Tất Thành",
+                        "ho chi minh",
+                        "bac ho",
+                        "nguyen ai quoc"
+                ],
+                "chuc_vu": "Chủ tịch nước Việt Nam Dân chủ Cộng hòa (1945 - 1969), Chủ tịch Đảng Lao động Việt Nam",
+                "vai_tro_noi_bat": "Lãnh tụ vĩ đại của dân tộc Việt Nam, Danh nhân văn hóa thế giới. Người sáng lập Đảng Cộng sản Việt Nam, đọc Tuyên ngôn Độc lập khai sinh nước VNDCCH ngày 2/9/1945, lãnh đạo cuộc kháng chiến chống Pháp và chống Mỹ.",
+                "thoi_ky": "1890 - 1969 — Trình bày tại các TẬP 9, 10, 11, 12, 13",
                 "thuoc_tap_15": false,
-                "tap_sach": "Tập 9 đến Tập 13: Giai đoạn Cách mạng 1930 - 1975",
+                "tap_sach": "Tập 9 đến Tập 13",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Võ Nguyên Giáp", "ly_do": "Người học trò xuất sắc được Bác Hồ trao quyền Tổng tư lệnh quân đội." },
-                    { "nhan_vat": "Phạm Văn Đồng & Trường Chinh", "ly_do": "Các học trò, đồng chí lãnh đạo nòng cốt qua các thời kỳ cách mạng." }
+                        {
+                                "nhan_vat": "Võ Nguyên Giáp",
+                                "ly_do": "Học trò xuất sắc, Đại tướng Tổng tư lệnh chỉ huy chiến dịch Điện Biên Phủ.",
+                                "goi_y_cau_hoi": "Đại tướng Võ Nguyên Giáp và chiến dịch Điện Biên Phủ 1954?"
+                        },
+                        {
+                                "nhan_vat": "Phạm Văn Đồng",
+                                "ly_do": "Người học trò, đồng chí thân cận nhiều năm giữ cương vị Thủ tướng.",
+                                "goi_y_cau_hoi": "Mối quan hệ giữa Bác Hồ và đồng chí Phạm Văn Đồng?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Tuyên ngôn Độc lập ngày 2-9-1945",
+                        "Tư tưởng Hồ Chí Minh về Đổi mới và độc lập dân tộc"
                 ]
-            },
-            "vo_nguyen_giap": {
+        },
+        "vo_nguyen_giap": {
                 "ten": "Đại tướng Võ Nguyên Giáp",
-                "ten_khac": ["Anh Văn", "vo nguyen giap", "dai tuong vo nguyen giap"],
-                "chuc_vu": "Đại tướng đầu tiên, Tổng tư lệnh Quân đội Nhân dân Việt Nam, Phó Chủ tịch Hội đồng Bộ trưởng",
-                "vai_tro_noi_bat": "Vị tướng huyền thoại chỉ huy Chiến thắng lịch sử Điện Biên Phủ 1954 lừng lẫy năm châu chấn động địa cầu và Chiến dịch Hồ Chí Minh lịch sử 1975.",
-                "thoi_ky": "1911 - 2013",
-                "thuoc_tap_15": false,
-                "tap_sach": "Tập 10 đến Tập 14: Lịch sử kháng chiến chống Pháp và chống Mỹ",
+                "ten_khac": [
+                        "vo nguyen giap",
+                        "dai tuong vo nguyen giap",
+                        "anh van"
+                ],
+                "chuc_vu": "Đại tướng đầu tiên, Tổng tư lệnh Quân đội Nhân dân Việt Nam, Phó Thủ tướng Chính phủ",
+                "vai_tro_noi_bat": "Danh tướng huyền thoại thế kỷ XX, người chỉ huy tối cao chiến thắng lịch sử Điện Biên Phủ 1954 'lừng lẫy năm châu, chấn động địa cầu' và chiến dịch Hồ Chí Minh lịch sử mùa xuân năm 1975.",
+                "thoi_ky": "1911 - 2013 — Hoạt động xuyên suốt các tập 10, 11, 12, 13, 14, 15",
+                "thuoc_tap_15": true,
+                "tap_sach": "",
                 "quan_he_mat_thiet": [
-                    { "nhan_vat": "Hồ Chí Minh", "ly_do": "Người thầy vĩ đại giao trọng trách thành lập Đội Việt Nam Tuyên truyền Giải phóng quân." }
+                        {
+                                "nhan_vat": "Hồ Chí Minh",
+                                "ly_do": "Người thầy vĩ đại trao trọng trách thành lập Đội Việt Nam Tuyên truyền Giải phóng quân năm 1944.",
+                                "goi_y_cau_hoi": "Đội Việt Nam Tuyên truyền Giải phóng quân được thành lập như thế nào?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Chiến thắng Điện Biên Phủ năm 1954",
+                        "Chiến dịch Hồ Chí Minh năm 1975 giải phóng miền Nam"
                 ]
+        },
+        "dien_bien_phu": {
+                "ten": "Chiến dịch Điện Biên Phủ (1954)",
+                "ten_khac": [
+                        "trận đánh điện biên phủ",
+                        "chiến dịch điện biên phủ",
+                        "điện biên phủ",
+                        "dien bien phu",
+                        "tran danh dien bien phu",
+                        "chien dich dien bien phu",
+                        "tran dien bien phu",
+                        "trận điện biên phủ",
+                        "dien bien phu la gi"
+                ],
+                "chuc_vu": "Trận quyết chiến chiến lược lớn nhất trong cuộc Kháng chiến chống thực dân Pháp (1945 - 1954)",
+                "vai_tro_noi_bat": "Diễn ra trong suốt 56 ngày đêm 'khoét núi, ngủ hầm, mưa dầm, cơm vắt, máu trộn bùn non' từ ngày 13/03/1954 đến ngày 07/05/1954 dưới sự chỉ đạo của Trung ương Đảng và chỉ huy tối cao của Đại tướng Võ Nguyên Giáp. Quân đội Nhân dân Việt Nam đã tiêu diệt và bắt sống toàn bộ 16.200 quân địch tại tập đoàn cứ điểm Điện Biên Phủ, bắt sống tướng De Castries (Đờ Cát). Chiến thắng 'lừng lẫy năm châu, chấn động địa cầu' đã đập tan hoàn toàn kế hoạch Nava của Pháp - Mỹ, buộc Pháp phải ký Hiệp định Genève năm 1954, chấm dứt ách đô hộ của thực dân Pháp tại Đông Dương và mở đường cho công cuộc xây dựng CNXH ở miền Bắc.",
+                "thoi_ky": "13/03/1954 - 07/05/1954 — Ghi chép toàn diện tại TẬP 10 của Bộ Thông sử Việt Nam",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 10: Kháng chiến chống thực dân Pháp (1945 - 1954)",
+                "quan_he_mat_thiet": [
+                        {
+                                "nhan_vat": "Đại tướng Võ Nguyên Giáp",
+                                "ly_do": "Tổng tư lệnh kiêm Chỉ huy trưởng chiến dịch, người đưa ra quyết định lịch sử chuyển phương châm tác chiến từ 'đánh nhanh thắng nhanh' sang 'đánh chắc tiến chắc'.",
+                                "goi_y_cau_hoi": "Quyết định chuyển phương châm tác chiến của Đại tướng Võ Nguyên Giáp tại Điện Biên Phủ?"
+                        },
+                        {
+                                "nhan_vat": "Chủ tịch Hồ Chí Minh",
+                                "ly_do": "Người trực tiếp chỉ đạo Bộ Chính trị mở chiến dịch Điện Biên Phủ với chỉ thị: 'Chiến dịch này là một chiến dịch rất quan trọng, phải đánh cho thắng, chắc thắng mới đánh'.",
+                                "goi_y_cau_hoi": "Lời căn dặn của Bác Hồ với Đại tướng Võ Nguyên Giáp trước khi lên đường ra mặt trận?"
+                        },
+                        {
+                                "nhan_vat": "Các anh hùng liệt sĩ (Bế Văn Đàn, Phan Đình Giót, Tô Vĩnh Diện)",
+                                "ly_do": "Những tấm gương hy sinh anh dũng tột bậc: Bế Văn Đàn lấy thân mình làm giá súng, Phan Đình Giót lấy thân mình lấp lỗ châu mai, Tô Vĩnh Diện lấy thân chèn pháo.",
+                                "goi_y_cau_hoi": "Hành động anh hùng của Phan Đình Giót và Tô Vĩnh Diện trong chiến dịch Điện Biên Phủ?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Ý nghĩa lịch sử của chiến thắng Điện Biên Phủ 1954",
+                        "Hiệp định Genève năm 1954 về chấm dứt chiến tranh ở Đông Dương",
+                        "Nghệ thuật quân sự kéo pháo và đào hào tại Điện Biên Phủ"
+                ]
+        },
+        "chien_dich_ho_chi_minh": {
+                "ten": "Chiến dịch Hồ Chí Minh (Đại thắng mùa Xuân 1975)",
+                "ten_khac": [
+                        "chiến dịch hồ chí minh",
+                        "30/4/1975",
+                        "giải phóng miền nam",
+                        "chien dich ho chi minh",
+                        "ngay 30 thang 4",
+                        "thong nhat dat nuoc",
+                        "30 thang 4 nam 1975",
+                        "dai thang mua xuan 1975"
+                ],
+                "chuc_vu": "Chiến dịch tiến công quân sự quy mô lớn nhất lịch sử dân tộc, giải phóng hoàn toàn miền Nam",
+                "vai_tro_noi_bat": "Chiến dịch đỉnh cao của cuộc Tổng tiến công và nổi dậy mùa Xuân 1975. Diễn ra từ ngày 26/4 đến ngày 30/4/1975 với sự tham gia của 5 cánh quân hợp đồng tác chiến tiến thẳng vào trung tâm Sài Gòn. Đúng 11 giờ 30 phút ngày 30/4/1975, lá cờ cách mạng tung bay trên nóc Dinh Độc Lập, Tổng thống Dương Văn Minh tuyên bố đầu hàng không điều kiện. Cuộc kháng chiến chống Mỹ cứu nước kết thúc thắng lợi rực rỡ, giải phóng hoàn toàn miền Nam, non sông thu về một mối, mở ra kỷ nguyên độc lập và thống nhất cho Tổ quốc.",
+                "thoi_ky": "1975 — Trình bày chi tiết tại TẬP 14 của Bộ Thông sử Việt Nam",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 14: Cuộc kháng chiến chống Mỹ cứu nước (1973 - 1975)",
+                "quan_he_mat_thiet": [
+                        {
+                                "nhan_vat": "Đại tướng Võ Nguyên Giáp",
+                                "ly_do": "Tác giả của bức mật điện nổi tiếng ngày 7/4/1975: 'Thần tốc, thần tốc hơn nữa. Táo bạo, táo bạo hơn nữa. Tranh thủ từng giờ từng phút, xốc tới mặt trận, giải phóng miền Nam'.",
+                                "goi_y_cau_hoi": "Ý nghĩa bức mật điện 'Thần tốc, táo bạo' của Đại tướng Võ Nguyên Giáp?"
+                        },
+                        {
+                                "nhan_vat": "Đại tướng Văn Tiến Dũng",
+                                "ly_do": "Tư lệnh Bộ Tư lệnh Chiến dịch Hồ Chí Minh, trực tiếp chỉ huy các cánh quân tiến vào Sài Gòn.",
+                                "goi_y_cau_hoi": "Diễn biến các cánh quân tiến vào giải phóng Sài Gòn trưa ngày 30/4/1975?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Ý nghĩa lịch sử của ngày giải phóng hoàn toàn miền Nam 30-4-1975",
+                        "Chiến dịch Tây Nguyên và Chiến dịch Huế - Đà Nẵng mùa Xuân 1975"
+                ]
+        },
+        "cach_mang_thang_tam": {
+                "ten": "Cách mạng Tháng Tám năm 1945",
+                "ten_khac": [
+                        "cách mạng tháng tám",
+                        "cách mạng tháng 8",
+                        "cach mang thang tam",
+                        "khoi nghia thang tam",
+                        "quoc khanh 2-9",
+                        "tuyen ngon doc lap",
+                        "ngay 2 thang 9 nam 1945",
+                        "cach mang thang tam 1945"
+                ],
+                "chuc_vu": "Cuộc cách mạng giải phóng dân tộc vĩ đại, khai sinh nước Việt Nam Dân chủ Cộng hòa",
+                "vai_tro_noi_bat": "Dưới sự lãnh đạo sáng suốt của Đảng Cộng sản Đông Dương và Chủ tịch Hồ Chí Minh, hơn 20 triệu đồng bào Việt Nam từ Bắc chí Nam đã đồng loạt vùng lên tổng khởi nghĩa giành chính quyền mùa thu năm 1945, xóa bỏ ách thống trị hơn 80 năm của thực dân Pháp và gần 1000 năm của chế độ phong kiến. Ngày 2/9/1945 tại Quảng trường Ba Đình lịch sử, Chủ tịch Hồ Chí Minh đọc bản 'Tuyên ngôn Độc lập', khai sinh nước Việt Nam Dân chủ Cộng hòa (nay là CHXHCN Việt Nam).",
+                "thoi_ky": "1945 — Ghi chép chi tiết tại TẬP 9 của Bộ Thông sử Việt Nam",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 9: Giai đoạn 1930 - 1945",
+                "quan_he_mat_thiet": [
+                        {
+                                "nhan_vat": "Chủ tịch Hồ Chí Minh",
+                                "ly_do": "Lãnh tụ tối cao chỉ đạo Hội nghị toàn quốc của Đảng tại Tân Trào và soạn thảo Tuyên ngôn Độc lập.",
+                                "goi_y_cau_hoi": "Nội dung và ý nghĩa lịch sử của bản Tuyên ngôn Độc lập ngày 2-9-1945?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Hội nghị Tân Trào và Quốc dân Đại hội tháng 8-1945",
+                        "Ngày Quốc khánh 2-9-1945 tại Quảng trường Ba Đình"
+                ]
+        },
+        "tran_bach_dang": {
+                "ten": "Các Chiến thắng Bạch Đằng lịch sử (Năm 938, 981, 1288)",
+                "ten_khac": [
+                        "trận bạch đằng",
+                        "bạch đằng 938",
+                        "bạch đằng 1288",
+                        "bach dang",
+                        "song bach dang",
+                        "chien thang bach dang",
+                        "ngo quyen danh nam han"
+                ],
+                "chuc_vu": "Dòng sông lịch sử ba lần chôn vùi đạo quân xâm lược phương Bắc",
+                "vai_tro_noi_bat": "Năm 938, Ngô Quyền dùng kế cắm cọc gỗ nhọn bịt sắt trên sông Bạch Đằng, lợi dụng thủy triều tiêu diệt hoàn toàn quân Nam Hán, chấm dứt hơn một nghìn năm Bắc thuộc, mở ra thời kỳ độc lập tự chủ lâu dài cho dân tộc Việt Nam. Năm 1288, Hưng Đạo Vương Trần Quốc Tuấn tái hiện kế sách cọc gỗ Bạch Đằng lịch sử, bắt sống tướng giặc Ô Mã Nhi, tiêu diệt toàn bộ thủy quân Mông - Nguyên, kết thúc thắng lợi vẻ vang cuộc kháng chiến chống quân xâm lược Nguyên - Mông lần thứ ba.",
+                "thoi_ky": "Năm 938 và 1288 — Trình bày tại TẬP 1 và TẬP 2 của Bộ Thông sử Việt Nam",
+                "thuoc_tap_15": false,
+                "tap_sach": "Tập 1 & Tập 2: Thời kỳ Ngô Quyền và Nhà Trần",
+                "quan_he_mat_thiet": [
+                        {
+                                "nhan_vat": "Ngô Quyền",
+                                "ly_do": "Vị vua anh hùng có công đầu khởi xướng trận cọc gỗ Bạch Đằng năm 938, xưng vương dựng nước.",
+                                "goi_y_cau_hoi": "Kế sách cắm cọc gỗ trên sông Bạch Đằng của Ngô Quyền năm 938?"
+                        },
+                        {
+                                "nhan_vat": "Trần Hưng Đạo",
+                                "ly_do": "Vị Tổng tư lệnh quân đội nhà Trần lãnh đạo trận đại thắng Bạch Đằng năm 1288.",
+                                "goi_y_cau_hoi": "Trận thủy chiến Bạch Đằng năm 1288 của quân dân nhà Trần?"
+                        }
+                ],
+                "chu_de_goi_y": [
+                        "Chiến thắng Bạch Đằng năm 938 của Ngô Quyền",
+                        "Chiến thắng Bạch Đằng năm 1288 của nhà Trần"
+                ]
+        }
+};
+
+
+        // ============================================================
+        // 1.1 TIMELINE MILESTONES (1986 - 2000)
+        // ============================================================
+        const TIMELINE_DATA = [
+            {
+                year: "1986",
+                title: "Đại hội VI — Khởi xướng công cuộc Đổi mới toàn diện",
+                desc: "Tháng 12/1986, Đại hội VI của Đảng với tinh thần 'Nhìn thẳng vào sự thật, đánh giá đúng sự thật, nói rõ sự thật' dưới sự lãnh đạo của Tổng Bí thư Trường Chinh và Tổng Bí thư kế nhiệm Nguyễn Văn Linh đã mở ra bước ngoặt lịch sử Đổi mới đất nước.",
+                question: "Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?"
+            },
+            {
+                year: "1988",
+                title: "Nghị quyết Khoán 10 — Cởi trói cho nền nông nghiệp Việt Nam",
+                desc: "Bộ Chính trị ban hành Nghị quyết số 10-NQ/TW (Khoán 10), giao quyền sử dụng đất lâu dài và sản phẩm cho hộ nông dân, đưa Việt Nam từ nước thiếu đói thành nước xuất khẩu gạo hàng đầu thế giới.",
+                question: "Chính sách khoán 10 năm 1988 đã tác động ra sao đến nông nghiệp?"
+            },
+            {
+                year: "1991",
+                title: "Đại hội VII — Cương lĩnh xây dựng đất nước thời kỳ quá độ",
+                desc: "Thông qua Cương lĩnh 1991, Chiến lược ổn định và phát triển kinh tế - xã hội đến năm 2000. Khẳng định phát triển nền kinh tế hàng hóa nhiều thành phần định hướng XHCN.",
+                question: "Cương lĩnh 1991 được thông qua tại Đại hội VII có ý nghĩa gì?"
+            },
+            {
+                year: "1992",
+                title: "Quốc hội thông qua Hiến pháp năm 1992",
+                desc: "Hiến pháp thời kỳ Đổi mới chính thức thể chế hóa đường lối kinh tế nhiều thành phần, mở cửa hội nhập quốc tế và xây dựng Nhà nước pháp quyền XHCN.",
+                question: "Hiến pháp năm 1992 có những điểm mới đột phá nào?"
+            },
+            {
+                year: "1994",
+                title: "Đóng điện Đường dây tải điện 500kV Bắc - Nam mạch 1",
+                desc: "Dưới sự chỉ đạo quyết liệt của Thủ tướng Võ Văn Kiệt, công trình thế kỷ Đường dây 500kV Bắc - Nam dài 1.487 km hoàn thành xuất sắc sau 2 năm xây dựng, giải quyết cơn khát điện cho miền Trung và miền Nam.",
+                question: "Ý nghĩa của công trình Đường dây 500kV Bắc - Nam năm 1994?"
+            },
+            {
+                year: "1995",
+                title: "Gia nhập ASEAN & Bình thường hóa quan hệ ngoại giao Việt - Mỹ",
+                desc: "Năm bản lề ngoại giao: Ngày 11/7/1995 bình thường hóa quan hệ ngoại giao với Hoa Kỳ; Ngày 28/7/1995 Việt Nam chính thức trở thành thành viên thứ 7 của Hiệp hội các quốc gia Đông Nam Á (ASEAN).",
+                question: "Việt Nam gia nhập ASEAN năm 1995 có ý nghĩa gì?"
+            },
+            {
+                year: "1997",
+                title: "Đại hội VIII & Bản lĩnh vượt qua Khủng hoảng tài chính châu Á",
+                desc: "Chủ tịch nước Trần Đức Lương và Thủ tướng Phan Văn Khải nhậm chức. Việt Nam chủ động điều hành chính sách tiền tệ, giữ vững tăng trưởng kinh tế giữa cơn bão khủng hoảng tài chính tiền tệ châu Á.",
+                question: "Việt Nam đã vượt qua cuộc khủng hoảng tài chính châu Á năm 1997 như thế nào?"
+            },
+            {
+                year: "1998",
+                title: "Gia nhập Diễn đàn Hợp tác Kinh tế châu Á - Thái Bình Dương (APEC)",
+                desc: "Tháng 11/1998, Việt Nam chính thức được kết nạp vào APEC, mở rộng không gian hội nhập kinh tế khu vực sâu rộng.",
+                question: "Việt Nam gia nhập diễn đàn APEC năm 1998 có tầm quan trọng ra sao?"
+            },
+            {
+                year: "1999",
+                title: "Ban hành Luật Doanh nghiệp 1999 & Hiệp ước Biên giới Việt - Trung",
+                desc: "Quốc hội ban hành Luật Doanh nghiệp năm 1999 tạo bước đột phá cởi trói quyền tự do kinh doanh cho khu vực tư nhân; Ký kết Hiệp ước Biên giới trên đất liền giữa Việt Nam và Trung Quốc.",
+                question: "Luật Doanh nghiệp năm 1999 đã tạo bước đột phá như thế nào?"
+            },
+            {
+                year: "2000",
+                title: "Hiệp định BTA Việt - Mỹ & Khai trương Thị trường Chứng khoán",
+                desc: "Ngày 13/7/2000 ký Hiệp định Thương mại song phương Việt - Mỹ (BTA); Ngày 20/7/2000 khai trương Trung tâm Giao dịch Chứng khoán TP.HCM; Tháng 11/2000 đón Tổng thống Bill Clinton sang thăm Việt Nam.",
+                question: "Hiệp định Thương mại Việt - Mỹ năm 2000 được ký kết như thế nào?"
             }
+        ];
+
+        // ============================================================
+        // 1.2 SAMPLE QUESTIONS THEO CHU DE
+        // ============================================================
+        const SAMPLE_QUESTIONS = {
+            "all": [
+                { q: "Trương Trinh làm gì vào giai đoạn đó?", sub: "Thực thể gõ sai & gợi ý liên quan Phạm Văn Đồng", cat: "nhan_vat" },
+                { q: "Từ năm 1986 đến năm 2000 là bao nhiêu năm?", sub: "Công cụ tính khoảng cách thời gian tự động", cat: "calc" },
+                { q: "Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?", sub: "Trích dẫn chính thống từ sách Tập 15 [Trang X]", cat: "doi_moi" },
+                { q: "Trận đánh Điện Biên Phủ năm 1954 diễn ra như thế nào?", sub: "Chiến dịch lịch sử lừng lẫy năm châu", cat: "chien_dich" },
+                { q: "Chiến dịch Hồ Chí Minh ngày 30/4/1975 giải phóng miền Nam", sub: "Đại thắng mùa Xuân non sông thu về một mối", cat: "chien_dich" },
+                { q: "Sơn Tùng M-TP là ai?", sub: "Tra cứu mở rộng bách khoa tự do", cat: "bach_khoa" }
+            ],
+            "doi_moi": [
+                { q: "Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?", sub: "Khởi xướng đường lối Đổi mới toàn diện", cat: "doi_moi" },
+                { q: "Chính sách khoán 10 năm 1988 đã tác động ra sao đến nông nghiệp?", sub: "Cởi trói cho sản xuất nông nghiệp", cat: "doi_moi" },
+                { q: "Việt Nam gia nhập ASEAN năm 1995 có ý nghĩa gì?", sub: "Mốc son hội nhập khu vực Đông Nam Á", cat: "doi_moi" },
+                { q: "Ý nghĩa công trình Đường dây tải điện 500kV Bắc - Nam năm 1994?", sub: "Tổng công trình sư Võ Văn Kiệt", cat: "doi_moi" },
+                { q: "Hiệp định Thương mại Việt - Mỹ năm 2000 được ký kết như thế nào?", sub: "Hiệp định BTA mở rộng thị trường", cat: "doi_moi" }
+            ],
+            "nhan_vat": [
+                { q: "Trương Trinh làm gì vào giai đoạn đó?", sub: "Trường Chinh (Tổng Bí thư của Đổi mới)", cat: "nhan_vat" },
+                { q: "Vai trò của đồng chí Phạm Văn Đồng trong giai đoạn 1986-2000", sub: "32 năm Thủ tướng & Cố vấn BCH Trung ương", cat: "nhan_vat" },
+                { q: "Nguyễn Văn Linh và những việc cần làm ngay", sub: "Hiện thực hóa đường lối Đổi mới Đại hội VI", cat: "nhan_vat" },
+                { q: "Đóng góp của Thủ tướng Võ Văn Kiệt trong công cuộc Đổi mới", sub: "Đường dây 500kV, khai phá Đồng Tháp Mười", cat: "nhan_vat" },
+                { q: "Thủ tướng Phan Văn Khải và Luật Doanh nghiệp 1999", sub: "Kiến tạo khung khổ thị trường tự do kinh doanh", cat: "nhan_vat" }
+            ],
+            "chien_dich": [
+                { q: "Trận đánh Điện Biên Phủ năm 1954 diễn ra như thế nào?", sub: "Chiến thắng 'lừng lẫy năm châu, chấn động địa cầu'", cat: "chien_dich" },
+                { q: "Chiến dịch Hồ Chí Minh 30/4/1975 giải phóng miền Nam", sub: "Đại thắng mùa Xuân 1975 thống nhất non sông", cat: "chien_dich" },
+                { q: "Ý nghĩa cuộc Tổng khởi nghĩa Cách mạng Tháng Tám năm 1945", sub: "Khai sinh nước Việt Nam Dân chủ Cộng hòa", cat: "chien_dich" },
+                { q: "Chiến thắng Bạch Đằng năm 938 của Ngô Quyền", sub: "Cắm cọc gỗ nhọn chấm dứt 1000 năm Bắc thuộc", cat: "chien_dich" },
+                { q: "Quang Trung Nguyễn Huệ đại phá 29 vạn quân Mãn Thanh mùa xuân 1789", sub: "Thần tốc hành quân đại phá Ngọc Hồi - Đống Đa", cat: "chien_dich" }
+            ],
+            "bach_khoa": [
+                { q: "Sơn Tùng M-TP là ai?", sub: "Ca sĩ kiêm nhạc sĩ nổi tiếng Việt Nam", cat: "bach_khoa" },
+                { q: "Vịnh Hạ Long nằm ở tỉnh nào và có đặc điểm gì?", sub: "Di sản thiên nhiên thế giới UNESCO", cat: "bach_khoa" },
+                { q: "Trí tuệ nhân tạo (AI) là gì và ứng dụng hiện nay?", sub: "Kiến thức công nghệ & đời sống", cat: "bach_khoa" },
+                { q: "Hồ Hoàn Kiếm và sự tích rùa vàng trả gươm", sub: "Di tích lịch sử văn hóa Hà Nội", cat: "bach_khoa" }
+            ]
         };
+
+        function hienThiCauHoiMau(catKey = "all") {
+            const container = document.getElementById("questionsContainer");
+            if (!container) return;
+            const list = SAMPLE_QUESTIONS[catKey] || SAMPLE_QUESTIONS["all"];
+            container.innerHTML = list.map(item => `
+                <button class="quick-btn" onclick="datCauHoi('${item.q.replace(/'/g, "\\'")}')">
+                    <strong>${item.q}</strong><br>
+                    <small style="color: #94a3b8;">${item.sub}</small>
+                </button>
+            `).join("");
+        }
+
+        function locChuDe(catKey, el) {
+            document.querySelectorAll(".cat-tab").forEach(tab => tab.classList.remove("active"));
+            if (el) el.classList.add("active");
+            hienThiCauHoiMau(catKey);
+        }
+
+        // Free Open Wikipedia API for zero-key universal question answering
+        async function traCuuBachKhoaClient(cauHoi) {
+            try {
+                let cleanQ = cauHoi.replace(/[?!.,;:]+/g, ' ');
+                cleanQ = cleanQ.replace(/\b(là ai|la ai|là gì|la gi|ai là|ai la|ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|cho tôi hỏi|cho hỏi|hỏi về|bạn có biết)\b/gi, ' ');
+                cleanQ = cleanQ.trim().replace(/\s+/g, ' ');
+                if (!cleanQ) cleanQ = cauHoi.trim();
+
+                const searchUrl = `https://vi.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(cleanQ)}&limit=1&format=json&origin=*`;
+                const resp = await fetch(searchUrl);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data && data.length >= 2 && data[1] && data[1].length > 0) {
+                        const title = data[1][0];
+                        const sumUrl = `https://vi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
+                        const sumResp = await fetch(sumUrl);
+                        if (sumResp.ok) {
+                            const sumData = await sumResp.json();
+                            if (sumData.extract) {
+                                return {
+                                    title: sumData.title || title,
+                                    extract: sumData.extract,
+                                    url: (sumData.content_urls && sumData.content_urls.desktop) ? sumData.content_urls.desktop.page : `https://vi.wikipedia.org/wiki/${encodeURIComponent(title)}`
+                                };
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("[Bach Khoa Client] Khong the ket noi Wikipedia:", err);
+            }
+            return null;
+        }
 
         // ============================================================
         // 2. CAC HAM XU LY TIENG VIET & BM25 SEARCH
@@ -1081,8 +1823,8 @@
             return scored.slice(0, topK);
         }
 
-        function traLoiClient(query, chunks) {
-            // 1. Calculator
+        async function traLoiClient(query, chunks) {
+            // 1. Module tinh toan thoi gian
             const calcAns = tinhToanNam(query);
             if (calcAns) {
                 return {
@@ -1097,20 +1839,25 @@
                 };
             }
 
-            // 2. Entity lookup
+            // 2. Module Knowledge Graph (Nhan vat, chien dich)
             const ent = timThucTheClient(query);
             if (ent) {
-                let answer = `### 🏛️ Nhân vật lịch sử: **${ent.ten}**\n\n`;
-                answer += `- **Chức vụ & Cương vị:** ${ent.chuc_vu}\n`;
+                const isVol15 = ent.thuoc_tap_15;
+                const isCampaign = !isVol15 && (ent.ten.includes("Chiến dịch") || ent.ten.includes("Cách mạng") || ent.ten.includes("Chiến thắng"));
+                
+                let iconHeader = isCampaign ? "⚔️" : "🏛️";
+                let titleLabel = isCampaign ? "Chiến dịch / Sự kiện lịch sử" : "Nhân vật lịch sử";
+                let answer = `### ${iconHeader} ${titleLabel}: **${ent.ten}**\n\n`;
+                answer += `- **Cương vị / Quy mô:** ${ent.chuc_vu}\n`;
                 answer += `- **Thời kỳ lịch sử:** ${ent.thoi_ky}\n`;
-                answer += `- **Công lao & Vai trò nổi bật:** ${ent.vai_tro_noi_bat}\n\n`;
+                answer += `- **Ý nghĩa & Vai trò nổi bật:** ${ent.vai_tro_noi_bat}\n\n`;
 
                 let sources = [];
                 let suggestions = [];
 
-                if (!ent.thuoc_tap_15) {
+                if (!isVol15) {
                     answer += `#### 📚 Phân bố dữ liệu trong Bộ Thông sử Việt Nam:\n`;
-                    answer += `Nhân vật lịch sử **${ent.ten}** thuộc thời kỳ được biên soạn chi tiết tại **${ent.tap_sach || 'Bộ Thông sử Việt Nam'}**. Bộ dữ liệu chuyên sâu hiện tại của hệ thống đang phục vụ cho **Tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)**.\n\n`;
+                    answer += `Đối tượng lịch sử **${ent.ten}** thuộc thời kỳ được biên soạn toàn diện tại **${ent.tap_sach || 'Bộ Thông sử Việt Nam'}**. Dữ liệu tài liệu số hóa trực tiếp của hệ thống đang phục vụ chuyên sâu cho **Tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)**.\n\n`;
                     if (ent.quan_he_mat_thiet && ent.quan_he_mat_thiet.length > 0) {
                         answer += `#### 🔗 Các nhân vật cùng thời kỳ & Mối liên hệ lịch sử tiêu biểu:\n`;
                         ent.quan_he_mat_thiet.forEach(qh => {
@@ -1118,6 +1865,12 @@
                             suggestions.push(qh.goi_y_cau_hoi || `Thông tin về ${qh.nhan_vat}`);
                         });
                     }
+                    return {
+                        answer: answer.trim(),
+                        sources: [],
+                        route: "su_toan_thu",
+                        suggestions: suggestions.slice(0, 5)
+                    };
                 } else {
                     const retrieved = bm25SearchClient(query, chunks, 3);
                     const matching = retrieved.filter(c => (c.text || c.tom_tat || "").includes(ent.ten));
@@ -1145,25 +1898,25 @@
                         trang: c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`,
                         tom_tat: (c.text || c.tom_tat).slice(0, 200) + "..."
                     }));
-                }
 
-                if (suggestions.length === 0) {
-                    suggestions = [
-                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
-                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
-                        "Chính sách khoán 10 trong nông nghiệp năm 1988"
-                    ];
-                }
+                    if (suggestions.length === 0) {
+                        suggestions = [
+                            "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                            "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                            "Chính sách khoán 10 trong nông nghiệp năm 1988"
+                        ];
+                    }
 
-                return {
-                    answer: answer.trim(),
-                    sources,
-                    route: "rag_offline",
-                    suggestions: suggestions.slice(0, 5)
-                };
+                    return {
+                        answer: answer.trim(),
+                        sources,
+                        route: "thuc_the",
+                        suggestions: suggestions.slice(0, 5)
+                    };
+                }
             }
 
-            // 3. General BM25 search
+            // 3. BM25 Search tren Tap 15
             const STOPWORDS_SET = new Set([
                 "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",
                 "co", "duoc", "trong", "mot", "cho", "ve", "khi", "da", "se", "dang",
@@ -1172,10 +1925,9 @@
                 "hay", "biet", "thong", "tin", "hoi", "sao", "bao", "nhieu", "may"
             ]);
             const contentWords = tokenize(query).filter(w => !STOPWORDS_SET.has(w));
-
             const retrieved = bm25SearchClient(query, chunks, 5);
 
-            // Kiem tra do tuong thich noi dung thuc te (Tranh ao tuong RAG tra loi linh tinh)
+            // Kiem tra do tuong thich noi dung (Tranh ao tuong RAG tra loi cheo)
             let hopLe = false;
             if (retrieved && retrieved.length > 0 && contentWords.length > 0) {
                 const top1 = retrieved[0];
@@ -1190,10 +1942,28 @@
                 hopLe = true;
             }
 
-            if (!hopLe || !retrieved || retrieved.length === 0) {
+            // Neu khop voi Tap 15 -> Tra ve cau tra loi kem so trang chinh xac
+            if (hopLe && retrieved && retrieved.length > 0) {
+                const top1 = retrieved[0];
+                const p1 = top1.trang_dau === top1.trang_cuoi ? `Trang ${top1.trang_dau}` : `Trang ${top1.trang_dau}-${top1.trang_cuoi}`;
+                let answer = `Dựa trên tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)* [${p1}]:\n\n`;
+                answer += `${(top1.text || top1.tom_tat).slice(0, 600)}...\n\n`;
+
+                if (retrieved.length > 1) {
+                    const top2 = retrieved[1];
+                    const p2 = top2.trang_dau === top2.trang_cuoi ? `Trang ${top2.trang_dau}` : `Trang ${top2.trang_dau}-${top2.trang_cuoi}`;
+                    answer += `**Thông tin bổ trợ [${p2}]:**\n\n${(top2.text || top2.tom_tat).slice(0, 400)}...\n\n`;
+                }
+
+                const sources = retrieved.map(c => ({
+                    tieu_de: c.tieu_de,
+                    trang: c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`,
+                    tom_tat: (c.text || c.tom_tat).slice(0, 200) + "..."
+                }));
+
                 return {
-                    answer: `### ⚠️ Không tìm thấy trong dữ liệu Lịch sử Việt Nam (1986 - 2000)\n\nNội dung câu hỏi của bạn về **"${query.trim()}"** không có dữ liệu đối chiếu trong bộ sách *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)* cũng như danh mục các nhân vật lịch sử tiêu biểu.\n\n- **Về nhân vật / sự kiện:** Đối tượng này không phải là nhân vật hay sự kiện lịch sử thuộc giai đoạn Đổi mới (1986 - 2000) và không được ghi nhận trong bộ sách thông sử này.\n- **Phạm vi của hệ thống:** Hệ thống chỉ cung cấp và xác thực các thông tin chính thống về **Lịch sử Việt Nam giai đoạn Đổi mới (1986 - 2000)**.\n\n💡 *Bạn có thể tra cứu các chủ đề lịch sử đúng chuyên môn:*\n- 🏛️ **Nhân vật thời Đổi mới:** *Trường Chinh, Phạm Văn Đồng, Nguyễn Văn Linh, Võ Văn Kiệt, Đỗ Mười...*\n- ⚔️ **Anh hùng dân tộc các thời kỳ:** *Quang Trung (Nguyễn Huệ), Trần Hưng Đạo, Lê Lợi, Hồ Chí Minh, Võ Nguyên Giáp...*\n- 📜 **Sự kiện & Chính sách:** *Đại hội VI năm 1986, Gia nhập ASEAN năm 1995, Chính sách Khoán 10 (1988), Hiệp định Thương mại Việt - Mỹ năm 2000...*`,
-                    sources: [],
+                    answer: answer.trim(),
+                    sources,
                     route: "rag_offline",
                     suggestions: [
                         "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
@@ -1204,32 +1974,38 @@
                 };
             }
 
-            const top1 = retrieved[0];
-            const p1 = top1.trang_dau === top1.trang_cuoi ? `Trang ${top1.trang_dau}` : `Trang ${top1.trang_dau}-${top1.trang_cuoi}`;
-            let answer = `Dựa trên tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)* [${p1}]:\n\n`;
-            answer += `${(top1.text || top1.tom_tat).slice(0, 600)}...\n\n`;
+            // 4. Neu khong thuoc Tap 15 -> Tra cuu Bach Khoa Mo Rong (Wikipedia)
+            const bkData = await traCuuBachKhoaClient(query);
+            if (bkData && bkData.extract) {
+                let answer = `### 🌐 Tri thức Mở rộng: **${bkData.title}**\n\n`;
+                answer += `${bkData.extract}\n\n`;
+                answer += `> ℹ️ **Lưu ý chuyên môn:** Đây là câu hỏi mở rộng ngoài tài liệu lưu trữ *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)*. Hệ thống đã kết nối dữ liệu bách khoa toàn thư mở để giải đáp đầy đủ cho bạn.`;
 
-            if (retrieved.length > 1) {
-                const top2 = retrieved[1];
-                const p2 = top2.trang_dau === top2.trang_cuoi ? `Trang ${top2.trang_dau}` : `Trang ${top2.trang_dau}-${top2.trang_cuoi}`;
-                answer += `**Thông tin bổ trợ [${p2}]:**\n\n${(top2.text || top2.tom_tat).slice(0, 400)}...\n\n`;
+                return {
+                    answer: answer.trim(),
+                    sources: [{
+                        tieu_de: `Bách khoa tri thức (${bkData.title})`,
+                        trang: "Tri thức mở rộng",
+                        tom_tat: bkData.extract.slice(0, 200) + "..."
+                    }],
+                    route: "bach_khoa",
+                    suggestions: [
+                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                        "Trương Trinh làm gì vào giai đoạn đó?"
+                    ]
+                };
             }
 
-            const sources = retrieved.map(c => ({
-                tieu_de: c.tieu_de,
-                trang: c.trang_dau === c.trang_cuoi ? `Trang ${c.trang_dau}` : `Trang ${c.trang_dau}-${c.trang_cuoi}`,
-                tom_tat: (c.text || c.tom_tat).slice(0, 200) + "..."
-            }));
-
+            // 5. Truong hop khong tim thay bat ky dau vet nao
             return {
-                answer: answer.trim(),
-                sources,
+                answer: `### ℹ️ Không tìm thấy kết quả khớp chính xác\n\nCâu hỏi của bạn về **"${query.trim()}"** không có dữ liệu đối chiếu trong bộ tài liệu *Lịch sử Việt Nam tập 15 (1986 - 2000)* cũng như bách khoa toàn thư mở.\n\n💡 **Gợi ý tra cứu:**\n- Bạn có thể hỏi về các mốc sự kiện Đổi mới: *Đại hội VI 1986, Khoán 10 năm 1988, ASEAN 1995, Đường dây 500kV...*\n- Hỏi về nhân vật: *Trường Chinh, Phạm Văn Đồng, Võ Văn Kiệt, Nguyễn Văn Linh, Đỗ Mười, Phan Văn Khải...*\n- Khám phá mốc lịch sử thông qua nút **[📅 Dòng thời gian (1986-2000)]** ở thanh công cụ phía trên.`,
+                sources: [],
                 route: "rag_offline",
                 suggestions: [
-                    "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                    "Đại hội VI năm 1986 đã đề ra những nội dung đổi mới nào?",
                     "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
-                    "Chính sách khoán 10 trong nông nghiệp năm 1988",
-                    "Hiệp định Thương mại Việt - Mỹ năm 2000"
+                    "Chính sách khoán 10 trong nông nghiệp năm 1988"
                 ]
             };
         }
@@ -1238,6 +2014,8 @@
         // 3. KHOI TAO & DONG BO DU LIEU
         // ============================================================
         async function khoiTaoDuLieu() {
+            hienThiCauHoiMau('all');
+            renderTimeline();
             // Kiem tra server cuc bo
             try {
                 const ctrl = new AbortController();
@@ -1313,8 +2091,29 @@
             let innerHtml = "";
             if (loai === "bot") {
                 const route = data.route || "rag_offline";
-                const isCalc = route === "calc";
-                innerHtml += `<div class="tag-pill ${isCalc ? 'calc' : ''}"><i class="fa-solid ${isCalc ? 'fa-calculator' : 'fa-database'}"></i> ${isCalc ? 'CALC' : 'RAG OFFLINE'}</div>`;
+                let badgeClass = "rag_offline";
+                let badgeIcon = "fa-book-bookmark";
+                let badgeText = "📖 TẬP 15 CHÍNH THỐNG (TRÍCH DẪN SỐ TRANG)";
+
+                if (route === "calc") {
+                    badgeClass = "calc";
+                    badgeIcon = "fa-calculator";
+                    badgeText = "🔢 TÍNH TOÁN LỊCH SỬ";
+                } else if (route === "thuc_the") {
+                    badgeClass = "thuc_the";
+                    badgeIcon = "fa-landmark";
+                    badgeText = "🏛️ NHÂN VẬT THỜI ĐỔI MỚI (TẬP 15)";
+                } else if (route === "su_toan_thu") {
+                    badgeClass = "su_toan_thu";
+                    badgeIcon = "fa-shield-halved";
+                    badgeText = "⚔️ LỊCH SỬ TOÀN THƯ (NGOÀI TẬP 15)";
+                } else if (route === "bach_khoa") {
+                    badgeClass = "bach_khoa";
+                    badgeIcon = "fa-globe";
+                    badgeText = "🌐 TRI THỨC MỞ RỘNG (NGOÀI TẬP 15)";
+                }
+
+                innerHtml += `<div class="tag-pill ${badgeClass}"><i class="fa-solid ${badgeIcon}"></i> ${badgeText}</div>`;
             }
 
             innerHtml += `<div class="msg-text">${formatMarkdown(content)}</div>`;
@@ -1434,7 +2233,7 @@
                         if (r.ok) allChunksCache = await r.json();
                     } catch (_) {}
                 }
-                data = traLoiClient(q, allChunksCache);
+                data = await traLoiClient(q, allChunksCache);
             }
 
             anLoading();
@@ -1501,6 +2300,34 @@
             `;
             chatArea.appendChild(wc);
             hienToast("Đã làm mới cuộc hội thoại!");
+        }
+
+
+        function moModalTimeline() {
+            document.getElementById("modalTimeline").style.display = "flex";
+        }
+
+        function moModalGuide() {
+            document.getElementById("modalGuide").style.display = "flex";
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById("timelineContainer");
+            if (!container) return;
+            container.innerHTML = `
+                <div class="timeline-container">
+                    ${TIMELINE_DATA.map(item => `
+                        <div class="timeline-card">
+                            <span class="timeline-year">MỐC NĂM ${item.year}</span>
+                            <div class="timeline-title">${item.title}</div>
+                            <div class="timeline-desc">${item.desc}</div>
+                            <button class="btn-msg-action" onclick="datCauHoi('${item.question.replace(/'/g, "\\'")}'); dongModal('modalTimeline')">
+                                <i class="fa-solid fa-magnifying-glass"></i> Khám phá sự kiện này
+                            </button>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
         }
 
         // Modal Chunks

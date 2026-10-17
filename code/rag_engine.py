@@ -176,6 +176,39 @@ class OfflineRAGEngine:
                     "Hiệp định Thương mại Việt - Mỹ năm 2000"
                 ]
             }
+    def tra_cuu_bach_khoa(self, cau_hoi: str) -> dict | None:
+        """Tra cuu Wikipedia de tra loi cac cau hoi ngoai pham vi du lieu Tap 15."""
+        import urllib.request
+        import urllib.parse
+        
+        clean_q = re.sub(r'[?!.,;:]+', ' ', cau_hoi)
+        clean_q = re.sub(r'\b(là ai|la ai|là gì|la gi|ai là|ai la|ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|cho tôi hỏi|cho hỏi|hỏi về|bạn có biết)\b', ' ', clean_q, flags=re.I)
+        clean_q = ' '.join(clean_q.split()).strip()
+        if not clean_q:
+            clean_q = cau_hoi.strip()
+            
+        try:
+            # 1. Tim kiem tieu de bai viet bang opensearch
+            search_url = f"https://vi.wikipedia.org/w/api.php?action=opensearch&search={urllib.parse.quote(clean_q)}&limit=1&format=json"
+            req = urllib.request.Request(search_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
+            with urllib.request.urlopen(req, timeout=3.5) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                if data and len(data) >= 2 and data[1]:
+                    title = data[1][0]
+                    # 2. Lay tom tat tu REST API
+                    summary_url = f"https://vi.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(title.replace(' ', '_'))}"
+                    req_sum = urllib.request.Request(summary_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
+                    with urllib.request.urlopen(req_sum, timeout=3.5) as resp_sum:
+                        sum_data = json.loads(resp_sum.read().decode('utf-8'))
+                        extract = sum_data.get("extract")
+                        if extract:
+                            return {
+                                "title": sum_data.get("title", title),
+                                "extract": extract,
+                                "url": sum_data.get("content_urls", {}).get("desktop", {}).get("page", "")
+                            }
+        except Exception:
+            pass
         return None
 
     def tim_kiem_hybrid(self, cau_hoi: str, top_k: int = 5) -> list[dict]:
@@ -352,18 +385,36 @@ class OfflineRAGEngine:
                     p_str2 = f"Trang {c2['trang_dau']}"
                     phan_tra_loi += f"**Thông tin bổ trợ [{p_str2}]:**\n\n{c2['text'][:400]}...\n\n"
             else:
-                sources = []
-                phan_tra_loi += (
-                    f"### ⚠️ Không tìm thấy trong dữ liệu Lịch sử Việt Nam (1986 - 2000)\n\n"
-                    f"Nội dung câu hỏi của bạn về **\"{cau_hoi.strip()}\"** không có dữ liệu đối chiếu trong bộ sách "
-                    f"*Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)* cũng như danh mục các nhân vật lịch sử tiêu biểu.\n\n"
-                    f"- **Về nhân vật / sự kiện:** Đối tượng này không phải là nhân vật hay sự kiện lịch sử thuộc giai đoạn Đổi mới (1986 - 2000) và không được ghi nhận trong bộ sách thông sử này.\n"
-                    f"- **Phạm vi của hệ thống:** Hệ thống chỉ cung cấp và xác thực các thông tin chính thống về **Lịch sử Việt Nam giai đoạn Đổi mới (1986 - 2000)**.\n\n"
-                    f"💡 *Bạn có thể tra cứu các chủ đề lịch sử đúng chuyên môn:*\n"
-                    f"- 🏛️ **Nhân vật thời Đổi mới:** *Trường Chinh, Phạm Văn Đồng, Nguyễn Văn Linh, Võ Văn Kiệt, Đỗ Mười...*\n"
-                    f"- ⚔️ **Anh hùng dân tộc các thời kỳ:** *Quang Trung (Nguyễn Huệ), Trần Hưng Đạo, Lê Lợi, Hồ Chí Minh, Võ Nguyên Giáp...*\n"
-                    f"- 📜 **Sự kiện & Chính sách:** *Đại hội VI năm 1986, Gia nhập ASEAN năm 1995, Chính sách Khoán 10 (1988), Hiệp định Thương mại Việt - Mỹ năm 2000...*"
-                )
+                # Thu tra cuu tri thuc mo rong (Wikipedia) de tra loi moi cau hoi
+                bk_data = self.tra_cuu_bach_khoa(cau_hoi)
+                if bk_data:
+                    route_type = "bach_khoa"
+                    phan_tra_loi += (
+                        f"### 🌐 Tri thức Mở rộng: **{bk_data['title']}**\n\n"
+                        f"{bk_data['extract']}\n\n"
+                        f"> ℹ️ **Lưu ý chuyên môn:** Đây là câu hỏi mở rộng ngoài tài liệu lưu trữ "
+                        f"*Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)*. "
+                        f"Đối với các câu hỏi về thời kỳ Đổi mới 1986-2000, hệ thống sẽ trích xuất số trang đối chiếu từ sách gốc."
+                    )
+                    sources = [{
+                        "tieu_de": f"Bách khoa tri thức ({bk_data['title']})",
+                        "diem": 1.0,
+                        "tom_tat": bk_data['extract'][:180] + "...",
+                        "trang": "Tri thức mở rộng"
+                    }]
+                else:
+                    sources = []
+                    phan_tra_loi += (
+                        f"### ⚠️ Không tìm thấy trong dữ liệu Lịch sử Việt Nam (1986 - 2000)\n\n"
+                        f"Nội dung câu hỏi của bạn về **\"{cau_hoi.strip()}\"** không có dữ liệu đối chiếu trong bộ sách "
+                        f"*Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)* cũng như danh mục các nhân vật lịch sử tiêu biểu.\n\n"
+                        f"- **Về nhân vật / sự kiện:** Đối tượng này không phải là nhân vật hay sự kiện lịch sử thuộc giai đoạn Đổi mới (1986 - 2000) và không được ghi nhận trong bộ sách thông sử này.\n"
+                        f"- **Phạm vi của hệ thống:** Hệ thống chỉ cung cấp và xác thực các thông tin chính thống về **Lịch sử Việt Nam giai đoạn Đổi mới (1986 - 2000)**.\n\n"
+                        f"💡 *Bạn có thể tra cứu các chủ đề lịch sử đúng chuyên môn:*\n"
+                        f"- 🏛️ **Nhân vật thời Đổi mới:** *Trường Chinh, Phạm Văn Đồng, Nguyễn Văn Linh, Võ Văn Kiệt, Đỗ Mười...*\n"
+                        f"- ⚔️ **Anh hùng dân tộc các thời kỳ:** *Quang Trung (Nguyễn Huệ), Trần Hưng Đạo, Lê Lợi, Hồ Chí Minh, Võ Nguyên Giáp...*\n"
+                        f"- 📜 **Sự kiện & Chính sách:** *Đại hội VI năm 1986, Gia nhập ASEAN năm 1995, Chính sách Khoán 10 (1988), Hiệp định Thương mại Việt - Mỹ năm 2000...*"
+                    )
                 
         # Bo sung cac chips goi y
         if not goi_y_chips:
