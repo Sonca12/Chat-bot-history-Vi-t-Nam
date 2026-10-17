@@ -85,4 +85,7 @@ Tất cả các ảnh biểu đồ độ phân giải cao đã được tạo s�
 | 11 | Bách khoa / Đời sống | *thủ đô của nước Pháp là gì* | Fast-path KB | Thủ đô Paris (Kinh đô Ánh sáng) | ✅ ĐẠT |
 | 12 | Bách khoa / Đời sống | *Sơn Tùng M-TP là ai* | Fast-path KB + Strict Entity Filter | Ca sĩ, nhạc sĩ người Thái Bình, các hit Lạc Trôi, Em Của Ngày Hôm Qua... | ✅ ĐẠT |
 | 13 | Bách khoa / Đời sống | *hang Sơn Đoòng nằm ở đâu* | Fast-path KB | Vườn quốc gia Phong Nha – Kẻ Bàng, tỉnh Quảng Bình | ✅ ĐẠT |
+| 14 | Địa lý Việt Nam | *hà nam ở đâu ?* | KB Địa lý Việt Nam + Multi-token Sublist Matching | Tỉnh Hà Nam (Việt Nam), Đồng bằng sông Hồng, tỉnh lỵ Phủ Lý, chùa Tam Chúc | ✅ ĐẠT |
+| 15 | Bách khoa / Đời sống | *danh hài chí tài là ai* | Fast-path KB + Strict Filter | Danh hài Chí Tài (Phạm Văn Tài, 1958–2020), danh hài nổi tiếng | ✅ ĐẠT |
+| 16 | Tính toán mốc lịch sử | *khoảng cách từ năm 1986 đến năm 2000 là bao nhiêu năm* | Engine Tính toán Lịch sử | 14 năm (Đại hội VI 1986 đến BTA 2000 và kết thúc kế hoạch 1996-2000) | ✅ ĐẠT |
 

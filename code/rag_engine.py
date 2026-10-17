@@ -185,199 +185,293 @@ class OfflineRAGEngine:
         
         KB_NGUOI_NOI_TIENG = [
             {
-                "keywords": [["thanh", "tam"], ["ca", "si", "thanh", "tam"], ["danh", "ca", "thanh", "tam"]],
+                "keywords": [["thanh tam"], ["ca si thanh tam"], ["danh ca thanh tam"]],
                 "title": "Ca sĩ Thanh Tâm",
                 "extract": "**Thanh Tâm** là nghệ danh của một số ca sĩ người Việt Nam:\n- **Thanh Tâm** – ca sĩ nhạc vàng, bolero nổi tiếng thập niên 1960–1970 tại miền Nam Việt Nam, từng được mệnh danh là 'giọng ca vàng', cùng thời với các nghệ sĩ Chế Linh, Hương Lan, Giao Linh.\n- **Thanh Tâm** (sinh khoảng 1988) – ca sĩ nhạc pop thế hệ mới, tham gia nhiều chương trình âm nhạc trong nước.\n\n*Nếu bạn muốn tìm ca sĩ Thanh Tâm cụ thể nào (nhạc vàng hay nhạc trẻ), hãy cho thêm thông tin về thời kỳ hoạt động hoặc dòng nhạc.*"
             },
             {
-                "keywords": [["son", "tung", "mtp"], ["son", "tung", "m-tp"]],
+                "keywords": [["son tung mtp"], ["son tung m-tp"], ["son tung"]],
                 "title": "Sơn Tùng M-TP",
                 "extract": "**Sơn Tùng M-TP** (tên thật: Nguyễn Thanh Tùng, sinh ngày 5 tháng 7 năm 1994 tại Thái Bình) là ca sĩ, nhạc sĩ người Việt Nam. Anh là nghệ sĩ trẻ thành công nhất Việt Nam với các hit: *Chắc Ai Đó Sẽ Về*, *Em Của Ngày Hôm Qua*, *Lạc Trôi*, *Hãy Trao Cho Anh*, *Muộn Rồi Mà Sao Còn*, *There's No One At All*. MTP = 'Mãi Theo Phong'."
             },
             {
-                "keywords": [["dam", "vinh", "hung"], ["mr", "dam"]],
+                "keywords": [["dam vinh hung"], ["mr dam"]],
                 "title": "Ca sĩ Đàm Vĩnh Hưng (Mr. Đàm)",
                 "extract": "**Đàm Vĩnh Hưng** (tên thật: Huỳnh Minh Hưng, sinh 2/3/1971 tại TP.HCM) là ca sĩ nhạc vàng, nhạc nhẹ nổi tiếng, biệt danh **Mr. Đàm**. Ông là một trong những ca sĩ có thù lao cao nhất Việt Nam và tổ chức nhiều liveshow lớn."
             },
             {
-                "keywords": [["ho", "ngoc", "ha"]],
+                "keywords": [["ho ngoc ha"]],
                 "title": "Ca sĩ Hồ Ngọc Hà",
                 "extract": "**Hồ Ngọc Hà** (sinh 6/6/1984 tại Hà Nội) là ca sĩ, diễn viên nổi tiếng Việt Nam. Các hit: *Xin Anh Đừng*, *Họa Mi Tóc Nâu*, *Chạm Đáy Nỗi Đau*, *Tìm Lại Bầu Trời*."
             },
             {
-                "keywords": [["bich", "phuong"], ["ca", "si", "bich", "phuong"]],
+                "keywords": [["bich phuong"], ["ca si bich phuong"]],
                 "title": "Ca sĩ Bích Phương",
                 "extract": "**Bích Phương** (tên thật: Trần Thị Bích Phương, sinh 26/9/1989 tại Hải Phòng) là ca sĩ pop Việt Nam. Các hit: *Thì Thầm*, *Bùa Yêu*, *Nói Thật Nhé*, *Chơi Vơi*."
             },
             {
-                "keywords": [["toc", "tien"]],
+                "keywords": [["toc tien"]],
                 "title": "Ca sĩ Tóc Tiên",
                 "extract": "**Tóc Tiên** (tên thật: Trương Anh Đào, sinh 17/2/1989 tại TP.HCM) là ca sĩ, người mẫu Việt Nam nổi tiếng với phong cách R&B/Pop. Các hit: *Ngày Hôm Nay*, *Nếu Như*, *Only You*."
             },
             {
-                "keywords": [["dong", "nhi"], ["ca", "si", "dong", "nhi"]],
+                "keywords": [["dong nhi"], ["ca si dong nhi"]],
                 "title": "Ca sĩ Đông Nhi",
                 "extract": "**Đông Nhi** (sinh 16/11/1989 tại TP.HCM) là ca sĩ nổi tiếng Việt Nam. Các hit: *Không Phải Dạng Vừa Đâu*, *VietNam Ơi!*."
             },
             {
-                "keywords": [["my", "tam"], ["ca", "si", "my", "tam"]],
+                "keywords": [["my tam"], ["ca si my tam"]],
                 "title": "Ca sĩ Mỹ Tâm",
                 "extract": "**Mỹ Tâm** (tên thật: Nguyễn Thị Mỹ Tâm, sinh 16/1/1981 tại Đà Nẵng) là ca sĩ pop nổi tiếng bậc nhất Việt Nam, mệnh danh 'Nữ hoàng nhạc pop'. Các hit: *Đừng Hỏi Em*, *Mưa Hồng*, *Ước Gì*, *Because I Love You*."
             },
             {
-                "keywords": [["noo", "phuoc", "thinh"]],
+                "keywords": [["noo phuoc thinh"]],
                 "title": "Ca sĩ Noo Phước Thịnh",
                 "extract": "**Noo Phước Thịnh** (sinh 15/9/1988 tại TP.HCM) là ca sĩ pop Việt Nam. Các hit: *Tâm Sự Tuổi 30*, *Nụ Hôn Mãi Mãi*, *Cause I Love You*."
             },
             {
-                "keywords": [["xuan", "hinh"], ["nghe", "si", "xuan", "hinh"]],
+                "keywords": [["xuan hinh"], ["nghe si xuan hinh"]],
                 "title": "Nghệ sĩ hài Xuân Hinh",
                 "extract": "**Xuân Hinh** (sinh 1/5/1963 tại Bắc Giang) là nghệ sĩ hài, diễn viên, ca sĩ nổi tiếng Việt Nam với phong cách hài dân gian, hài chèo. Thường biểu diễn cùng ca sĩ Thanh Thanh Hiền."
             },
             {
-                "keywords": [["chi", "pu"], ["ca", "si", "chi", "pu"]],
+                "keywords": [["chi pu"], ["ca si chi pu"]],
                 "title": "Chi Pu",
                 "extract": "**Chi Pu** (tên thật: Nguyễn Thùy Chi, sinh 23/9/1993 tại Hà Nội) là diễn viên, người mẫu, ca sĩ người Việt Nam. Ca khúc nổi tiếng: *Từ Hôm Nay*, *Anh Ơi Ở Lại*, *Đóa Hoa Hồng*."
             },
             {
-                "keywords": [["nha", "phuong"], ["dien", "vien", "nha", "phuong"]],
+                "keywords": [["nha phuong"], ["dien vien nha phuong"]],
                 "title": "Diễn viên Nhã Phương",
                 "extract": "**Nhã Phương** (tên thật: Trương Thị Nhã Phương, sinh 1991 tại Quảng Nam) là diễn viên nổi tiếng Việt Nam, được yêu thích qua các bộ phim *Tuổi Thanh Xuân*, *Chàng Trai Năm Ấy*. Cô là vợ của danh hài Trường Giang."
             },
             {
-                "keywords": [["truong", "giang"], ["danh", "hai", "truong", "giang"]],
+                "keywords": [["truong giang"], ["danh hai truong giang"]],
                 "title": "Danh hài Trường Giang",
                 "extract": "**Trường Giang** (sinh 1/12/1983 tại Quảng Nam) là danh hài, diễn viên hài nổi tiếng nhất Việt Nam. Được biết đến qua nhiều liveshow hài và phim hài. Anh là chồng của diễn viên Nhã Phương."
             },
             {
-                "keywords": [["chi", "tai"], ["danh", "hai", "chi", "tai"]],
+                "keywords": [["chi tai"], ["danh hai chi tai"]],
                 "title": "Danh hài Chí Tài",
                 "extract": "**Chí Tài** (tên thật: Phạm Văn Tài, 1958–2020) là diễn viên hài, ca sĩ, nhạc sĩ người Mỹ gốc Việt nổi tiếng trong cộng đồng người Việt hai bên bờ đại dương. Ông từ trần ngày 9 tháng 12 năm 2020 tại TP.HCM."
             },
         ]
 
-        TRI_THUC_NHANH = KB_NGUOI_NOI_TIENG + [
+        KB_DIA_LY_VIET_NAM = [
             {
-                "keywords": [["cau", "dai", "nhat"], ["cay", "cau", "dai", "nhat"]],
+                "keywords": [["ha nam"], ["tinh ha nam"]],
+                "title": "Tỉnh Hà Nam (Việt Nam)",
+                "extract": "**Hà Nam** là một tỉnh thuộc vùng Đồng bằng sông Hồng, miền Bắc Việt Nam, có diện tích khoảng 862 km². Tỉnh lỵ là thành phố **Phủ Lý**, cách trung tâm Thủ đô Hà Nội khoảng 60 km về phía nam.\n- **Vị trí tiếp giáp:**\n  + Phía bắc giáp Thủ đô Hà Nội\n  + Phía đông giáp tỉnh Hưng Yên và tỉnh Thái Bình\n  + Phía nam giáp tỉnh Nam Định và tỉnh Ninh Bình\n  + Phía tây giáp tỉnh Hòa Bình\n- **Địa danh & Di tích nổi tiếng:** Quần thể văn hóa tâm linh Tam Chúc (ngôi chùa lớn nhất thế giới), Chùa Bà Đanh, Đền Trần Thương, Làng Vũ Đại (quê hương nhà văn Nam Cao), Làng nghề trống Đọi Tam."
+            },
+            {
+                "keywords": [["nam dinh"], ["tinh nam dinh"]],
+                "title": "Tỉnh Nam Định (Việt Nam)",
+                "extract": "**Nam Định** là một tỉnh nằm ở phía nam vùng Đồng bằng sông Hồng. Tỉnh lỵ là thành phố Nam Định, cách Hà Nội khoảng 90 km về phía đông nam.\n- **Vị trí tiếp giáp:** Giáp Thái Bình, Hà Nam, Ninh Bình và giáp Biển Đông.\n- **Đặc trưng văn hóa:** Cái nôi phát tích của Vương triều nhà Trần (Di tích lịch sử Đền Trần - Chùa Tháp), Chợ Viềng Xuân, Nhà thờ Đổ Hải Hậu, Làng hoa Vị Khê, Phở bò Nam Định trứ danh."
+            },
+            {
+                "keywords": [["ninh binh"], ["tinh ninh binh"]],
+                "title": "Tỉnh Ninh Bình (Việt Nam)",
+                "extract": "**Ninh Bình** là một tỉnh nằm ở cực nam vùng Đồng bằng sông Hồng, cửa ngõ chuyển tiếp giữa miền Bắc và miền Trung Việt Nam, cách Hà Nội khoảng 93 km về phía nam.\n- **Đặc trưng nổi bật:** Cố đô Hoa Lư (Kinh đô đầu tiên của nhà nước Đại Cồ Việt thế kỷ X), Quần thể danh thắng Tràng An (Di sản Văn hóa và Thiên nhiên Thế giới UNESCO), Chùa Bái Đính, Tam Cốc – Bích Động, Vườn quốc gia Cúc Phương, Nhà thờ đá Phát Diệm."
+            },
+            {
+                "keywords": [["thai binh"], ["tinh thai binh"]],
+                "title": "Tỉnh Thái Bình (Việt Nam)",
+                "extract": "**Thái Bình** là một tỉnh ven biển thuộc vùng Đồng bằng sông Hồng, cách Hà Nội khoảng 110 km về phía đông nam. Được mệnh danh là 'Quê hương năm tấn' với những cánh đồng lúa phì nhiêu.\n- **Vị trí tiếp giáp:** Giáp Hải Dương, Hưng Yên, Hải Phòng, Hà Nam, Nam Định và Biển Đông.\n- **Đặc trưng:** Chùa Keo (ngôi chùa cổ bằng gỗ độc đáo bậc nhất Việt Nam), Khu di tích Đền thờ các vua Trần tại Hưng Hà, Bãi biển Đồng Châu, Cồn Vành."
+            },
+            {
+                "keywords": [["quang ninh"], ["tinh quang ninh"]],
+                "title": "Tỉnh Quảng Ninh (Việt Nam)",
+                "extract": "**Quảng Ninh** là một tỉnh ven biển thuộc vùng Đông Bắc Bộ Việt Nam, được ví như 'Việt Nam thu nhỏ' với cả biển đảo, đồng bằng và miền núi.\n- **Đặc trưng nổi tiếng:** Vịnh Hạ Long (Kỳ quan thiên nhiên thế giới UNESCO), Vịnh Bái Tử Long, Quần thể danh thắng Yên Tử (cái nôi của Thiền phái Trúc Lâm Yên Tử do vua Trần Nhân Tông sáng lập), Đảo Cô Tô, Đảo Quan Lạn, Thành phố cửa khẩu Móng Cái."
+            },
+            {
+                "keywords": [["hai phong"], ["thanh pho hai phong"], ["tp hai phong"]],
+                "title": "Thành phố Hải Phòng (Việt Nam)",
+                "extract": "**Hải Phòng** là thành phố cảng lớn nhất miền Bắc, đô thị loại I trực thuộc Trung ương, được mệnh danh là 'Thành phố Hoa phượng đỏ'.\n- **Vị trí:** Cách Hà Nội khoảng 100 km về phía đông.\n- **Điểm đến nổi tiếng:** Quần đảo Cát Bà (Khu dự trữ sinh quyển thế giới & Di sản thiên nhiên thế giới UNESCO), Bãi biển Đồ Sơn, Cầu vượt biển Đình Vũ – Cát Hải (5.442 m), Di tích Bạch Đằng Giang."
+            },
+            {
+                "keywords": [["da nang"], ["thanh pho da nang"], ["tp da nang"]],
+                "title": "Thành phố Đà Nẵng (Việt Nam)",
+                "extract": "**Đà Nẵng** là thành phố cảng, trung tâm kinh tế, văn hóa, du lịch lớn nhất miền Trung Việt Nam, đô thị loại I trực thuộc Trung ương.\n- **Vị trí:** Nằm ở vùng Duyên hải Nam Trung Bộ, cách Hà Nội 766 km về phía bắc và TP.HCM 961 km về phía nam.\n- **Điểm đến nổi tiếng:** Bán đảo Sơn Trà, Bà Nà Hills (Cầu Vàng), Danh thắng Ngũ Hành Sơn, Cầu Rồng phun lửa, Bãi biển Mỹ Khê (một trong những bãi biển đẹp nhất hành tinh)."
+            },
+            {
+                "keywords": [["can tho"], ["thanh pho can tho"], ["tp can tho"]],
+                "title": "Thành phố Cần Thơ (Việt Nam)",
+                "extract": "**Cần Thơ** là thành phố trực thuộc Trung ương lớn nhất vùng Đồng bằng sông Cửu Long (Tây Nam Bộ), mệnh danh là 'Thủ phủ miền Tây' hay 'Tây Đô'.\n- **Vị trí:** Nằm ở trung tâm vùng hạ lưu sông Mê Kông, cách TP.HCM khoảng 169 km.\n- **Điểm đến nổi tiếng:** Bến Ninh Kiều, Chợ nổi Cái Răng, Chợ nổi Phong Điền, Cầu Cần Thơ (cầu dây văng dài nhất miền Tây vượt sông Hậu), Nhà cổ Bình Thủy, Vườn cò Bằng Lăng."
+            },
+            {
+                "keywords": [["ca mau"], ["tinh ca mau"], ["dat mui ca mau"]],
+                "title": "Tỉnh Cà Mau (Đất Mũi Cà Mau)",
+                "extract": "**Cà Mau** là tỉnh cực Nam của Việt Nam, thuộc vùng Đồng bằng sông Cửu Long, có 3 mặt tiếp giáp biển.\n- **Điểm đến nổi tiếng:** Mũi Cà Mau (Cột mốc tọa độ quốc gia GPS 0001, điểm cực Nam trên đất liền), Vườn quốc gia Mũi Cà Mau (Khu dự trữ sinh quyển thế giới UNESCO), Rừng quốc gia U Minh Hạ, ẩm thực Cua Cà Mau trứ danh."
+            },
+            {
+                "keywords": [["da lat"], ["thanh pho da lat"]],
+                "title": "Thành phố Đà Lạt (Tỉnh Lâm Đồng)",
+                "extract": "**Đà Lạt** là thành phố tỉnh lỵ của tỉnh Lâm Đồng, nằm trên cao nguyên Lâm Viên thuộc vùng Tây Nguyên Việt Nam, ở độ cao khoảng 1.500 m so với mực nước biển.\n- **Đặc trưng:** Khí hậu mát mẻ ôn hòa quanh năm, mệnh danh là 'Thành phố ngàn hoa', 'Thành phố sương mù'. Điểm đến: Hồ Xuân Hương, Thung lũng Tình Yêu, Núi Langbiang, Dinh Bảo Đại, Ga Đà Lạt."
+            },
+            {
+                "keywords": [["ha giang"], ["tinh ha giang"]],
+                "title": "Tỉnh Hà Giang (Cực Bắc Tổ quốc)",
+                "extract": "**Hà Giang** là tỉnh địa đầu cực Bắc của Việt Nam, nơi có Cột cờ Lũng Cú đánh dấu điểm cực Bắc Tổ quốc.\n- **Đặc trưng:** Cao nguyên đá Đồng Văn (Công viên Địa chất Toàn cầu UNESCO), Đèo Mã Pí Lèng (tứ đại đỉnh đèo), Hẻm vực Tu Sản trên dòng sông Nho Quế xanh ngắt, Dinh thự họ Vương (Nhà Vua Mèo), mùa hoa Tam giác mạch."
+            },
+            {
+                "keywords": [["quang binh"], ["tinh quang binh"]],
+                "title": "Tỉnh Quảng Bình (Vương quốc Hang động)",
+                "extract": "**Quảng Bình** là tỉnh thuộc vùng Bắc Trung Bộ Việt Nam, được mệnh danh là 'Vương quốc hang động'.\n- **Đặc trưng:** Vườn quốc gia Phong Nha – Kẻ Bàng (Di sản Thiên nhiên Thế giới UNESCO), Hang Sơn Đoòng (hang tự nhiên lớn nhất thế giới), Động Thiên Đường, Động Phong Nha, Bãi biển Nhật Lệ, Vũng Chùa – Đảo Yến (nơi an nghỉ của Đại tướng Võ Nguyên Giáp)."
+            },
+            {
+                "keywords": [["quang nam"], ["hoi an"]],
+                "title": "Tỉnh Quảng Nam & Đô thị cổ Hội An",
+                "extract": "**Quảng Nam** là tỉnh thuộc vùng Nam Trung Bộ Việt Nam, sở hữu 2 Di sản Văn hóa Thế giới UNESCO:\n- **Đô thị cổ Hội An:** Thương cảng cổ truyền thống Đông Nam Á được bảo tồn nguyên vẹn từ thế kỷ XVI-XVIII.\n- **Thánh địa Mỹ Sơn:** Quần thể kiến trúc đền tháp Chăm Pa cổ kính.\nNgoài ra còn có Quần đảo Cù Lao Chàm (Khu dự trữ sinh quyển thế giới)."
+            },
+            {
+                "keywords": [["thua thien hue"], ["co do hue"], ["tinh hue"], ["thanh pho hue"], ["o hue"]],
+                "title": "Tỉnh Thừa Thiên Huế (Cố đô Huế)",
+                "extract": "**Thừa Thiên Huế** là tỉnh ven biển miền Trung Việt Nam, từng là kinh đô của triều đại phong kiến nhà Nguyễn (1802–1945).\n- **Di sản nổi tiếng:** Quần thể di tích Cố đô Huế (Đại Nội, lăng tẩm các vua Nguyễn: Tự Đức, Khải Định, Minh Mạng...), Nhã nhạc cung đình Huế, Chùa Thiên Mụ, Sông Hương và Cầu Tràng Tiền thơ mộng."
+            },
+            {
+                "keywords": [["vung tau"], ["ba ria"]],
+                "title": "Tỉnh Bà Rịa – Vũng Tàu",
+                "extract": "**Bà Rịa – Vũng Tàu** là tỉnh ven biển thuộc vùng Đông Nam Bộ Việt Nam, cách TP.HCM khoảng 100 km, trung tâm dầu khí và du lịch biển lớn của cả nước.\n- **Điểm đến nổi tiếng:** Thành phố biển Vũng Tàu (Bãi Trước, Bãi Sau), Tượng Chúa Kitô Vua trên núi Nhỏ, Ngọn Hải Đăng Vũng Tàu, Quần đảo Côn Đảo (Di tích lịch sử nhà tù Côn Đảo và Vườn quốc gia Côn Đảo)."
+            },
+            {
+                "keywords": [["nha trang"], ["khanh hoa"]],
+                "title": "Thành phố Nha Trang (Tỉnh Khánh Hòa)",
+                "extract": "**Nha Trang** là thành phố tỉnh lỵ của tỉnh Khánh Hòa, thuộc vùng Duyên hải Nam Trung Bộ, được mệnh danh là 'Hòn ngọc Biển Đông' với một trong những vịnh biển đẹp nhất thế giới.\n- **Điểm đến:** Bãi biển Nha Trang, Đảo Hòn Tre (VinWonders), Tháp Bà Ponagar (di tích Chăm Pa cổ), Chùa Long Sơn, Viện Hải dương học Nha Trang."
+            }
+        ]
+
+        TRI_THUC_NHANH = KB_NGUOI_NOI_TIENG + KB_DIA_LY_VIET_NAM + [
+            {
+                "keywords": [["cau dai nhat"], ["cay cau dai nhat"]],
                 "title": "Cầu dài nhất Việt Nam",
                 "extract": "Tại Việt Nam:\n- **Cầu vượt biển dài nhất:** **Cầu Đình Vũ – Cát Hải** (Hải Phòng) với tổng chiều dài **5.442 m (5,44 km)**, khánh thành năm 2017, là một trong những cây cầu vượt biển dài nhất Đông Nam Á.\n- **Cầu vượt sông dài nhất:** **Cầu Vĩnh Thịnh** nối Hà Nội với Vĩnh Phúc bắc qua sông Hồng với chiều dài **4.480 m**.\n- **Cầu dây văng dài nhất:** **Cầu Cần Thơ** (bắc qua sông Hậu) với nhịp chính 550 m và tổng chiều dài toàn tuyến 15,85 km."
             },
             {
-                "keywords": [["ca", "loc"], ["con", "ca", "loc"], ["loai", "ca", "loc"]],
+                "keywords": [["ca loc"], ["con ca loc"], ["loai ca loc"]],
                 "title": "Cá lóc (Cá quả, Cá chuối, Cá sộp)",
                 "extract": "**Cá lóc** (miền Bắc gọi là *cá quả*, *cá chuối*, *cá sộp*; miền Trung gọi là *cá tràu*) là loài cá nước ngọt thuộc họ Cá quả (Channidae). Đây là loài cá săn mồi ăn cá nhỏ, tôm, ếch nhái, sống phổ biến ở ao, hồ, sông, đồng ruộng khắp Việt Nam. Thịt cá lóc thơm ngon, ngọt, ít xương dăm, giàu chất đạm và là nguyên liệu cho nhiều món ăn trứ danh như canh chua cá lóc, cá lóc kho tộ, cá lóc nướng trui và bánh canh cá lóc."
             },
             {
-                "keywords": [["nui", "cao", "nhat", "viet", "nam"], ["dinh", "nui", "cao", "nhat"]],
+                "keywords": [["nui cao nhat viet nam"], ["dinh nui cao nhat viet nam"], ["fansipan"], ["phan xi pang"]],
                 "title": "Đỉnh núi cao nhất Việt Nam (Fansipan)",
                 "extract": "Đỉnh núi cao nhất Việt Nam là **Fansipan (Phan Xi Păng)** với độ cao **3.143 m** so với mực nước biển, thuộc dãy núi Hoàng Liên Sơn (tỉnh Lào Cai và Lai Châu). Fansipan được mệnh danh là *'Nóc nhà Đông Dương'* (cao nhất trong ba nước Việt Nam, Lào, Campuchia)."
             },
             {
-                "keywords": [["song", "dai", "nhat", "viet", "nam"]],
+                "keywords": [["song dai nhat viet nam"]],
                 "title": "Sông dài nhất Việt Nam",
                 "extract": "- **Sông nội địa dài nhất:** **Sông Đồng Nai** với chiều dài khoảng **586 km**, bắt nguồn từ cao nguyên Lâm Viên và chảy hoàn toàn trong lãnh thổ Việt Nam.\n- **Sông chảy qua Việt Nam dài nhất:** **Sông Mê Kông (sông Cửu Long)** với tổng chiều dài 4.350 km, đoạn chảy qua Việt Nam dài hơn 220 km trước khi đổ ra Biển Đông qua 9 cửa sông."
             },
             {
-                "keywords": [["nui", "cao", "nhat", "the", "gioi"]],
+                "keywords": [["nui cao nhat the gioi"], ["dinh everest"], ["mount everest"]],
                 "title": "Đỉnh núi cao nhất thế giới (Everest)",
                 "extract": "Đỉnh núi cao nhất thế giới là **Mount Everest** với độ cao **8.848,86 m** so với mực nước biển, nằm trên dãy Himalaya giữa biên giới Nepal và Khu tự trị Tây Tạng (Trung Quốc)."
             },
             {
-                "keywords": [["song", "dai", "nhat", "the", "gioi"]],
+                "keywords": [["song dai nhat the gioi"], ["song nin"], ["song nile"], ["song amazon"]],
                 "title": "Sông dài nhất thế giới (Sông Nin & Sông Amazon)",
                 "extract": "Sông dài nhất thế giới theo ghi nhận truyền thống là **Sông Nin (Nile)** ở Châu Phi với chiều dài khoảng **6.650 km**. Một số nghiên cứu hiện đại cũng ghi nhận **Sông Amazon** (Nam Mỹ) có chiều dài tương đương khoảng 6.400 - 6.992 km tùy phương pháp đo điểm khởi nguồn."
             },
             {
-                "keywords": [["hang", "dong", "lon", "nhat"], ["hang", "son", "doong"]],
+                "keywords": [["hang dong lon nhat"], ["hang son doong"], ["son doong"]],
                 "title": "Hang động lớn nhất thế giới (Hang Sơn Đoòng)",
                 "extract": "Hang động tự nhiên lớn nhất thế giới là **Hang Sơn Đoòng**, nằm trong Vườn quốc gia Phong Nha – Kẻ Bàng (tỉnh Quảng Bình, Việt Nam). Hang có thể tích ước tính lên tới 38,5 triệu mét khối, đủ lớn để chứa cả một khu phố của New York với những tòa nhà chọc trời 40 tầng."
             },
             {
-                "keywords": [["dao", "lon", "nhat", "viet", "nam"]],
+                "keywords": [["dao lon nhat viet nam"], ["dao phu quoc"], ["phu quoc"]],
                 "title": "Đảo lớn nhất Việt Nam (Đảo Phú Quốc)",
                 "extract": "Hòn đảo lớn nhất của Việt Nam là **Đảo Phú Quốc** (tỉnh Kiên Giang) với diện tích khoảng **589 km²**, được mệnh danh là 'Đảo Ngọc' của Việt Nam."
             },
             {
-                "keywords": [["ho", "lon", "nhat", "viet", "nam"]],
+                "keywords": [["ho lon nhat viet nam"], ["ho ba be"], ["ho dau tieng"]],
                 "title": "Hồ lớn nhất Việt Nam",
                 "extract": "- **Hồ nước ngọt tự nhiên lớn nhất:** **Hồ Ba Bể** (tỉnh Bắc Kạn) với diện tích mặt nước khoảng 650 ha (6,5 km²).\n- **Hồ nhân tạo lớn nhất:** **Hồ Dầu Tiếng** (trên địa phận Tây Ninh, Bình Dương, Bình Phước) với diện tích mặt nước lên tới 270 km²."
             },
             {
-                "keywords": [["tinh", "lon", "nhat", "viet", "nam"]],
+                "keywords": [["tinh lon nhat viet nam"], ["tinh co dien tich lon nhat"]],
                 "title": "Tỉnh có diện tích lớn nhất Việt Nam (Nghệ An)",
                 "extract": "Tỉnh có diện tích lớn nhất Việt Nam là **Tỉnh Nghệ An** với tổng diện tích **16.490 km²**, thuộc vùng Bắc Trung Bộ."
             },
             {
-                "keywords": [["tinh", "nho", "nhat", "viet", "nam"]],
+                "keywords": [["tinh nho nhat viet nam"], ["tinh co dien tich nho nhat"]],
                 "title": "Tỉnh có diện tích nhỏ nhất Việt Nam (Bắc Ninh)",
                 "extract": "Tỉnh có diện tích nhỏ nhất Việt Nam là **Tỉnh Bắc Ninh** với diện tích chỉ khoảng **822,7 km²**, thuộc vùng Đồng bằng sông Hồng."
             },
             {
-                "keywords": [["thanh", "pho", "lon", "nhat", "viet", "nam"]],
+                "keywords": [["thanh pho lon nhat viet nam"]],
                 "title": "Thành phố lớn nhất Việt Nam",
                 "extract": "- **Lớn nhất về kinh tế và dân số:** **Thành phố Hồ Chí Minh** với hơn 9 triệu dân chính thức và đóng góp khoảng 20-22% GDP cả nước.\n- **Lớn nhất về diện tích:** **Thủ đô Hà Nội** (sau khi sáp nhập Hà Tây năm 2008) với diện tích 3.359 km²."
             },
             {
-                "keywords": [["thu", "do", "viet", "nam"], ["thu", "do", "cua", "viet", "nam"]],
+                "keywords": [["thu do", "viet nam"]],
                 "title": "Thủ đô của Việt Nam (Hà Nội)",
                 "extract": "Thủ đô của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam là thành phố **Hà Nội**. Hà Nội là trung tâm đầu não chính trị, hành chính quốc gia, đồng thời là trung tâm lớn về văn hóa, khoa học, giáo dục, kinh tế và giao lưu quốc tế."
             },
             {
-                "keywords": [["thu", "do", "phap"], ["thu", "do", "nuoc", "phap"]],
+                "keywords": [["thu do", "phap"]],
                 "title": "Thủ đô của nước Pháp (Paris)",
                 "extract": "Thủ đô của nước Cộng hòa Pháp là thành phố **Paris**, được mệnh danh là 'Kinh đô Ánh sáng', trung tâm văn hóa, nghệ thuật, thời trang và kinh tế hàng đầu thế giới."
             },
             {
-                "keywords": [["thu", "do", "my"], ["thu", "do", "hoa", "ky"], ["thu", "do", "nuoc", "my"]],
+                "keywords": [["thu do", "my"], ["thu do", "hoa ky"]],
                 "title": "Thủ đô của Hoa Kỳ (Washington, D.C.)",
                 "extract": "Thủ đô của Hợp chúng quốc Hoa Kỳ (Mỹ) là **Washington, D.C.** (Đặc khu Columbia), nơi đặt trụ sở của Nhà Trắng, Điện Capitol và các cơ quan đầu não chính phủ liên bang Mỹ."
             },
             {
-                "keywords": [["thu", "do", "nhat", "ban"]],
+                "keywords": [["thu do", "nhat ban"], ["thu do", "nhat"]],
                 "title": "Thủ đô của Nhật Bản (Tokyo)",
                 "extract": "Thủ đô của Nhật Bản là **Tokyo**, một trong những đại đô thị sầm uất, hiện đại và đông dân nhất thế giới."
             },
             {
-                "keywords": [["thu", "do", "han", "quoc"]],
+                "keywords": [["thu do", "han quoc"]],
                 "title": "Thủ đô của Hàn Quốc (Seoul)",
                 "extract": "Thủ đô của Đại Hàn Dân Quốc (Hàn Quốc) là thành phố **Seoul**, trung tâm chính trị, văn hóa, tài chính và công nghệ cao của Hàn Quốc."
             },
             {
-                "keywords": [["thu", "do", "trung", "quoc"]],
+                "keywords": [["thu do", "trung quoc"]],
                 "title": "Thủ đô của Trung Quốc (Bắc Kinh)",
                 "extract": "Thủ đô của nước Cộng hòa Nhân dân Trung Hoa là thành phố **Bắc Kinh (Beijing)**."
             },
             {
-                "keywords": [["thu", "do", "nga"], ["thu", "do", "nuoc", "nga"]],
+                "keywords": [["thu do", "nga"]],
                 "title": "Thủ đô của Liên bang Nga (Moskva)",
                 "extract": "Thủ đô của Liên bang Nga là thành phố **Moskva (Moscow)**."
             },
             {
-                "keywords": [["thu", "do", "anh"], ["thu", "do", "nuoc", "anh"]],
+                "keywords": [["thu do", "anh"]],
                 "title": "Thủ đô của Vương quốc Anh (Luân Đôn)",
                 "extract": "Thủ đô của Vương quốc Liên hiệp Anh và Bắc Ireland là thành phố **Luân Đôn (London)**."
             },
             {
-                "keywords": [["bac", "ho", "sinh", "nam", "nao"], ["ngay", "sinh", "bac", "ho"], ["ho", "chi", "minh", "sinh", "nam", "nao"]],
+                "keywords": [["bac ho", "sinh"], ["ngay sinh bac ho"], ["ho chi minh", "sinh"]],
                 "title": "Ngày sinh của Chủ tịch Hồ Chí Minh",
                 "extract": "Chủ tịch Hồ Chí Minh sinh ngày **19 tháng 5 năm 1890** tại làng Sen, xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An. Người qua đời ngày **2 tháng 9 năm 1969** tại Thủ đô Hà Nội, hưởng thọ 79 tuổi."
             },
             {
-                "keywords": [["ngay", "quoc", "khanh"], ["quoc", "khanh", "viet", "nam"]],
+                "keywords": [["ngay quoc khanh"], ["quoc khanh viet nam"]],
                 "title": "Ngày Quốc khánh Việt Nam (2 tháng 9)",
                 "extract": "Ngày Quốc khánh Việt Nam là ngày **2 tháng 9 năm 1945**. Vào ngày này, tại Quảng trường Ba Đình (Hà Nội), Chủ tịch Hồ Chí Minh đã đọc bản *Tuyên ngôn Độc lập*, khai sinh ra nước Việt Nam Dân chủ Cộng hòa (nay là nước Cộng hòa Xã hội Chủ nghĩa Việt Nam)."
             },
             {
-                "keywords": [["giai", "phong", "mien", "nam"], ["ngay", "thong", "nhat", "dat", "nuoc"], ["30", "thang", "4"]],
+                "keywords": [["giai phong mien nam"], ["ngay thong nhat dat nuoc"], ["30 thang 4"]],
                 "title": "Ngày Giải phóng miền Nam (30 tháng 4 năm 1975)",
                 "extract": "Ngày Giải phóng miền Nam, thống nhất đất nước là ngày **30 tháng 4 năm 1975**, khi Chiến dịch Hồ Chí Minh toàn thắng, lá cờ Mặt trận Dân tộc Giải phóng miền Nam Việt Nam tung bay trên nóc Dinh Độc Lập lúc 11 giờ 30 phút, kết thúc vẻ vang 21 năm kháng chiến chống Mỹ cứu nước."
             }
         ]
 
+        def co_cum_tu(cum_tu: str, van_ban_norm: str) -> bool:
+            p_words = cum_tu.strip().split()
+            t_words = van_ban_norm.strip().split()
+            lp = len(p_words)
+            if lp == 0 or len(t_words) < lp:
+                return False
+            for i in range(len(t_words) - lp + 1):
+                if t_words[i:i+lp] == p_words:
+                    return True
+            return False
+
         # 1. Kiem tra Fast-path Knowledge Base
         for item in TRI_THUC_NHANH:
             for kw_group in item["keywords"]:
-                if all(kw in q_norm for kw in kw_group):
+                if all(co_cum_tu(kw, q_norm) for kw in kw_group):
                     return {
                         "title": item["title"],
                         "extract": item["extract"],
@@ -386,26 +480,27 @@ class OfflineRAGEngine:
 
         # 2. Chuan hoa cau hoi chuyen sau
         clean_q = re.sub(r'[?!.,;:\'\"()]+', ' ', cau_hoi).strip()
-        clean_q = re.sub(r'^(cho tôi hỏi|cho em hỏi|cho mình hỏi|hỏi về|hãy cho biết|bạn có biết|bạn ơi|ai là|đâu là|thế nào là|tìm hiểu về|thông tin về|giải thích về)\s*', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'^(cho tôi hỏi|cho em hỏi|cho mình hỏi|hỏi về|hãy cho biết|bạn có biết|bạn ơi|thế nào là|tìm hiểu về|thông tin về|giải thích về)\s*', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'^(ai là|đâu là)\s+', '', clean_q, flags=re.I)
         clean_q = re.sub(r'\s+(vậy ta|vậy nhỉ|vậy nè|vậy|thế|hả|nhỉ|nè|nha|nhé|à|a|hở|với|nhá|ạ)\s*$', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'\b(là|la)\s+.*?(gì|gi|ai|nao|nào|đâu|dau|sao|mấy|may|bao nhiêu|bao nhieu)\s*$', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'\b(ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|ra sao)\s*$', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'\b(cái gì|cai gi|con gì|con gi|loài gì|loai gi|cây gì|cay gi|ai|gì|gi)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)(ở đâu|o dau|nằm ở đâu|nam o dau|thuộc tỉnh nào|ở tỉnh nào|ở miền nào|ở nước nào|thuộc nước nào)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)(như thế nào|nhu the nao|thế nào|the nao|ra sao)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)(là cái gì|cai gi|con gì|con gi|loài gì|loai gi|cây gì|cay gi|là gì|la gi|là ai|la ai|ai|gì|gi)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)(bao nhiêu|bao nhieu|mấy|may)\s*$', '', clean_q, flags=re.I)
         
-        clean_q = re.sub(r'\bdai\s+nhat\b', 'dài nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\bdai\s+nhất\b', 'dài nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\bcao\s+nhat\b', 'cao nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\blon\s+nhat\b', 'lớn nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\bsau\s+nhat\b', 'sâu nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\brong\s+nhat\b', 'rộng nhất', clean_q, flags=re.I)
-        clean_q = re.sub(r'\bnhieu\s+nhat\b', 'nhiều nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)dai\s+nhat(?:\s|$)', ' dài nhất ', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)cao\s+nhat(?:\s|$)', ' cao nhất ', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)lon\s+nhat(?:\s|$)', ' lớn nhất ', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)sau\s+nhat(?:\s|$)', ' sâu nhất ', clean_q, flags=re.I)
+        clean_q = re.sub(r'(?:\s|^)rong\s+nhat(?:\s|$)', ' rộng nhất ', clean_q, flags=re.I)
         clean_q = re.sub(r'^(cây|con|ngọn|loài|chiếc|bức|tòa)\s+', '', clean_q, flags=re.I)
         clean_q = ' '.join(clean_q.split()).strip()
         if not clean_q:
             clean_q = cau_hoi.strip()
 
-        STOP_WORDS = {'ca', 'si', 'nghe', 'dien', 'vien', 'loai', 'con', 'cay', 'bai', 'hat', 'phim', 'tho', 'danh', 'hai'}
-        q_terms = [w for w in xoa_dau(clean_q).split() if len(w) > 1]
+        clean_q_norm = xoa_dau(clean_q)
+        STOP_WORDS = {'ca', 'si', 'nghe', 'dien', 'vien', 'loai', 'con', 'cay', 'bai', 'hat', 'phim', 'tho', 'danh', 'hai', 'tinh', 'thanh', 'pho'}
+        q_terms = [w for w in clean_q_norm.split() if len(w) > 1]
         significant_terms = [w for w in q_terms if w not in STOP_WORDS]
 
         def _lay_summary(title, must_match=True):
@@ -417,9 +512,12 @@ class OfflineRAGEngine:
                     if data.get('extract') and data.get('type') != 'disambiguation':
                         t_norm = xoa_dau(data.get('title', title))
                         e_norm = xoa_dau(data.get('extract', ''))
-                        if must_match and significant_terms:
-                            if not all(w in t_norm or w in e_norm for w in significant_terms):
-                                return None
+                        if must_match and len(clean_q_norm) >= 3:
+                            has_phrase = (clean_q_norm in t_norm) or (clean_q_norm in e_norm)
+                            if not has_phrase and significant_terms:
+                                match_all = all(w in t_norm or w in e_norm for w in significant_terms)
+                                if not match_all:
+                                    return None
                         return {
                             'title': data.get('title', title),
                             'extract': data.get('extract'),
@@ -429,19 +527,29 @@ class OfflineRAGEngine:
                 pass
             return None
 
-        # Tier 1: Direct summary
+        # Tier 1: Direct summary (TitleCase and raw)
+        title_cased = '_'.join([w.capitalize() for w in clean_q.split()])
+        res = _lay_summary(title_cased, must_match=False)
+        if res:
+            return res
         res = _lay_summary(clean_q, must_match=False)
         if res:
             return res
 
-        # Tier 2: Opensearch prefix
+        # Tier 2: Opensearch prefix (with priority for Vietnamese administrative entities)
         try:
-            url_open = "https://vi.wikipedia.org/w/api.php?action=opensearch&search=" + urllib.parse.quote(clean_q) + "&limit=3&format=json"
+            url_open = "https://vi.wikipedia.org/w/api.php?action=opensearch&search=" + urllib.parse.quote(clean_q) + "&limit=6&format=json"
             req_open = urllib.request.Request(url_open, headers={'User-Agent': 'VietNamHistoryBot/3.0'})
             with urllib.request.urlopen(req_open, timeout=4) as resp_open:
                 d_open = json.loads(resp_open.read().decode('utf-8'))
                 if d_open and len(d_open) >= 2 and d_open[1]:
-                    for candidate in d_open[1]:
+                    sorted_cand = sorted(
+                        d_open[1],
+                        key=lambda x: (
+                            0 if any(k in xoa_dau(x) for k in ('(tinh viet nam)', '(viet nam)')) else 1
+                        )
+                    )
+                    for candidate in sorted_cand:
                         res = _lay_summary(candidate, must_match=True)
                         if res:
                             return res
@@ -461,10 +569,17 @@ class OfflineRAGEngine:
                     t_norm = xoa_dau(title)
                     if (t_norm == "viet nam" or t_norm == "lich su viet nam") and "dat nuoc viet nam" not in q_norm and len(q_terms) > 1:
                         continue
-                    if significant_terms and not any(w in t_norm for w in significant_terms):
+                    if (clean_q_norm not in t_norm) and significant_terms and not any(w in t_norm for w in significant_terms):
                         continue
-                    score = sum(3 for w in q_terms if w in t_norm)
-                    if t_norm.startswith(xoa_dau(clean_q)):
+                    score = 0
+                    if clean_q_norm in t_norm:
+                        score += 12
+                    if "(tinh viet nam)" in t_norm or "(viet nam)" in t_norm:
+                        score += 8
+                    for w in q_terms:
+                        if w in t_norm:
+                            score += 3
+                    if t_norm.startswith(clean_q_norm):
                         score += 5
                     scored.append((score, title))
                 scored.sort(key=lambda x: x[0], reverse=True)
