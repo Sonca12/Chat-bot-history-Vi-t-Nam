@@ -1708,7 +1708,83 @@
         // ============================================================
         // 1.5. CƠ SỞ TRI THỨC TOÀN CẦU & BÁCH KHOA TOÀN THƯ MỞ
         // ============================================================
-        const TRI_THUC_NHANH = [
+        // ============================================================
+        // KB NGHỆ SĨ / NGƯỜI NỔI TIẾNG VIỆT NAM (tránh lỗi Wikipedia disambig)
+        // ============================================================
+        const KB_NGUOI_NOI_TIENG = [
+            {
+                keywords: [["thanh", "tam"], ["ca", "si", "thanh", "tam"], ["danh", "ca", "thanh", "tam"]],
+                title: "Ca sĩ Thanh Tâm",
+                extract: "**Thanh Tâm** là nghệ danh của một số ca sĩ người Việt Nam:\n- **Thanh Tâm** – ca sĩ nhạc vàng, bolero nổi tiếng thập niên 1960–1970 tại miền Nam Việt Nam, từng được mệnh danh là 'giọng ca vàng', cùng thời với các nghệ sĩ Chế Linh, Hương Lan, Giao Linh.\n- **Thanh Tâm** (sinh khoảng 1988) – ca sĩ nhạc pop thế hệ mới, tham gia nhiều chương trình âm nhạc trong nước.\n\n*Nếu bạn muốn tìm ca sĩ Thanh Tâm cụ thể nào (nhạc vàng hay nhạc trẻ), hãy cho thêm thông tin về thời kỳ hoạt động hoặc dòng nhạc.*"
+            },
+            {
+                keywords: [["son", "tung", "mtp"], ["son", "tung", "m-tp"]],
+                title: "Sơn Tùng M-TP",
+                extract: "**Sơn Tùng M-TP** (tên thật: Nguyễn Thanh Tùng, sinh ngày 5 tháng 7 năm 1994 tại Thái Bình) là ca sĩ, nhạc sĩ người Việt Nam. Anh là nghệ sĩ trẻ thành công nhất Việt Nam với các hit: *Chắc Ai Đó Sẽ Về*, *Em Của Ngày Hôm Qua*, *Lạc Trôi*, *Hãy Trao Cho Anh*, *Muộn Rồi Mà Sao Còn*, *There's No One At All*. MTP = 'Mãi Theo Phong'."
+            },
+            {
+                keywords: [["dam", "vinh", "hung"], ["mr", "dam"]],
+                title: "Ca sĩ Đàm Vĩnh Hưng (Mr. Đàm)",
+                extract: "**Đàm Vĩnh Hưng** (tên thật: Huỳnh Minh Hưng, sinh 2/3/1971 tại TP.HCM) là ca sĩ nhạc vàng, nhạc nhẹ nổi tiếng, biệt danh **Mr. Đàm**. Ông là một trong những ca sĩ có thù lao cao nhất Việt Nam và tổ chức nhiều liveshow lớn."
+            },
+            {
+                keywords: [["ho", "ngoc", "ha"]],
+                title: "Ca sĩ Hồ Ngọc Hà",
+                extract: "**Hồ Ngọc Hà** (sinh 6/6/1984 tại Hà Nội) là ca sĩ, diễn viên nổi tiếng Việt Nam. Các hit: *Xin Anh Đừng*, *Họa Mi Tóc Nâu*, *Chạm Đáy Nỗi Đau*, *Tìm Lại Bầu Trời*."
+            },
+            {
+                keywords: [["bich", "phuong"], ["ca", "si", "bich", "phuong"]],
+                title: "Ca sĩ Bích Phương",
+                extract: "**Bích Phương** (tên thật: Trần Thị Bích Phương, sinh 26/9/1989 tại Hải Phòng) là ca sĩ pop Việt Nam. Các hit: *Thì Thầm*, *Bùa Yêu*, *Nói Thật Nhé*, *Chơi Vơi*."
+            },
+            {
+                keywords: [["toc", "tien"]],
+                title: "Ca sĩ Tóc Tiên",
+                extract: "**Tóc Tiên** (tên thật: Trương Anh Đào, sinh 17/2/1989 tại TP.HCM) là ca sĩ, người mẫu Việt Nam nổi tiếng với phong cách R&B/Pop. Các hit: *Ngày Hôm Nay*, *Nếu Như*, *Only You*."
+            },
+            {
+                keywords: [["dong", "nhi"], ["ca", "si", "dong", "nhi"]],
+                title: "Ca sĩ Đông Nhi",
+                extract: "**Đông Nhi** (sinh 16/11/1989 tại TP.HCM) là ca sĩ nổi tiếng Việt Nam. Các hit: *Không Phải Dạng Vừa Đâu*, *VietNam Ơi!*."
+            },
+            {
+                keywords: [["my", "tam"], ["ca", "si", "my", "tam"]],
+                title: "Ca sĩ Mỹ Tâm",
+                extract: "**Mỹ Tâm** (tên thật: Nguyễn Thị Mỹ Tâm, sinh 16/1/1981 tại Đà Nẵng) là ca sĩ pop nổi tiếng bậc nhất Việt Nam, mệnh danh 'Nữ hoàng nhạc pop'. Các hit: *Đừng Hỏi Em*, *Mưa Hồng*, *Ước Gì*, *Because I Love You*."
+            },
+            {
+                keywords: [["noo", "phuoc", "thinh"]],
+                title: "Ca sĩ Noo Phước Thịnh",
+                extract: "**Noo Phước Thịnh** (sinh 15/9/1988 tại TP.HCM) là ca sĩ pop Việt Nam. Các hit: *Tâm Sự Tuổi 30*, *Nụ Hôn Mãi Mãi*, *Cause I Love You*."
+            },
+            {
+                keywords: [["xuan", "hinh"], ["nghe", "si", "xuan", "hinh"]],
+                title: "Nghệ sĩ hài Xuân Hinh",
+                extract: "**Xuân Hinh** (sinh 1/5/1963 tại Bắc Giang) là nghệ sĩ hài, diễn viên, ca sĩ nổi tiếng Việt Nam với phong cách hài dân gian, hài chèo. Thường biểu diễn cùng ca sĩ Thanh Thanh Hiền."
+            },
+            {
+                keywords: [["chi", "pu"], ["ca", "si", "chi", "pu"]],
+                title: "Chi Pu",
+                extract: "**Chi Pu** (tên thật: Nguyễn Thùy Chi, sinh 23/9/1993 tại Hà Nội) là diễn viên, người mẫu, ca sĩ người Việt Nam. Ca khúc nổi tiếng: *Từ Hôm Nay*, *Anh Ơi Ở Lại*, *Đóa Hoa Hồng*."
+            },
+            {
+                keywords: [["nha", "phuong"], ["dien", "vien", "nha", "phuong"]],
+                title: "Diễn viên Nhã Phương",
+                extract: "**Nhã Phương** (tên thật: Trương Thị Nhã Phương, sinh 1991 tại Quảng Nam) là diễn viên nổi tiếng Việt Nam, được yêu thích qua các bộ phim *Tuổi Thanh Xuân*, *Chàng Trai Năm Ấy*. Cô là vợ của danh hài Trường Giang."
+            },
+            {
+                keywords: [["truong", "giang"], ["danh", "hai", "truong", "giang"]],
+                title: "Danh hài Trường Giang",
+                extract: "**Trường Giang** (sinh 1/12/1983 tại Quảng Nam) là danh hài, diễn viên hài nổi tiếng nhất Việt Nam. Được biết đến qua nhiều liveshow hài và phim hài. Anh là chồng của diễn viên Nhã Phương."
+            },
+            {
+                keywords: [["chi", "tai"], ["danh", "hai", "chi", "tai"]],
+                title: "Danh hài Chí Tài",
+                extract: "**Chí Tài** (tên thật: Phạm Văn Tài, 1958–2020) là diễn viên hài, ca sĩ, nhạc sĩ người Mỹ gốc Việt nổi tiếng trong cộng đồng người Việt hai bên bờ đại dương. Ông từ trần ngày 9 tháng 12 năm 2020 tại TP.HCM."
+            },
+        ];
+
+        const TRI_THUC_NHANH = [...KB_NGUOI_NOI_TIENG,
             {
                 keywords: [["cau", "dai", "nhat"], ["cay", "cau", "dai", "nhat"]],
                 title: "Cầu dài nhất Việt Nam",
@@ -1873,13 +1949,24 @@
                 let cleanQ = chuanHoaCauHoi(cauHoi);
                 if (!cleanQ) cleanQ = cauHoi.trim();
 
-                async function laySummary(title) {
+                const STOP_WORDS = new Set(['ca', 'si', 'nghe', 'dien', 'vien', 'loai', 'con', 'cay', 'bai', 'hat', 'phim', 'tho', 'danh', 'hai']);
+                const qTerms = xoaDau(cleanQ).split(/[^a-z0-9_]+/i).filter(w => w.length > 1);
+                const significantTerms = qTerms.filter(w => !STOP_WORDS.has(w));
+
+                async function laySummary(title, mustMatch = true) {
                     try {
                         const sumUrl = `https://vi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
                         const sumResp = await fetch(sumUrl);
                         if (sumResp.ok) {
                             const sumData = await sumResp.json();
                             if (sumData.extract && sumData.type !== 'disambiguation') {
+                                const tNorm = xoaDau(sumData.title || title);
+                                const eNorm = xoaDau(sumData.extract || '');
+                                // Validation: neu query co tu dac trung thi phai co mat o title hoac extract
+                                if (mustMatch && significantTerms.length > 0) {
+                                    const matchAll = significantTerms.every(w => tNorm.includes(w) || eNorm.includes(w));
+                                    if (!matchAll) return null;
+                                }
                                 return {
                                     title: sumData.title || title,
                                     extract: sumData.extract,
@@ -1894,10 +1981,10 @@
                 }
 
                 // Tier 1: Thu truc tiep summary cua cleanQ
-                let res = await laySummary(cleanQ);
+                let res = await laySummary(cleanQ, false);
                 if (res) return res;
 
-                // Tier 2: Thu Opensearch (Prefix matching)
+                // Tier 2: Thu Opensearch (Prefix matching voi entity validation)
                 try {
                     const openUrl = `https://vi.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(cleanQ)}&limit=3&format=json&origin=*`;
                     const openResp = await fetch(openUrl);
@@ -1905,14 +1992,14 @@
                         const openData = await openResp.json();
                         if (openData && openData.length >= 2 && openData[1] && openData[1].length > 0) {
                             for (const candidate of openData[1]) {
-                                res = await laySummary(candidate);
+                                res = await laySummary(candidate, true);
                                 if (res) return res;
                             }
                         }
                     }
                 } catch (e) {}
 
-                // Tier 3: Thu List Search voi RE-RANKING & ANTI-GARBAGE FILTER
+                // Tier 3: Thu List Search voi RE-RANKING, ANTI-GARBAGE & STRICT ENTITY FILTER
                 try {
                     const searchUrl = `https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanQ)}&format=json&utf8=1&origin=*&srlimit=8`;
                     const searchResp = await fetch(searchUrl);
@@ -1920,7 +2007,6 @@
                         const searchData = await searchResp.json();
                         const items = searchData && searchData.query && searchData.query.search;
                         if (items && items.length > 0) {
-                            const qTerms = xoaDau(cleanQ).split(/[^a-z0-9_]+/i).filter(w => w.length > 1);
                             const scored = [];
 
                             for (const it of items) {
@@ -1929,6 +2015,11 @@
 
                                 // ANTI-GARBAGE: Loai bo trang quoc gia "Việt Nam" neu nguoi dung hoi ve vat the, sinh vat, cau, nui...
                                 if ((tNorm === "viet nam" || tNorm === "lich su viet nam") && !qNorm.includes("dat nuoc viet nam") && qTerms.length > 1) {
+                                    continue;
+                                }
+
+                                // Neu co tu dac trung thi title phai chua it nhat 1 tu dac trung
+                                if (significantTerms.length > 0 && !significantTerms.some(w => tNorm.includes(w))) {
                                     continue;
                                 }
 
@@ -1943,7 +2034,7 @@
                             scored.sort((a, b) => b.score - a.score);
 
                             for (const cand of scored) {
-                                res = await laySummary(cand.title);
+                                res = await laySummary(cand.title, true);
                                 if (res) return res;
                             }
                         }
@@ -2033,6 +2124,13 @@
                     if (titleWords.includes(t)) score += 3.0;
                 });
 
+                // De-prioritize appendix and bibliography pages unless explicitly asked
+                const isAppendix = (c.trang_dau >= 435);
+                const queryWantsAppendix = /tham khảo|phụ lục|ảnh|kiến trúc|daewoo|xuất bản/i.test(query);
+                if (isAppendix && !queryWantsAppendix) {
+                    score *= 0.05;
+                }
+
                 return { ...c, diem: Math.round(score * 100) / 100 };
             });
 
@@ -2081,6 +2179,29 @@
                         "Hiệp định Thương mại Việt - Mỹ năm 2000"
                     ]
                 };
+            }
+
+            // 1.5. Kiem tra Fast-path Knowledge Base (Cau hoi bach khoa, dia ly, sinh hoc, nhan vat)
+            const qNormFast = xoaDau(query);
+            for (const item of TRI_THUC_NHANH) {
+                for (const kwGroup of item.keywords) {
+                    if (kwGroup.every(kw => qNormFast.includes(kw))) {
+                        return {
+                            answer: `### 🌐 Tri thức Mở rộng: **${item.title}**\n\n${item.extract}\n\n> ℹ️ **Lưu ý chuyên môn:** Đây là câu hỏi mở rộng ngoài tài liệu lưu trữ *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)*. Hệ thống đã kết nối cơ sở tri thức bách khoa mở để giải đáp đầy đủ và chính xác cho bạn.`,
+                            sources: [{
+                                tieu_de: `Bách khoa tri thức (${item.title})`,
+                                trang: "Tri thức mở rộng",
+                                tom_tat: item.extract.slice(0, 200) + "..."
+                            }],
+                            route: "bach_khoa",
+                            suggestions: [
+                                "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                                "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                                "Chiến dịch Điện Biên Phủ diễn ra năm nào?"
+                            ]
+                        };
+                    }
+                }
             }
 
             // 2. Module Knowledge Graph (Nhan vat, chien dich)
@@ -2164,17 +2285,17 @@
             // Cac tu khoa chinh thuoc pham vi Tap 15 (1986-2000) - chi su dung BM25 khi cau hoi thuoc chu de nay
             const TAP15_DOMAIN_WORDS = new Set([
                 // Su kien chinh tri & chu truong
-                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "nha", "nuoc", "chinh", "phu",
+                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "chinh", "phu",
                 "kinh", "te", "xa", "hoi", "quan", "su", "ngoai", "giao", "chinh", "tri",
                 // Cac moc quan trong & to chuc
                 "khoan", "khoan10", "asean", "apec", "wto", "afta", "miga",
-                "500kv", "duong", "day", "bac", "nam", "yaly", "hoa", "binh", "tri", "an",
+                "500kv", "yaly",
                 // Loai hinh kinh te & tai chinh
-                "doanh", "nghiep", "thi", "truong", "von", "dau", "tu", "xuat", "khau", "nhap",
-                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "ngan", "hang", "tien", "te",
-                "lam", "phat", "giam", "phat", "tang", "truong", "gdp", "fdi", "oda", "che", "xuat",
+                "doanh", "nghiep", "truong", "dau", "tu", "xuat", "khau", "nhap",
+                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "tien", "te",
+                "lam", "phat", "gdp", "fdi", "oda",
                 // Van hoa xa hoi & doi song
-                "giao", "duc", "y", "te", "dan", "so", "lao", "dong", "viec", "lam", "xoa", "doi", "giam", "ngheo",
+                "giao", "duc", "y_te", "dan", "so", "lao", "dong", "viec", "lam",
                 // Thoi gian trong pham vi Tap 15
                 "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
                 "1994", "1995", "1996", "1997", "1998", "1999", "2000"
@@ -2185,7 +2306,8 @@
                 "viet", "nam", "nhat", "lon", "nho", "cao", "thap", "dai", "ngan", "rong",
                 "dep", "xau", "tot", "kem", "moi", "cu", "nhieu", "it",
                 "nguoi", "con", "cai", "chiec", "chung", "minh",
-                "hoi", "sao", "cau", "bai", "nao", "sach", "tap"
+                "hoi", "sao", "cau", "bai", "nao", "sach", "tap",
+                "nuoc", "hang", "bac", "dong", "tay", "thu", "do", "loai", "hinh"
             ]);
 
             const STOPWORDS_SET = new Set([

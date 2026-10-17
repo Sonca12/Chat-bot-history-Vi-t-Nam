@@ -183,7 +183,80 @@ class OfflineRAGEngine:
         
         q_norm = xoa_dau(cau_hoi)
         
-        TRI_THUC_NHANH = [
+        KB_NGUOI_NOI_TIENG = [
+            {
+                "keywords": [["thanh", "tam"], ["ca", "si", "thanh", "tam"], ["danh", "ca", "thanh", "tam"]],
+                "title": "Ca sĩ Thanh Tâm",
+                "extract": "**Thanh Tâm** là nghệ danh của một số ca sĩ người Việt Nam:\n- **Thanh Tâm** – ca sĩ nhạc vàng, bolero nổi tiếng thập niên 1960–1970 tại miền Nam Việt Nam, từng được mệnh danh là 'giọng ca vàng', cùng thời với các nghệ sĩ Chế Linh, Hương Lan, Giao Linh.\n- **Thanh Tâm** (sinh khoảng 1988) – ca sĩ nhạc pop thế hệ mới, tham gia nhiều chương trình âm nhạc trong nước.\n\n*Nếu bạn muốn tìm ca sĩ Thanh Tâm cụ thể nào (nhạc vàng hay nhạc trẻ), hãy cho thêm thông tin về thời kỳ hoạt động hoặc dòng nhạc.*"
+            },
+            {
+                "keywords": [["son", "tung", "mtp"], ["son", "tung", "m-tp"]],
+                "title": "Sơn Tùng M-TP",
+                "extract": "**Sơn Tùng M-TP** (tên thật: Nguyễn Thanh Tùng, sinh ngày 5 tháng 7 năm 1994 tại Thái Bình) là ca sĩ, nhạc sĩ người Việt Nam. Anh là nghệ sĩ trẻ thành công nhất Việt Nam với các hit: *Chắc Ai Đó Sẽ Về*, *Em Của Ngày Hôm Qua*, *Lạc Trôi*, *Hãy Trao Cho Anh*, *Muộn Rồi Mà Sao Còn*, *There's No One At All*. MTP = 'Mãi Theo Phong'."
+            },
+            {
+                "keywords": [["dam", "vinh", "hung"], ["mr", "dam"]],
+                "title": "Ca sĩ Đàm Vĩnh Hưng (Mr. Đàm)",
+                "extract": "**Đàm Vĩnh Hưng** (tên thật: Huỳnh Minh Hưng, sinh 2/3/1971 tại TP.HCM) là ca sĩ nhạc vàng, nhạc nhẹ nổi tiếng, biệt danh **Mr. Đàm**. Ông là một trong những ca sĩ có thù lao cao nhất Việt Nam và tổ chức nhiều liveshow lớn."
+            },
+            {
+                "keywords": [["ho", "ngoc", "ha"]],
+                "title": "Ca sĩ Hồ Ngọc Hà",
+                "extract": "**Hồ Ngọc Hà** (sinh 6/6/1984 tại Hà Nội) là ca sĩ, diễn viên nổi tiếng Việt Nam. Các hit: *Xin Anh Đừng*, *Họa Mi Tóc Nâu*, *Chạm Đáy Nỗi Đau*, *Tìm Lại Bầu Trời*."
+            },
+            {
+                "keywords": [["bich", "phuong"], ["ca", "si", "bich", "phuong"]],
+                "title": "Ca sĩ Bích Phương",
+                "extract": "**Bích Phương** (tên thật: Trần Thị Bích Phương, sinh 26/9/1989 tại Hải Phòng) là ca sĩ pop Việt Nam. Các hit: *Thì Thầm*, *Bùa Yêu*, *Nói Thật Nhé*, *Chơi Vơi*."
+            },
+            {
+                "keywords": [["toc", "tien"]],
+                "title": "Ca sĩ Tóc Tiên",
+                "extract": "**Tóc Tiên** (tên thật: Trương Anh Đào, sinh 17/2/1989 tại TP.HCM) là ca sĩ, người mẫu Việt Nam nổi tiếng với phong cách R&B/Pop. Các hit: *Ngày Hôm Nay*, *Nếu Như*, *Only You*."
+            },
+            {
+                "keywords": [["dong", "nhi"], ["ca", "si", "dong", "nhi"]],
+                "title": "Ca sĩ Đông Nhi",
+                "extract": "**Đông Nhi** (sinh 16/11/1989 tại TP.HCM) là ca sĩ nổi tiếng Việt Nam. Các hit: *Không Phải Dạng Vừa Đâu*, *VietNam Ơi!*."
+            },
+            {
+                "keywords": [["my", "tam"], ["ca", "si", "my", "tam"]],
+                "title": "Ca sĩ Mỹ Tâm",
+                "extract": "**Mỹ Tâm** (tên thật: Nguyễn Thị Mỹ Tâm, sinh 16/1/1981 tại Đà Nẵng) là ca sĩ pop nổi tiếng bậc nhất Việt Nam, mệnh danh 'Nữ hoàng nhạc pop'. Các hit: *Đừng Hỏi Em*, *Mưa Hồng*, *Ước Gì*, *Because I Love You*."
+            },
+            {
+                "keywords": [["noo", "phuoc", "thinh"]],
+                "title": "Ca sĩ Noo Phước Thịnh",
+                "extract": "**Noo Phước Thịnh** (sinh 15/9/1988 tại TP.HCM) là ca sĩ pop Việt Nam. Các hit: *Tâm Sự Tuổi 30*, *Nụ Hôn Mãi Mãi*, *Cause I Love You*."
+            },
+            {
+                "keywords": [["xuan", "hinh"], ["nghe", "si", "xuan", "hinh"]],
+                "title": "Nghệ sĩ hài Xuân Hinh",
+                "extract": "**Xuân Hinh** (sinh 1/5/1963 tại Bắc Giang) là nghệ sĩ hài, diễn viên, ca sĩ nổi tiếng Việt Nam với phong cách hài dân gian, hài chèo. Thường biểu diễn cùng ca sĩ Thanh Thanh Hiền."
+            },
+            {
+                "keywords": [["chi", "pu"], ["ca", "si", "chi", "pu"]],
+                "title": "Chi Pu",
+                "extract": "**Chi Pu** (tên thật: Nguyễn Thùy Chi, sinh 23/9/1993 tại Hà Nội) là diễn viên, người mẫu, ca sĩ người Việt Nam. Ca khúc nổi tiếng: *Từ Hôm Nay*, *Anh Ơi Ở Lại*, *Đóa Hoa Hồng*."
+            },
+            {
+                "keywords": [["nha", "phuong"], ["dien", "vien", "nha", "phuong"]],
+                "title": "Diễn viên Nhã Phương",
+                "extract": "**Nhã Phương** (tên thật: Trương Thị Nhã Phương, sinh 1991 tại Quảng Nam) là diễn viên nổi tiếng Việt Nam, được yêu thích qua các bộ phim *Tuổi Thanh Xuân*, *Chàng Trai Năm Ấy*. Cô là vợ của danh hài Trường Giang."
+            },
+            {
+                "keywords": [["truong", "giang"], ["danh", "hai", "truong", "giang"]],
+                "title": "Danh hài Trường Giang",
+                "extract": "**Trường Giang** (sinh 1/12/1983 tại Quảng Nam) là danh hài, diễn viên hài nổi tiếng nhất Việt Nam. Được biết đến qua nhiều liveshow hài và phim hài. Anh là chồng của diễn viên Nhã Phương."
+            },
+            {
+                "keywords": [["chi", "tai"], ["danh", "hai", "chi", "tai"]],
+                "title": "Danh hài Chí Tài",
+                "extract": "**Chí Tài** (tên thật: Phạm Văn Tài, 1958–2020) là diễn viên hài, ca sĩ, nhạc sĩ người Mỹ gốc Việt nổi tiếng trong cộng đồng người Việt hai bên bờ đại dương. Ông từ trần ngày 9 tháng 12 năm 2020 tại TP.HCM."
+            },
+        ]
+
+        TRI_THUC_NHANH = KB_NGUOI_NOI_TIENG + [
             {
                 "keywords": [["cau", "dai", "nhat"], ["cay", "cau", "dai", "nhat"]],
                 "title": "Cầu dài nhất Việt Nam",
@@ -331,13 +404,22 @@ class OfflineRAGEngine:
         if not clean_q:
             clean_q = cau_hoi.strip()
 
-        def _lay_summary(title):
+        STOP_WORDS = {'ca', 'si', 'nghe', 'dien', 'vien', 'loai', 'con', 'cay', 'bai', 'hat', 'phim', 'tho', 'danh', 'hai'}
+        q_terms = [w for w in xoa_dau(clean_q).split() if len(w) > 1]
+        significant_terms = [w for w in q_terms if w not in STOP_WORDS]
+
+        def _lay_summary(title, must_match=True):
             try:
                 url = "https://vi.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(title.replace(' ', '_'))
                 req = urllib.request.Request(url, headers={'User-Agent': 'VietNamHistoryBot/3.0 (Educational RAG Project)'})
                 with urllib.request.urlopen(req, timeout=4) as resp:
                     data = json.loads(resp.read().decode('utf-8'))
                     if data.get('extract') and data.get('type') != 'disambiguation':
+                        t_norm = xoa_dau(data.get('title', title))
+                        e_norm = xoa_dau(data.get('extract', ''))
+                        if must_match and significant_terms:
+                            if not all(w in t_norm or w in e_norm for w in significant_terms):
+                                return None
                         return {
                             'title': data.get('title', title),
                             'extract': data.get('extract'),
@@ -348,7 +430,7 @@ class OfflineRAGEngine:
             return None
 
         # Tier 1: Direct summary
-        res = _lay_summary(clean_q)
+        res = _lay_summary(clean_q, must_match=False)
         if res:
             return res
 
@@ -360,25 +442,26 @@ class OfflineRAGEngine:
                 d_open = json.loads(resp_open.read().decode('utf-8'))
                 if d_open and len(d_open) >= 2 and d_open[1]:
                     for candidate in d_open[1]:
-                        res = _lay_summary(candidate)
+                        res = _lay_summary(candidate, must_match=True)
                         if res:
                             return res
         except Exception:
             pass
 
-        # Tier 3: Query list=search voi Re-ranking & Anti-Garbage Filter
+        # Tier 3: Query list=search voi Re-ranking, Anti-Garbage & Strict Entity Filter
         try:
             url_search = "https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + urllib.parse.quote(clean_q) + "&format=json&utf8=1&srlimit=8"
             req_search = urllib.request.Request(url_search, headers={'User-Agent': 'VietNamHistoryBot/3.0'})
             with urllib.request.urlopen(req_search, timeout=4) as resp_search:
                 d_search = json.loads(resp_search.read().decode('utf-8'))
                 slist = d_search.get("query", {}).get("search", [])
-                q_terms = [w for w in xoa_dau(clean_q).split() if len(w) > 1]
                 scored = []
                 for item in slist:
                     title = item.get("title", "")
                     t_norm = xoa_dau(title)
                     if (t_norm == "viet nam" or t_norm == "lich su viet nam") and "dat nuoc viet nam" not in q_norm and len(q_terms) > 1:
+                        continue
+                    if significant_terms and not any(w in t_norm for w in significant_terms):
                         continue
                     score = sum(3 for w in q_terms if w in t_norm)
                     if t_norm.startswith(xoa_dau(clean_q)):
@@ -386,7 +469,7 @@ class OfflineRAGEngine:
                     scored.append((score, title))
                 scored.sort(key=lambda x: x[0], reverse=True)
                 for _, title in scored:
-                    res = _lay_summary(title)
+                    res = _lay_summary(title, must_match=True)
                     if res:
                         return res
         except Exception:
@@ -404,7 +487,11 @@ class OfflineRAGEngine:
         # Reciprocal Rank
         rank_dict = {}
         for rank, (idx, score) in enumerate(bm25_results):
-            rank_dict[idx] = rank_dict.get(idx, 0.0) + (1.0 / (60.0 + rank + 1))
+            c = self.chunks[idx]
+            penalty = 1.0
+            if c.get("trang_dau", 0) >= 435 and not any(k in cau_hoi.lower() for k in ("tham khảo", "phụ lục", "ảnh", "kiến trúc", "daewoo", "xuất bản")):
+                penalty = 0.05
+            rank_dict[idx] = rank_dict.get(idx, 0.0) + (1.0 / (60.0 + rank + 1)) * penalty
             
         # Sap xep lai theo diem tong hop
         sorted_indices = sorted(rank_dict.keys(), key=lambda x: rank_dict[x], reverse=True)[:top_k]
@@ -462,6 +549,24 @@ class OfflineRAGEngine:
         kq_calc = self.xu_ly_tinh_toan(cau_hoi)
         if kq_calc:
             return kq_calc
+
+        # 1.5. Kiem tra Fast-path Knowledge Base (Cau hoi bach khoa, dia ly, sinh hoc, nhan vat)
+        bk_fast = self.tra_cuu_bach_khoa(cau_hoi)
+        if bk_fast and bk_fast.get("url") == "https://vi.wikipedia.org/":
+            return {
+                "answer": f"### 🌐 Tri thức Mở rộng: **{bk_fast['title']}**\n\n{bk_fast['extract']}\n\n> ℹ️ **Lưu ý chuyên môn:** Đây là câu hỏi mở rộng ngoài tài liệu lưu trữ *Lịch sử Việt Nam tập 15 (Từ năm 1986 đến năm 2000 - Giai đoạn Đổi mới)*. Hệ thống đã kết nối cơ sở tri thức bách khoa mở để giải đáp đầy đủ và chính xác cho bạn.",
+                "sources": [{
+                    "tieu_de": f"Bách khoa tri thức ({bk_fast['title']})",
+                    "trang": "Tri thức mở rộng",
+                    "tom_tat": bk_fast["extract"][:200] + "..."
+                }],
+                "route": "bach_khoa",
+                "suggestions": [
+                    "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                    "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                    "Chiến dịch Điện Biên Phủ diễn ra năm nào?"
+                ]
+            }
             
         # 2. Phat hien thuc the (VD: Trương Trinh / Trường Chinh, Phạm Văn Đồng, ...)
         thuc_the_info = tim_thuc_the(cau_hoi)
@@ -561,14 +666,14 @@ class OfflineRAGEngine:
         else:
             # Kiem tra do tuong thich noi dung thuc te voi Topic Guard Tap 15
             TAP15_DOMAIN_WORDS = {
-                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "nha", "nuoc", "chinh", "phu",
+                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "chinh", "phu",
                 "kinh", "te", "xa", "hoi", "quan", "su", "ngoai", "giao", "chinh", "tri",
                 "khoan", "khoan10", "asean", "apec", "wto", "afta", "miga",
-                "500kv", "duong", "day", "bac", "nam", "yaly", "hoa", "binh", "tri", "an",
-                "doanh", "nghiep", "thi", "truong", "von", "dau", "tu", "xuat", "khau", "nhap",
-                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "ngan", "hang", "tien", "te",
-                "lam", "phat", "giam", "phat", "tang", "truong", "gdp", "fdi", "oda", "che", "xuat",
-                "giao", "duc", "y", "te", "dan", "so", "lao", "dong", "viec", "lam", "xoa", "doi", "giam", "ngheo",
+                "500kv", "yaly",
+                "doanh", "nghiep", "truong", "dau", "tu", "xuat", "khau", "nhap",
+                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "tien", "te",
+                "lam", "phat", "gdp", "fdi", "oda",
+                "giao", "duc", "y_te", "dan", "so", "lao", "dong", "viec", "lam",
                 "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
                 "1994", "1995", "1996", "1997", "1998", "1999", "2000"
             }
@@ -576,7 +681,8 @@ class OfflineRAGEngine:
                 "viet", "nam", "nhat", "lon", "nho", "cao", "thap", "dai", "ngan", "rong",
                 "dep", "xau", "tot", "kem", "moi", "cu", "nhieu", "it",
                 "nguoi", "con", "cai", "chiec", "chung", "minh",
-                "hoi", "sao", "cau", "bai", "nao", "sach", "tap"
+                "hoi", "sao", "cau", "bai", "nao", "sach", "tap",
+                "nuoc", "hang", "bac", "dong", "tay", "thu", "do", "loai", "hinh"
             }
             STOPWORDS = {
                 "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",

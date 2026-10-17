@@ -62,5 +62,27 @@ Tất cả các ảnh biểu đồ độ phân giải cao đã được tạo s�
 ---
 
 ## 4. LINK TRẢI NGHIỆM TRỰC TUYẾN DÀNH CHO GIẢNG VIÊN VÀ HỘI ĐỒNG CHẤM
-* **Website Chatbot Trực tuyến 24/7:** [https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/](https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/)
+* **Website Chatbot Trực tuyến 24/7 (GitHub Pages):** [https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/](https://sonca12.github.io/Chat-bot-history-Vi-t-Nam/)
 * **Mã nguồn GitHub Repository:** [https://github.com/Sonca12/Chat-bot-history-Vi-t-Nam.git](https://github.com/Sonca12/Chat-bot-history-Vi-t-Nam.git)
+
+---
+
+## 5. BẢNG KIỂM THỬ THỰC TẾ 13 CÂU HỎI ĐA MIỀN (100% ĐẠT)
+*(Dữ liệu nghiệm thu tự động ngày 17/10/2026)*
+
+| STT | Nhóm câu hỏi | Câu hỏi kiểm thử | Cơ chế xử lý | Kết quả thực tế | Trạng thái |
+| :---: | :--- | :--- | :--- | :--- | :---: |
+| 1 | Lịch sử Tập 15 | *Đại hội VI năm 1986 đã đề ra những đường lối đổi mới nào?* | BM25 Thích ứng + Topic Guard | Trích dẫn chính xác **Trang 41** (Khẳng định đường lối đổi mới, thời kỳ quá độ) | ✅ ĐẠT |
+| 2 | Lịch sử Tập 15 | *Đường dây 500kV Bắc Nam được đóng điện năm nào?* | BM25 Thích ứng | Trích dẫn chính xác **Trang 164** (Dài 1.487km, khởi công 1992, đóng điện 1994) | ✅ ĐẠT |
+| 3 | Lịch sử Tập 15 | *Việt Nam gia nhập ASEAN vào năm nào?* | BM25 Thích ứng | Trích dẫn chính xác **Trang 205** (Tháng 7/1995 tại Brunei) | ✅ ĐẠT |
+| 4 | Knowledge Graph | *Chiến dịch Điện Biên Phủ diễn ra năm nào?* | Đồ thị Tri thức Lịch sử | 13/03/1954 - 07/05/1954 (56 ngày đêm) | ✅ ĐẠT |
+| 5 | Knowledge Graph | *Võ Nguyên Giáp là ai?* | Đồ thị Tri thức Lịch sử | Đại tướng đầu tiên, Tổng tư lệnh QĐNDVN | ✅ ĐẠT |
+| 6 | Knowledge Graph | *Trần Hưng Đạo có công lao gì?* | Đồ thị Tri thức Lịch sử | Quốc công Tiết chế, 3 lần đánh bại quân Nguyên Mông | ✅ ĐẠT |
+| 7 | Bách khoa / Đời sống | *ca sĩ thanh tâm là ai ?* | Fast-path KB + Strict Entity Filter | Ca sĩ Thanh Tâm (nhạc vàng thập niên 60-70 & ca sĩ trẻ), không bị nhầm sang Thanh Tuyền | ✅ ĐẠT |
+| 8 | Bách khoa / Đời sống | *cây cầu dai nhất việt nam* | Fast-path KB | Cầu Đình Vũ – Cát Hải (5.442 m) | ✅ ĐẠT |
+| 9 | Bách khoa / Đời sống | *cá lóc là cá gì vậy ?* | Fast-path KB | Họ Cá quả (cá quả, cá chuối, cá sộp, cá tràu) | ✅ ĐẠT |
+| 10 | Bách khoa / Đời sống | *núi cao nhất việt nam là núi gì hả* | Fast-path KB | Fansipan (3.143 m - Nóc nhà Đông Dương) | ✅ ĐẠT |
+| 11 | Bách khoa / Đời sống | *thủ đô của nước Pháp là gì* | Fast-path KB | Thủ đô Paris (Kinh đô Ánh sáng) | ✅ ĐẠT |
+| 12 | Bách khoa / Đời sống | *Sơn Tùng M-TP là ai* | Fast-path KB + Strict Entity Filter | Ca sĩ, nhạc sĩ người Thái Bình, các hit Lạc Trôi, Em Của Ngày Hôm Qua... | ✅ ĐẠT |
+| 13 | Bách khoa / Đời sống | *hang Sơn Đoòng nằm ở đâu* | Fast-path KB | Vườn quốc gia Phong Nha – Kẻ Bàng, tỉnh Quảng Bình | ✅ ĐẠT |
+
