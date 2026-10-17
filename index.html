@@ -1708,28 +1708,59 @@
         // Free Open Wikipedia API for zero-key universal question answering
         async function traCuuBachKhoaClient(cauHoi) {
             try {
-                let cleanQ = cauHoi.replace(/[?!.,;:]+/g, ' ');
-                cleanQ = cleanQ.replace(/\b(là ai|la ai|là gì|la gi|ai là|ai la|ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|cho tôi hỏi|cho hỏi|hỏi về|bạn có biết)\b/gi, ' ');
+                let cleanQ = cauHoi.replace(/[?!.,;:]+/g, ' ').trim();
+                cleanQ = cleanQ.replace(/^(cho tôi hỏi|cho hỏi|hỏi về|bạn có biết|bạn hãy cho biết|hãy cho biết|cho em hỏi)\s*/gi, '');
+                cleanQ = cleanQ.replace(/\b(là|la)\s+.*?(gì|gi|ai|nao|nào|đâu|dau)\s*$/gi, '');
+                cleanQ = cleanQ.replace(/\b(ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao)\s*$/gi, '');
+                cleanQ = cleanQ.replace(/^(ai là|ai la|đâu là|dau la)\s*/gi, '');
                 cleanQ = cleanQ.trim().replace(/\s+/g, ' ');
                 if (!cleanQ) cleanQ = cauHoi.trim();
 
-                const searchUrl = `https://vi.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(cleanQ)}&limit=1&format=json&origin=*`;
-                const resp = await fetch(searchUrl);
-                if (resp.ok) {
+                // Phuong phap 1: action=query&list=search (hoat dong tot voi tieng Viet co dau)
+                async function timKiemWiki(q) {
+                    const searchUrl = `https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&utf8=1&origin=*&srlimit=1`;
+                    const resp = await fetch(searchUrl);
+                    if (!resp.ok) return null;
                     const data = await resp.json();
-                    if (data && data.length >= 2 && data[1] && data[1].length > 0) {
-                        const title = data[1][0];
-                        const sumUrl = `https://vi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
-                        const sumResp = await fetch(sumUrl);
-                        if (sumResp.ok) {
-                            const sumData = await sumResp.json();
-                            if (sumData.extract) {
-                                return {
-                                    title: sumData.title || title,
-                                    extract: sumData.extract,
-                                    url: (sumData.content_urls && sumData.content_urls.desktop) ? sumData.content_urls.desktop.page : `https://vi.wikipedia.org/wiki/${encodeURIComponent(title)}`
-                                };
-                            }
+                    const results = data && data.query && data.query.search;
+                    if (!results || results.length === 0) return null;
+                    return results[0].title;
+                }
+
+                // Phuong phap 2: opensearch (du phong)
+                async function timKiemOpenSearch(q) {
+                    const searchUrl = `https://vi.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(q)}&limit=1&format=json&origin=*`;
+                    const resp = await fetch(searchUrl);
+                    if (!resp.ok) return null;
+                    const data = await resp.json();
+                    if (data && data.length >= 2 && data[1] && data[1].length > 0) return data[1][0];
+                    return null;
+                }
+
+                // Thu phuong phap 1 truoc, neu that bai moi dung phuong phap 2
+                let title = await timKiemWiki(cleanQ);
+                if (!title) title = await timKiemOpenSearch(cleanQ);
+                if (!title) {
+                    // Thu voi cau hoi goc neu clean_q khac
+                    if (cleanQ !== cauHoi.trim()) {
+                        title = await timKiemWiki(cauHoi.trim());
+                        if (!title) title = await timKiemOpenSearch(cauHoi.trim());
+                    }
+                }
+
+                if (title) {
+                    const sumUrl = `https://vi.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title.replace(/ /g, '_'))}`;
+                    const sumResp = await fetch(sumUrl);
+                    if (sumResp.ok) {
+                        const sumData = await sumResp.json();
+                        if (sumData.extract) {
+                            return {
+                                title: sumData.title || title,
+                                extract: sumData.extract,
+                                url: (sumData.content_urls && sumData.content_urls.desktop)
+                                    ? sumData.content_urls.desktop.page
+                                    : `https://vi.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, '_'))}`
+                            };
                         }
                     }
                 }
@@ -1824,6 +1855,33 @@
         }
 
         async function traLoiClient(query, chunks) {
+            // 0. Chao hoi va gioi thieu ban than
+            const qClean = xoaDau(query).trim();
+            if (/^(chao|chao ban|xin chao|hello|hi|helo|alo|hai ban)\b/.test(qClean)) {
+                return {
+                    answer: "Xin chào bạn! 👋 Tôi là **Trợ lý Lịch sử Việt Nam & Tri thức Tổng hợp**.\n\nTôi sẵn sàng giải đáp **bất kỳ câu hỏi nào** của bạn:\n- 📖 **Lịch sử Việt Nam Tập 15 (1986 - 2000):** Tra cứu chính xác từng số trang về Đại hội VI, Khoán 10, gia nhập ASEAN 1995, Đường dây 500kV...\n- ⚔️ **Chiến dịch & Danh nhân toàn thư:** Chiến dịch Điện Biên Phủ, Chiến dịch Hồ Chí Minh, Quang Trung, Trần Hưng Đạo...\n- 🌐 **Tri thức Mở rộng:** Tra cứu thông tin bách khoa đời sống, khoa học, địa lý, nhân vật!",
+                    sources: [],
+                    route: "rag_offline",
+                    suggestions: [
+                        "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                        "Chiến dịch Điện Biên Phủ diễn ra năm nào?",
+                        "cầu dài nhất việt nam là cầu gì?"
+                    ]
+                };
+            }
+            if (/^(ban la ai|ban ten la gi|gioi thieu ve ban|tro ly la gi)\b/.test(qClean)) {
+                return {
+                    answer: "Tôi là **Trợ lý Lịch sử Việt Nam & Bách khoa Tri thức**, hệ thống Hybrid RAG + Knowledge Graph 100% mã nguồn mở phục vụ tra cứu học tập. Hệ thống kết hợp dữ liệu thông sử Tập 15 (1986-2000) cùng cơ sở tri thức mở để có thể trả lời mọi câu hỏi của bạn!",
+                    sources: [],
+                    route: "rag_offline",
+                    suggestions: [
+                        "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                        "Trương Trinh làm gì vào giai đoạn đó?",
+                        "Hiệp định Thương mại Việt - Mỹ năm 2000"
+                    ]
+                };
+            }
+
             // 1. Module tinh toan thoi gian
             const calcAns = tinhToanNam(query);
             if (calcAns) {
@@ -1916,7 +1974,34 @@
                 }
             }
 
-            // 3. BM25 Search tren Tap 15
+            // 3. BM25 Search tren Tap 15 voi Topic Guard thong minh
+            // Cac tu khoa chinh thuoc pham vi Tap 15 (1986-2000) - chi su dung BM25 khi cau hoi thuoc chu de nay
+            const TAP15_DOMAIN_WORDS = new Set([
+                // Su kien chinh tri & chu truong
+                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "nha", "nuoc", "chinh", "phu",
+                "kinh", "te", "xa", "hoi", "quan", "su", "ngoai", "giao", "chinh", "tri",
+                // Cac moc quan trong & to chuc
+                "khoan", "khoan10", "asean", "apec", "wto", "afta", "miga",
+                "500kv", "duong", "day", "bac", "nam", "yaly", "hoa", "binh", "tri", "an",
+                // Loai hinh kinh te & tai chinh
+                "doanh", "nghiep", "thi", "truong", "von", "dau", "tu", "xuat", "khau", "nhap",
+                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "ngan", "hang", "tien", "te",
+                "lam", "phat", "giam", "phat", "tang", "truong", "gdp", "fdi", "oda", "che", "xuat",
+                // Van hoa xa hoi & doi song
+                "giao", "duc", "y", "te", "dan", "so", "lao", "dong", "viec", "lam", "xoa", "doi", "giam", "ngheo",
+                // Thoi gian trong pham vi Tap 15
+                "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
+                "1994", "1995", "1996", "1997", "1998", "1999", "2000"
+            ]);
+
+            // Tu pho thong chung khong phai chu de dac trung cua Tap 15
+            const GENERIC_WORDS_NOT_DOMAIN = new Set([
+                "viet", "nam", "nhat", "lon", "nho", "cao", "thap", "dai", "ngan", "rong",
+                "dep", "xau", "tot", "kem", "moi", "cu", "nhieu", "it",
+                "nguoi", "con", "cai", "chiec", "chung", "minh",
+                "hoi", "sao", "cau", "bai", "nao", "sach", "tap"
+            ]);
+
             const STOPWORDS_SET = new Set([
                 "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",
                 "co", "duoc", "trong", "mot", "cho", "ve", "khi", "da", "se", "dang",
@@ -1924,21 +2009,32 @@
                 "ra", "vao", "lai", "qua", "len", "xuong", "nay", "do", "kia", "ay",
                 "hay", "biet", "thong", "tin", "hoi", "sao", "bao", "nhieu", "may"
             ]);
+
+            // Content words (loai bo stopwords)
             const contentWords = tokenize(query).filter(w => !STOPWORDS_SET.has(w));
+            // Domain-specific words: loai bo ca tu chung va stopwords
+            const domainWords = contentWords.filter(w => !GENERIC_WORDS_NOT_DOMAIN.has(w));
+
+            // Kiem tra xem cau hoi co chua tu khoa Tap 15 khong (Topic Guard)
+            const hasTap15Topic = domainWords.some(w => TAP15_DOMAIN_WORDS.has(w));
+
             const retrieved = bm25SearchClient(query, chunks, 5);
 
             // Kiem tra do tuong thich noi dung (Tranh ao tuong RAG tra loi cheo)
             let hopLe = false;
-            if (retrieved && retrieved.length > 0 && contentWords.length > 0) {
+            if (hasTap15Topic && retrieved && retrieved.length > 0 && contentWords.length > 0) {
                 const top1 = retrieved[0];
                 const textNorm = xoaDau((top1.tieu_de || "") + " " + (top1.text || top1.tom_tat || ""));
-                const matches = contentWords.filter(w => textNorm.includes(w));
-                if (contentWords.length <= 2) {
-                    hopLe = (matches.length === contentWords.length);
+                const meaningfulWords = domainWords.length > 0 ? domainWords : contentWords;
+                const matches = meaningfulWords.filter(w => textNorm.includes(w));
+                if (meaningfulWords.length === 1) {
+                    hopLe = (matches.length === 1) && (top1.diem >= 1.0);
+                } else if (meaningfulWords.length === 2) {
+                    hopLe = (matches.length >= 2) && (top1.diem >= 0.8);
                 } else {
-                    hopLe = (matches.length / contentWords.length >= 0.4);
+                    hopLe = (matches.length / meaningfulWords.length >= 0.65) && (top1.diem >= 0.5);
                 }
-            } else if (retrieved && retrieved.length > 0 && contentWords.length === 0) {
+            } else if (hasTap15Topic && retrieved && retrieved.length > 0 && contentWords.length === 0) {
                 hopLe = true;
             }
 

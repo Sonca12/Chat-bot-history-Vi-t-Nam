@@ -181,32 +181,56 @@ class OfflineRAGEngine:
         import urllib.request
         import urllib.parse
         
-        clean_q = re.sub(r'[?!.,;:]+', ' ', cau_hoi)
-        clean_q = re.sub(r'\b(là ai|la ai|là gì|la gi|ai là|ai la|ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|cho tôi hỏi|cho hỏi|hỏi về|bạn có biết)\b', ' ', clean_q, flags=re.I)
+        clean_q = re.sub(r'[?!.,;:]+', ' ', cau_hoi).strip()
+        clean_q = re.sub(r'^(cho tôi hỏi|cho hỏi|hỏi về|bạn có biết|bạn hãy cho biết|hãy cho biết|cho em hỏi)\s*', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\b(là|la)\s+.*?(gì|gi|ai|nao|nào|đâu|dau)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\b(ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'^(ai là|ai la|đâu là|dau la)\s*', '', clean_q, flags=re.I)
         clean_q = ' '.join(clean_q.split()).strip()
         if not clean_q:
             clean_q = cau_hoi.strip()
             
+        def _tim_wiki(q):
+            try:
+                # Phuong phap 1: query list=search (hoat dong tot voi tieng Viet co dau)
+                url1 = "https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + urllib.parse.quote(q) + "&format=json&utf8=1&srlimit=1"
+                req1 = urllib.request.Request(url1, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
+                with urllib.request.urlopen(req1, timeout=3.5) as resp1:
+                    d1 = json.loads(resp1.read().decode('utf-8'))
+                    slist = d1.get("query", {}).get("search", [])
+                    if slist:
+                        return slist[0].get("title")
+            except Exception:
+                pass
+            try:
+                # Phuong phap 2: opensearch (du phong)
+                url2 = "https://vi.wikipedia.org/w/api.php?action=opensearch&search=" + urllib.parse.quote(q) + "&limit=1&format=json"
+                req2 = urllib.request.Request(url2, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
+                with urllib.request.urlopen(req2, timeout=3.5) as resp2:
+                    d2 = json.loads(resp2.read().decode('utf-8'))
+                    if d2 and len(d2) >= 2 and d2[1]:
+                        return d2[1][0]
+            except Exception:
+                pass
+            return None
+
         try:
-            # 1. Tim kiem tieu de bai viet bang opensearch
-            search_url = f"https://vi.wikipedia.org/w/api.php?action=opensearch&search={urllib.parse.quote(clean_q)}&limit=1&format=json"
-            req = urllib.request.Request(search_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
-            with urllib.request.urlopen(req, timeout=3.5) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
-                if data and len(data) >= 2 and data[1]:
-                    title = data[1][0]
-                    # 2. Lay tom tat tu REST API
-                    summary_url = f"https://vi.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(title.replace(' ', '_'))}"
-                    req_sum = urllib.request.Request(summary_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
-                    with urllib.request.urlopen(req_sum, timeout=3.5) as resp_sum:
-                        sum_data = json.loads(resp_sum.read().decode('utf-8'))
-                        extract = sum_data.get("extract")
-                        if extract:
-                            return {
-                                "title": sum_data.get("title", title),
-                                "extract": extract,
-                                "url": sum_data.get("content_urls", {}).get("desktop", {}).get("page", "")
-                            }
+            title = _tim_wiki(clean_q)
+            if not title and clean_q != cau_hoi.strip():
+                title = _tim_wiki(cau_hoi.strip())
+            
+            if title:
+                summary_url = "https://vi.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(title.replace(' ', '_'))
+                req_sum = urllib.request.Request(summary_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
+                with urllib.request.urlopen(req_sum, timeout=3.5) as resp_sum:
+                    sum_data = json.loads(resp_sum.read().decode('utf-8'))
+                    extract = sum_data.get("extract")
+                    if extract:
+                        return {
+                            "title": sum_data.get("title", title),
+                            "extract": extract,
+                            "url": sum_data.get("content_urls", {}).get("desktop", {}).get("page", "")
+                        }
         except Exception:
             pass
         return None
@@ -250,6 +274,31 @@ class OfflineRAGEngine:
         3. Tim kiem Hybrid tu tai lieu va QA pairs
         4. Tong hop cau tra loi tieng Viet day du kem trich dan va GOI Y LIEN QUAN
         """
+        # 0. Chao hoi va gioi thieu ban than
+        q_clean = xoa_dau(cau_hoi).strip()
+        if re.match(r'^(chao|chao ban|xin chao|hello|hi|helo|alo|hai ban)\b', q_clean):
+            return {
+                "answer": "Xin chào bạn! 👋 Tôi là **Trợ lý Lịch sử Việt Nam & Tri thức Tổng hợp**.\n\nTôi sẵn sàng giải đáp **bất kỳ câu hỏi nào** của bạn:\n- 📖 **Lịch sử Việt Nam Tập 15 (1986 - 2000):** Tra cứu chính xác từng số trang về Đại hội VI, Khoán 10, gia nhập ASEAN 1995, Đường dây 500kV...\n- ⚔️ **Chiến dịch & Danh nhân toàn thư:** Chiến dịch Điện Biên Phủ, Chiến dịch Hồ Chí Minh, Quang Trung, Trần Hưng Đạo...\n- 🌐 **Tri thức Mở rộng:** Tra cứu thông tin bách khoa đời sống, khoa học, địa lý, nhân vật!",
+                "sources": [],
+                "route": "rag_offline",
+                "suggestions": [
+                    "Nội dung Đổi mới tại Đại hội VI năm 1986 là gì?",
+                    "Chiến dịch Điện Biên Phủ diễn ra năm nào?",
+                    "cầu dài nhất việt nam là cầu gì?"
+                ]
+            }
+        if re.match(r'^(ban la ai|ban ten la gi|gioi thieu ve ban|tro ly la gi)\b', q_clean):
+            return {
+                "answer": "Tôi là **Trợ lý Lịch sử Việt Nam & Bách khoa Tri thức**, hệ thống Hybrid RAG + Knowledge Graph 100% mã nguồn mở phục vụ tra cứu học tập. Hệ thống kết hợp dữ liệu thông sử Tập 15 (1986-2000) cùng cơ sở tri thức mở để có thể trả lời mọi câu hỏi của bạn!",
+                "sources": [],
+                "route": "rag_offline",
+                "suggestions": [
+                    "Quá trình gia nhập ASEAN năm 1995 của Việt Nam",
+                    "Trương Trinh làm gì vào giai đoạn đó?",
+                    "Hiệp định Thương mại Việt - Mỹ năm 2000"
+                ]
+            }
+
         # 1. Tinh toan
         kq_calc = self.xu_ly_tinh_toan(cau_hoi)
         if kq_calc:
@@ -351,7 +400,25 @@ class OfflineRAGEngine:
                 p_str = f"Trang {retrieved_chunks[0]['trang_dau']}"
                 phan_tra_loi += f"*(Nguồn tham khảo: {retrieved_chunks[0]['tieu_de']} - {p_str})*\n"
         else:
-            # Kiem tra do tuong thich noi dung thuc te (Tranh ao tuong RAG tra loi linh tinh)
+            # Kiem tra do tuong thich noi dung thuc te voi Topic Guard Tap 15
+            TAP15_DOMAIN_WORDS = {
+                "doi", "moi", "dai", "hoi", "nghi", "quyet", "dang", "nha", "nuoc", "chinh", "phu",
+                "kinh", "te", "xa", "hoi", "quan", "su", "ngoai", "giao", "chinh", "tri",
+                "khoan", "khoan10", "asean", "apec", "wto", "afta", "miga",
+                "500kv", "duong", "day", "bac", "nam", "yaly", "hoa", "binh", "tri", "an",
+                "doanh", "nghiep", "thi", "truong", "von", "dau", "tu", "xuat", "khau", "nhap",
+                "nong", "nghiep", "cong", "nghiep", "thuong", "mai", "ngan", "hang", "tien", "te",
+                "lam", "phat", "giam", "phat", "tang", "truong", "gdp", "fdi", "oda", "che", "xuat",
+                "giao", "duc", "y", "te", "dan", "so", "lao", "dong", "viec", "lam", "xoa", "doi", "giam", "ngheo",
+                "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993",
+                "1994", "1995", "1996", "1997", "1998", "1999", "2000"
+            }
+            GENERIC_WORDS_NOT_DOMAIN = {
+                "viet", "nam", "nhat", "lon", "nho", "cao", "thap", "dai", "ngan", "rong",
+                "dep", "xau", "tot", "kem", "moi", "cu", "nhieu", "it",
+                "nguoi", "con", "cai", "chiec", "chung", "minh",
+                "hoi", "sao", "cau", "bai", "nao", "sach", "tap"
+            }
             STOPWORDS = {
                 "la", "ai", "gi", "o", "dau", "the", "nao", "nhu", "cua", "cac", "nhung",
                 "co", "duoc", "trong", "mot", "cho", "ve", "khi", "da", "se", "dang",
@@ -360,17 +427,22 @@ class OfflineRAGEngine:
                 "hay", "biet", "thong", "tin", "hoi", "sao", "bao", "nhieu", "may"
             }
             content_words = [w for w in xoa_dau(cau_hoi).split() if len(w) > 1 and w not in STOPWORDS]
+            domain_words = [w for w in content_words if w not in GENERIC_WORDS_NOT_DOMAIN]
+            has_tap15_topic = any(w in TAP15_DOMAIN_WORDS for w in domain_words)
             
             hop_le = False
-            if retrieved_chunks and content_words:
+            if has_tap15_topic and retrieved_chunks and content_words:
                 top_c = retrieved_chunks[0]
                 text_norm = xoa_dau(top_c.get("tieu_de", "") + " " + top_c.get("text", ""))
-                matches = [w for w in content_words if w in text_norm]
-                if len(content_words) <= 2:
-                    hop_le = (len(matches) == len(content_words))
+                meaningful_words = domain_words if domain_words else content_words
+                matches = [w for w in meaningful_words if w in text_norm]
+                if len(meaningful_words) == 1:
+                    hop_le = (len(matches) == 1) and (top_c.get("diem", 0) >= 1.0)
+                elif len(meaningful_words) == 2:
+                    hop_le = (len(matches) >= 2) and (top_c.get("diem", 0) >= 0.8)
                 else:
-                    hop_le = (len(matches) / len(content_words) >= 0.4)
-            elif retrieved_chunks and not content_words:
+                    hop_le = (len(matches) / len(meaningful_words) >= 0.65) and (top_c.get("diem", 0) >= 0.5)
+            elif has_tap15_topic and retrieved_chunks and not content_words:
                 hop_le = True
 
             if hop_le and retrieved_chunks:
