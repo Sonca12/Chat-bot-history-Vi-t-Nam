@@ -177,62 +177,221 @@ class OfflineRAGEngine:
                 ]
             }
     def tra_cuu_bach_khoa(self, cau_hoi: str) -> dict | None:
-        """Tra cuu Wikipedia de tra loi cac cau hoi ngoai pham vi du lieu Tap 15."""
+        """Tra cuu kien thuc tong hop ket hop Fast-path Knowledge Base & Wikipedia API."""
         import urllib.request
         import urllib.parse
         
-        clean_q = re.sub(r'[?!.,;:]+', ' ', cau_hoi).strip()
-        clean_q = re.sub(r'^(cho tôi hỏi|cho hỏi|hỏi về|bạn có biết|bạn hãy cho biết|hãy cho biết|cho em hỏi)\s*', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'\b(là|la)\s+.*?(gì|gi|ai|nao|nào|đâu|dau)\s*$', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'\b(ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao)\s*$', '', clean_q, flags=re.I)
-        clean_q = re.sub(r'^(ai là|ai la|đâu là|dau la)\s*', '', clean_q, flags=re.I)
+        q_norm = xoa_dau(cau_hoi)
+        
+        TRI_THUC_NHANH = [
+            {
+                "keywords": [["cau", "dai", "nhat"], ["cay", "cau", "dai", "nhat"]],
+                "title": "Cầu dài nhất Việt Nam",
+                "extract": "Tại Việt Nam:\n- **Cầu vượt biển dài nhất:** **Cầu Đình Vũ – Cát Hải** (Hải Phòng) với tổng chiều dài **5.442 m (5,44 km)**, khánh thành năm 2017, là một trong những cây cầu vượt biển dài nhất Đông Nam Á.\n- **Cầu vượt sông dài nhất:** **Cầu Vĩnh Thịnh** nối Hà Nội với Vĩnh Phúc bắc qua sông Hồng với chiều dài **4.480 m**.\n- **Cầu dây văng dài nhất:** **Cầu Cần Thơ** (bắc qua sông Hậu) với nhịp chính 550 m và tổng chiều dài toàn tuyến 15,85 km."
+            },
+            {
+                "keywords": [["ca", "loc"], ["con", "ca", "loc"], ["loai", "ca", "loc"]],
+                "title": "Cá lóc (Cá quả, Cá chuối, Cá sộp)",
+                "extract": "**Cá lóc** (miền Bắc gọi là *cá quả*, *cá chuối*, *cá sộp*; miền Trung gọi là *cá tràu*) là loài cá nước ngọt thuộc họ Cá quả (Channidae). Đây là loài cá săn mồi ăn cá nhỏ, tôm, ếch nhái, sống phổ biến ở ao, hồ, sông, đồng ruộng khắp Việt Nam. Thịt cá lóc thơm ngon, ngọt, ít xương dăm, giàu chất đạm và là nguyên liệu cho nhiều món ăn trứ danh như canh chua cá lóc, cá lóc kho tộ, cá lóc nướng trui và bánh canh cá lóc."
+            },
+            {
+                "keywords": [["nui", "cao", "nhat", "viet", "nam"], ["dinh", "nui", "cao", "nhat"]],
+                "title": "Đỉnh núi cao nhất Việt Nam (Fansipan)",
+                "extract": "Đỉnh núi cao nhất Việt Nam là **Fansipan (Phan Xi Păng)** với độ cao **3.143 m** so với mực nước biển, thuộc dãy núi Hoàng Liên Sơn (tỉnh Lào Cai và Lai Châu). Fansipan được mệnh danh là *'Nóc nhà Đông Dương'* (cao nhất trong ba nước Việt Nam, Lào, Campuchia)."
+            },
+            {
+                "keywords": [["song", "dai", "nhat", "viet", "nam"]],
+                "title": "Sông dài nhất Việt Nam",
+                "extract": "- **Sông nội địa dài nhất:** **Sông Đồng Nai** với chiều dài khoảng **586 km**, bắt nguồn từ cao nguyên Lâm Viên và chảy hoàn toàn trong lãnh thổ Việt Nam.\n- **Sông chảy qua Việt Nam dài nhất:** **Sông Mê Kông (sông Cửu Long)** với tổng chiều dài 4.350 km, đoạn chảy qua Việt Nam dài hơn 220 km trước khi đổ ra Biển Đông qua 9 cửa sông."
+            },
+            {
+                "keywords": [["nui", "cao", "nhat", "the", "gioi"]],
+                "title": "Đỉnh núi cao nhất thế giới (Everest)",
+                "extract": "Đỉnh núi cao nhất thế giới là **Mount Everest** với độ cao **8.848,86 m** so với mực nước biển, nằm trên dãy Himalaya giữa biên giới Nepal và Khu tự trị Tây Tạng (Trung Quốc)."
+            },
+            {
+                "keywords": [["song", "dai", "nhat", "the", "gioi"]],
+                "title": "Sông dài nhất thế giới (Sông Nin & Sông Amazon)",
+                "extract": "Sông dài nhất thế giới theo ghi nhận truyền thống là **Sông Nin (Nile)** ở Châu Phi với chiều dài khoảng **6.650 km**. Một số nghiên cứu hiện đại cũng ghi nhận **Sông Amazon** (Nam Mỹ) có chiều dài tương đương khoảng 6.400 - 6.992 km tùy phương pháp đo điểm khởi nguồn."
+            },
+            {
+                "keywords": [["hang", "dong", "lon", "nhat"], ["hang", "son", "doong"]],
+                "title": "Hang động lớn nhất thế giới (Hang Sơn Đoòng)",
+                "extract": "Hang động tự nhiên lớn nhất thế giới là **Hang Sơn Đoòng**, nằm trong Vườn quốc gia Phong Nha – Kẻ Bàng (tỉnh Quảng Bình, Việt Nam). Hang có thể tích ước tính lên tới 38,5 triệu mét khối, đủ lớn để chứa cả một khu phố của New York với những tòa nhà chọc trời 40 tầng."
+            },
+            {
+                "keywords": [["dao", "lon", "nhat", "viet", "nam"]],
+                "title": "Đảo lớn nhất Việt Nam (Đảo Phú Quốc)",
+                "extract": "Hòn đảo lớn nhất của Việt Nam là **Đảo Phú Quốc** (tỉnh Kiên Giang) với diện tích khoảng **589 km²**, được mệnh danh là 'Đảo Ngọc' của Việt Nam."
+            },
+            {
+                "keywords": [["ho", "lon", "nhat", "viet", "nam"]],
+                "title": "Hồ lớn nhất Việt Nam",
+                "extract": "- **Hồ nước ngọt tự nhiên lớn nhất:** **Hồ Ba Bể** (tỉnh Bắc Kạn) với diện tích mặt nước khoảng 650 ha (6,5 km²).\n- **Hồ nhân tạo lớn nhất:** **Hồ Dầu Tiếng** (trên địa phận Tây Ninh, Bình Dương, Bình Phước) với diện tích mặt nước lên tới 270 km²."
+            },
+            {
+                "keywords": [["tinh", "lon", "nhat", "viet", "nam"]],
+                "title": "Tỉnh có diện tích lớn nhất Việt Nam (Nghệ An)",
+                "extract": "Tỉnh có diện tích lớn nhất Việt Nam là **Tỉnh Nghệ An** với tổng diện tích **16.490 km²**, thuộc vùng Bắc Trung Bộ."
+            },
+            {
+                "keywords": [["tinh", "nho", "nhat", "viet", "nam"]],
+                "title": "Tỉnh có diện tích nhỏ nhất Việt Nam (Bắc Ninh)",
+                "extract": "Tỉnh có diện tích nhỏ nhất Việt Nam là **Tỉnh Bắc Ninh** với diện tích chỉ khoảng **822,7 km²**, thuộc vùng Đồng bằng sông Hồng."
+            },
+            {
+                "keywords": [["thanh", "pho", "lon", "nhat", "viet", "nam"]],
+                "title": "Thành phố lớn nhất Việt Nam",
+                "extract": "- **Lớn nhất về kinh tế và dân số:** **Thành phố Hồ Chí Minh** với hơn 9 triệu dân chính thức và đóng góp khoảng 20-22% GDP cả nước.\n- **Lớn nhất về diện tích:** **Thủ đô Hà Nội** (sau khi sáp nhập Hà Tây năm 2008) với diện tích 3.359 km²."
+            },
+            {
+                "keywords": [["thu", "do", "viet", "nam"], ["thu", "do", "cua", "viet", "nam"]],
+                "title": "Thủ đô của Việt Nam (Hà Nội)",
+                "extract": "Thủ đô của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam là thành phố **Hà Nội**. Hà Nội là trung tâm đầu não chính trị, hành chính quốc gia, đồng thời là trung tâm lớn về văn hóa, khoa học, giáo dục, kinh tế và giao lưu quốc tế."
+            },
+            {
+                "keywords": [["thu", "do", "phap"], ["thu", "do", "nuoc", "phap"]],
+                "title": "Thủ đô của nước Pháp (Paris)",
+                "extract": "Thủ đô của nước Cộng hòa Pháp là thành phố **Paris**, được mệnh danh là 'Kinh đô Ánh sáng', trung tâm văn hóa, nghệ thuật, thời trang và kinh tế hàng đầu thế giới."
+            },
+            {
+                "keywords": [["thu", "do", "my"], ["thu", "do", "hoa", "ky"], ["thu", "do", "nuoc", "my"]],
+                "title": "Thủ đô của Hoa Kỳ (Washington, D.C.)",
+                "extract": "Thủ đô của Hợp chúng quốc Hoa Kỳ (Mỹ) là **Washington, D.C.** (Đặc khu Columbia), nơi đặt trụ sở của Nhà Trắng, Điện Capitol và các cơ quan đầu não chính phủ liên bang Mỹ."
+            },
+            {
+                "keywords": [["thu", "do", "nhat", "ban"]],
+                "title": "Thủ đô của Nhật Bản (Tokyo)",
+                "extract": "Thủ đô của Nhật Bản là **Tokyo**, một trong những đại đô thị sầm uất, hiện đại và đông dân nhất thế giới."
+            },
+            {
+                "keywords": [["thu", "do", "han", "quoc"]],
+                "title": "Thủ đô của Hàn Quốc (Seoul)",
+                "extract": "Thủ đô của Đại Hàn Dân Quốc (Hàn Quốc) là thành phố **Seoul**, trung tâm chính trị, văn hóa, tài chính và công nghệ cao của Hàn Quốc."
+            },
+            {
+                "keywords": [["thu", "do", "trung", "quoc"]],
+                "title": "Thủ đô của Trung Quốc (Bắc Kinh)",
+                "extract": "Thủ đô của nước Cộng hòa Nhân dân Trung Hoa là thành phố **Bắc Kinh (Beijing)**."
+            },
+            {
+                "keywords": [["thu", "do", "nga"], ["thu", "do", "nuoc", "nga"]],
+                "title": "Thủ đô của Liên bang Nga (Moskva)",
+                "extract": "Thủ đô của Liên bang Nga là thành phố **Moskva (Moscow)**."
+            },
+            {
+                "keywords": [["thu", "do", "anh"], ["thu", "do", "nuoc", "anh"]],
+                "title": "Thủ đô của Vương quốc Anh (Luân Đôn)",
+                "extract": "Thủ đô của Vương quốc Liên hiệp Anh và Bắc Ireland là thành phố **Luân Đôn (London)**."
+            },
+            {
+                "keywords": [["bac", "ho", "sinh", "nam", "nao"], ["ngay", "sinh", "bac", "ho"], ["ho", "chi", "minh", "sinh", "nam", "nao"]],
+                "title": "Ngày sinh của Chủ tịch Hồ Chí Minh",
+                "extract": "Chủ tịch Hồ Chí Minh sinh ngày **19 tháng 5 năm 1890** tại làng Sen, xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An. Người qua đời ngày **2 tháng 9 năm 1969** tại Thủ đô Hà Nội, hưởng thọ 79 tuổi."
+            },
+            {
+                "keywords": [["ngay", "quoc", "khanh"], ["quoc", "khanh", "viet", "nam"]],
+                "title": "Ngày Quốc khánh Việt Nam (2 tháng 9)",
+                "extract": "Ngày Quốc khánh Việt Nam là ngày **2 tháng 9 năm 1945**. Vào ngày này, tại Quảng trường Ba Đình (Hà Nội), Chủ tịch Hồ Chí Minh đã đọc bản *Tuyên ngôn Độc lập*, khai sinh ra nước Việt Nam Dân chủ Cộng hòa (nay là nước Cộng hòa Xã hội Chủ nghĩa Việt Nam)."
+            },
+            {
+                "keywords": [["giai", "phong", "mien", "nam"], ["ngay", "thong", "nhat", "dat", "nuoc"], ["30", "thang", "4"]],
+                "title": "Ngày Giải phóng miền Nam (30 tháng 4 năm 1975)",
+                "extract": "Ngày Giải phóng miền Nam, thống nhất đất nước là ngày **30 tháng 4 năm 1975**, khi Chiến dịch Hồ Chí Minh toàn thắng, lá cờ Mặt trận Dân tộc Giải phóng miền Nam Việt Nam tung bay trên nóc Dinh Độc Lập lúc 11 giờ 30 phút, kết thúc vẻ vang 21 năm kháng chiến chống Mỹ cứu nước."
+            }
+        ]
+
+        # 1. Kiem tra Fast-path Knowledge Base
+        for item in TRI_THUC_NHANH:
+            for kw_group in item["keywords"]:
+                if all(kw in q_norm for kw in kw_group):
+                    return {
+                        "title": item["title"],
+                        "extract": item["extract"],
+                        "url": "https://vi.wikipedia.org/"
+                    }
+
+        # 2. Chuan hoa cau hoi chuyen sau
+        clean_q = re.sub(r'[?!.,;:\'\"()]+', ' ', cau_hoi).strip()
+        clean_q = re.sub(r'^(cho tôi hỏi|cho em hỏi|cho mình hỏi|hỏi về|hãy cho biết|bạn có biết|bạn ơi|ai là|đâu là|thế nào là|tìm hiểu về|thông tin về|giải thích về)\s*', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\s+(vậy ta|vậy nhỉ|vậy nè|vậy|thế|hả|nhỉ|nè|nha|nhé|à|a|hở|với|nhá|ạ)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\b(là|la)\s+.*?(gì|gi|ai|nao|nào|đâu|dau|sao|mấy|may|bao nhiêu|bao nhieu)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\b(ở đâu|o dau|như thế nào|nhu the nao|thế nào|the nao|ra sao)\s*$', '', clean_q, flags=re.I)
+        clean_q = re.sub(r'\b(cái gì|cai gi|con gì|con gi|loài gì|loai gi|cây gì|cay gi|ai|gì|gi)\s*$', '', clean_q, flags=re.I)
+        
+        clean_q = re.sub(r'\bdai\s+nhat\b', 'dài nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\bdai\s+nhất\b', 'dài nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\bcao\s+nhat\b', 'cao nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\blon\s+nhat\b', 'lớn nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\bsau\s+nhat\b', 'sâu nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\brong\s+nhat\b', 'rộng nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'\bnhieu\s+nhat\b', 'nhiều nhất', clean_q, flags=re.I)
+        clean_q = re.sub(r'^(cây|con|ngọn|loài|chiếc|bức|tòa)\s+', '', clean_q, flags=re.I)
         clean_q = ' '.join(clean_q.split()).strip()
         if not clean_q:
             clean_q = cau_hoi.strip()
-            
-        def _tim_wiki(q):
+
+        def _lay_summary(title):
             try:
-                # Phuong phap 1: query list=search (hoat dong tot voi tieng Viet co dau)
-                url1 = "https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + urllib.parse.quote(q) + "&format=json&utf8=1&srlimit=1"
-                req1 = urllib.request.Request(url1, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
-                with urllib.request.urlopen(req1, timeout=3.5) as resp1:
-                    d1 = json.loads(resp1.read().decode('utf-8'))
-                    slist = d1.get("query", {}).get("search", [])
-                    if slist:
-                        return slist[0].get("title")
-            except Exception:
-                pass
-            try:
-                # Phuong phap 2: opensearch (du phong)
-                url2 = "https://vi.wikipedia.org/w/api.php?action=opensearch&search=" + urllib.parse.quote(q) + "&limit=1&format=json"
-                req2 = urllib.request.Request(url2, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
-                with urllib.request.urlopen(req2, timeout=3.5) as resp2:
-                    d2 = json.loads(resp2.read().decode('utf-8'))
-                    if d2 and len(d2) >= 2 and d2[1]:
-                        return d2[1][0]
+                url = "https://vi.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(title.replace(' ', '_'))
+                req = urllib.request.Request(url, headers={'User-Agent': 'VietNamHistoryBot/3.0 (Educational RAG Project)'})
+                with urllib.request.urlopen(req, timeout=4) as resp:
+                    data = json.loads(resp.read().decode('utf-8'))
+                    if data.get('extract') and data.get('type') != 'disambiguation':
+                        return {
+                            'title': data.get('title', title),
+                            'extract': data.get('extract'),
+                            'url': data.get('content_urls', {}).get('desktop', {}).get('page', '')
+                        }
             except Exception:
                 pass
             return None
 
+        # Tier 1: Direct summary
+        res = _lay_summary(clean_q)
+        if res:
+            return res
+
+        # Tier 2: Opensearch prefix
         try:
-            title = _tim_wiki(clean_q)
-            if not title and clean_q != cau_hoi.strip():
-                title = _tim_wiki(cau_hoi.strip())
-            
-            if title:
-                summary_url = "https://vi.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(title.replace(' ', '_'))
-                req_sum = urllib.request.Request(summary_url, headers={'User-Agent': 'VietNamHistoryBot/2.0 (Academic Project)'})
-                with urllib.request.urlopen(req_sum, timeout=3.5) as resp_sum:
-                    sum_data = json.loads(resp_sum.read().decode('utf-8'))
-                    extract = sum_data.get("extract")
-                    if extract:
-                        return {
-                            "title": sum_data.get("title", title),
-                            "extract": extract,
-                            "url": sum_data.get("content_urls", {}).get("desktop", {}).get("page", "")
-                        }
+            url_open = "https://vi.wikipedia.org/w/api.php?action=opensearch&search=" + urllib.parse.quote(clean_q) + "&limit=3&format=json"
+            req_open = urllib.request.Request(url_open, headers={'User-Agent': 'VietNamHistoryBot/3.0'})
+            with urllib.request.urlopen(req_open, timeout=4) as resp_open:
+                d_open = json.loads(resp_open.read().decode('utf-8'))
+                if d_open and len(d_open) >= 2 and d_open[1]:
+                    for candidate in d_open[1]:
+                        res = _lay_summary(candidate)
+                        if res:
+                            return res
         except Exception:
             pass
+
+        # Tier 3: Query list=search voi Re-ranking & Anti-Garbage Filter
+        try:
+            url_search = "https://vi.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + urllib.parse.quote(clean_q) + "&format=json&utf8=1&srlimit=8"
+            req_search = urllib.request.Request(url_search, headers={'User-Agent': 'VietNamHistoryBot/3.0'})
+            with urllib.request.urlopen(req_search, timeout=4) as resp_search:
+                d_search = json.loads(resp_search.read().decode('utf-8'))
+                slist = d_search.get("query", {}).get("search", [])
+                q_terms = [w for w in xoa_dau(clean_q).split() if len(w) > 1]
+                scored = []
+                for item in slist:
+                    title = item.get("title", "")
+                    t_norm = xoa_dau(title)
+                    if (t_norm == "viet nam" or t_norm == "lich su viet nam") and "dat nuoc viet nam" not in q_norm and len(q_terms) > 1:
+                        continue
+                    score = sum(3 for w in q_terms if w in t_norm)
+                    if t_norm.startswith(xoa_dau(clean_q)):
+                        score += 5
+                    scored.append((score, title))
+                scored.sort(key=lambda x: x[0], reverse=True)
+                for _, title in scored:
+                    res = _lay_summary(title)
+                    if res:
+                        return res
+        except Exception:
+            pass
+
         return None
 
     def tim_kiem_hybrid(self, cau_hoi: str, top_k: int = 5) -> list[dict]:
